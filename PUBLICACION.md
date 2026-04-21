@@ -19,37 +19,22 @@
 - `/empleos/`
 - `/contacto/`
 
-## URL limpia recomendada
+## URL publicada
 
-Mientras no exista dominio propio, la salida mas limpia y estable para este proyecto es GitHub Pages con un repo llamado `valorhumano-uy`.
+La salida estatica de esta version queda publicada en GitHub Pages en:
 
-Formato recomendado:
-
-- `https://TU-USUARIO.github.io/valorhumano-uy/`
+- `https://jhonatan202020.github.io/valorhumano-uy/`
 
 Cuando exista dominio propio:
 
 - `https://www.valorhumano.com.uy`
 - `https://valorhumano.com.uy`
 
-## Lo honesto sobre la publicacion desde este entorno
+## Estado tecnico de publicacion
 
-En esta carpeta no hay un repositorio Git activo ni tooling autenticado de deploy disponible (`gh` y `netlify` no estan instalados ni conectados), asi que desde este entorno no se pudo ejecutar una publicacion verificada en un host externo sin inventar pasos.
+La carpeta ya se inicializo como repositorio git, se empujo a `jhonatan202020/valorhumano-uy` y GitHub Pages quedo configurado para publicar via workflow.
 
-Lo que si quedo resuelto:
-
-- salida estatica final
-- workflow de GitHub Pages listo
-- estructura apta para una URL profesional
-- sin previews efimeras ni tuneles
-
-## Paso minimo para dejarla online con URL limpia
-
-1. Crear o usar un repositorio llamado `valorhumano-uy`.
-2. Subir esta carpeta como contenido del repo.
-3. Usar la rama `main`.
-4. Dejar que GitHub Actions ejecute el workflow de Pages.
-5. La URL temporal limpia quedara en `https://TU-USUARIO.github.io/valorhumano-uy/`.
+La URL `https://valorhumano.github.io/valorhumano-uy/` no se pudo usar porque ese usuario no existe hoy en GitHub. La variante limpia real disponible desde este entorno es la publicada arriba.
 
 ## Dominio propio
 
