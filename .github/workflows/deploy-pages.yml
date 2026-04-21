@@ -1,0 +1,64 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Render static site
+        shell: pwsh
+        run: ./render-site.ps1
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare static artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf dist
+          mkdir -p dist
+          cp -R assets dist/assets
+          cp -R css dist/css
+          cp -R js dist/js
+          cp -R nosotros dist/nosotros
+          cp -R seleccion-de-personal dist/seleccion-de-personal
+          cp -R tercerizacion-de-personal dist/tercerizacion-de-personal
+          cp -R payroll dist/payroll
+          cp -R asesoramiento-logistico dist/asesoramiento-logistico
+          cp -R empresas dist/empresas
+          cp -R empleos dist/empleos
+          cp -R contacto dist/contacto
+          cp *.html dist/
+          cp robots.txt dist/robots.txt
+          cp _headers dist/_headers
+          cp _redirects dist/_redirects
+          if [ -f CNAME ]; then cp CNAME dist/CNAME; fi
+          touch dist/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
