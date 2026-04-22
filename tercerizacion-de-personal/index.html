@@ -3,142 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Tercerización de personal para cobertura, reemplazos, zafras y continuidad operativa con seguimiento y coordinación." />
+  <meta name="description" content="Tercerización de personal para empresas que necesitan cobertura, continuidad operativa, reemplazos y respuesta para picos de actividad." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0f141c" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Valor Humano" />
   <meta property="og:title" content="Tercerización de personal | Valor Humano" />
-  <meta property="og:description" content="Cobertura y continuidad operativa para empresas con picos de demanda, reemplazos y necesidades de coordinación diaria." />
+  <meta property="og:description" content="Continuidad operativa, reemplazos, zafras y cobertura en áreas donde la actividad diaria no puede frenar." />
   <title>Tercerización de personal | Valor Humano</title>
   <base href="../" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422a" />
+  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
+  <link rel="stylesheet" href="css/style.css?v=20260422b" />
 </head>
 <body class="page-outsourcing">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header">
-    <div class="container header-shell">
-      <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
-        <img class="brand-logo" src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-      </a>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-        <span class="nav-toggle-label">Abrir menú</span>
-      </button>
-
-      <nav class="nav-panel" id="nav-panel" aria-label="Principal">
-        <ul class="nav-menu">
-          <li><a href="./">Inicio</a></li>
-          <li><a href="nosotros/">Nosotros</a></li>
-          <li><a href="seleccion-de-personal/">Selección de personal</a></li>
-          <li><a class="active" href="tercerizacion-de-personal/">Tercerización</a></li>
-          <li><a href="payroll/">Payroll</a></li>
-          <li><a href="asesoramiento-logistico/">Asesoramiento logístico</a></li>
-          <li><a href="empresas/">Empresas</a></li>
-          <li><a href="empleos/">Empleos</a></li>
-          <li><a href="contacto/">Contacto</a></li>
-        </ul>
-        <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
-      </nav>
+    <div class="container">
+      <div class="header-shell">
+        <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+          <span class="brand-plaque">
+            <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+          <span class="nav-toggle-label">Abrir menú</span>
+        </button>
+        <nav class="nav-panel" id="nav-panel" aria-label="Principal">
+          <ul class="nav-menu">
+            <li><a href="./">Inicio</a></li>
+            <li class="nav-item has-popover">
+              <button class="services-toggle is-active" type="button" data-services-toggle aria-expanded="false" aria-controls="services-menu">Servicios</button>
+              <div class="services-popover" id="services-menu" data-services-menu>
+                <div class="services-popover-grid">
+                  <a class="service-pop-card" href="seleccion-de-personal/">
+                    <span>Selección</span>
+                    <strong>Selección de personal</strong>
+                    <em>Perfiles mejor relevados para decidir con más respaldo.</em>
+                  </a>
+                  <a class="service-pop-card is-current" href="tercerizacion-de-personal/">
+                    <span>Tercerización</span>
+                    <strong>Tercerización de personal</strong>
+                    <em>Cobertura para continuidad operativa, reemplazos y picos.</em>
+                  </a>
+                  <a class="service-pop-card" href="payroll/">
+                    <span>Payroll</span>
+                    <strong>Payroll</strong>
+                    <em>Administración laboral ordenada, trazable y confiable.</em>
+                  </a>
+                  <a class="service-pop-card" href="asesoramiento-logistico/">
+                    <span>Logística</span>
+                    <strong>Asesoramiento logístico</strong>
+                    <em>Layout, stock, picking y flujo con criterio operativo.</em>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li><a href="empresas/">Empresas</a></li>
+            <li><a href="empleos/">Empleos</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+          </ul>
+          <div class="nav-mobile-services">
+            <p>Servicios</p>
+            <div class="nav-mobile-links">
+              <a href="seleccion-de-personal/">Selección de personal</a>
+              <a class="active" href="tercerizacion-de-personal/">Tercerización de personal</a>
+              <a href="payroll/">Payroll</a>
+              <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
+            </div>
+          </div>
+          <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main id="contenido">
+  <main class="site-main" id="contenido">
     <section class="page-hero">
-      <div class="container page-hero-shell">
-        <article class="page-hero-copy" data-reveal>
+      <div class="container page-hero-grid">
+        <article class="panel page-copy" data-reveal>
           <p class="eyebrow">Tercerización de personal</p>
-          <h1 class="page-hero-title">Continuidad operativa sin interrupciones.</h1>
-          <p class="page-hero-lead">La tercerización sirve cuando la empresa necesita cobertura real para sostener operación diaria, reemplazos, zafras o picos de actividad sin desordenar su estructura interna.</p>
-          <ul class="page-hero-points">
-            <li>Dotaciones operativas para contextos donde el ritmo no admite pausas.</li>
-            <li>Coordinación, seguimiento y capacidad de respuesta frente a cambios cotidianos.</li>
+          <h1 class="page-title">Continuidad operativa sin interrupciones.</h1>
+          <p class="page-summary">La tercerización conviene cuando la operación necesita cobertura, reemplazos o flexibilidad sin trasladar toda la carga de coordinación, seguimiento y administración a la estructura interna.</p>
+          <div class="button-row">
+            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar asesoramiento</a>
+            <a class="btn btn-silver" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero consultar por tercerización de personal.">Hablar por WhatsApp</a>
+          </div>
+          <ul class="page-checklist">
+            <li>Cobertura para reemplazos, picos de actividad, zafras y necesidades temporales.</li>
+            <li>Seguimiento para áreas donde la actividad diaria no puede detenerse.</li>
             <li>Menor carga operativa y administrativa sobre el equipo interno.</li>
           </ul>
-          <div class="button-row">
-            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar cobertura</a>
-            <a class="btn btn-light" href="contacto/">Hablar con Valor Humano</a>
-          </div>
         </article>
 
-        <aside class="page-hero-side" data-reveal>
-          <div class="page-hero-media">
-            <img src="assets/img/outsourcing-hero.jpg" alt="Equipo operativo trabajando en planta y continuidad de servicio" />
+        <aside class="page-side" data-reveal>
+          <div class="page-media">
+            <img src="assets/img/outsourcing-hero.jpg" alt="Equipo operativo en planta industrial" />
           </div>
-          <div class="hero-micro">
-            <article class="hero-micro-item">
-              <strong>Cobertura</strong>
-              <span>Respuesta para picos y refuerzos.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Reemplazos</strong>
-              <span>Continuidad cuando alguien falta.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Seguimiento</strong>
-              <span>Coordinación diaria más ordenada.</span>
-            </article>
+          <div class="page-side-note">
+            <strong>Cobertura</strong>
+            <span>Respuesta cuando una ausencia o un pico de trabajo impactan sobre la operación.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Flexibilidad</strong>
+            <span>Alternativa útil para zafras, rotación, refuerzos y necesidades puntuales.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Seguimiento</strong>
+            <span>La coordinación no se deja librada a la improvisación del día a día.</span>
           </div>
         </aside>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container two-column">
-        <article class="editorial-card" data-reveal>
-          <p class="section-kicker">Qué resuelve</p>
-          <h2 class="card-title">Sostiene la operación cuando la necesidad principal es continuidad, flexibilidad y respuesta.</h2>
-          <p>Conviene para empresas que necesitan reforzar dotación, cubrir ausencias, atravesar zafras o descargar coordinación diaria sin armar una estructura paralela propia.</p>
-          <ul class="bullet-list">
-            <li>Picos de actividad y períodos estacionales.</li>
-            <li>Reemplazos por ausencias, licencias o rotación.</li>
-            <li>Operaciones donde el encargado necesita apoyo concreto y orden.</li>
-          </ul>
+      <div class="container story-grid">
+        <article class="story-card panel" data-reveal>
+          <p class="eyebrow">Qué resuelve</p>
+          <h2 class="card-title">Sostiene la operación cuando la dotación necesita moverse con rapidez.</h2>
+          <p class="panel-copy">Es especialmente útil para coberturas temporales, reemplazos, zafras o momentos donde la empresa necesita conservar continuidad sin desordenar su estructura interna.</p>
         </article>
-
-        <article class="image-card" data-reveal>
-          <img src="assets/img/outsourcing-operation.jpg" alt="Operarios en una planta y equipos sosteniendo la actividad diaria" />
+        <article class="story-card panel" data-reveal>
+          <p class="eyebrow">Qué gana la empresa</p>
+          <h2 class="card-title">Más flexibilidad, menos fricción interna y una respuesta mejor encuadrada.</h2>
+          <p class="panel-copy">La prioridad no es solo cubrir. Es cubrir con más orden, seguimiento y lectura práctica del trabajo que hay que sostener.</p>
         </article>
       </div>
     </section>
 
-    <section class="section-tint">
-      <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Cómo se trabaja</p>
-          <h2 class="section-title">La cobertura se coordina con foco en continuidad, reemplazo y seguimiento.</h2>
+    <section class="section-contrast">
+      <div class="container testimonial-shell visual-carousel" data-carousel data-reveal>
+        <div class="carousel-header">
+          <div class="section-head" style="margin-bottom: 0;">
+            <p class="eyebrow">Rubros y escenas</p>
+            <h2 class="section-title">Coberturas pensadas para contextos donde el trabajo sigue en marcha.</h2>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-button" type="button" aria-label="Anterior" data-carousel-prev>&lt;</button>
+            <button class="carousel-button" type="button" aria-label="Siguiente" data-carousel-next>&gt;</button>
+          </div>
         </div>
 
-        <div class="timeline-grid">
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">01</span>
-            <h3>Relevamiento operativo</h3>
-            <p>Se entiende volumen, turnos, exigencia del puesto y nivel de urgencia.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">02</span>
-            <h3>Definición de dotación</h3>
-            <p>Se determina cantidad, perfil y modalidad para cubrir el frente con orden.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">03</span>
-            <h3>Activación y coordinación</h3>
-            <p>Se pone en marcha la cobertura y se organiza el seguimiento con el cliente.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">04</span>
-            <h3>Continuidad y reemplazos</h3>
-            <p>Se sostiene el servicio con capacidad de reacción frente a cambios o faltas.</p>
-          </article>
+        <div class="carousel-viewport">
+          <div class="carousel-track">
+            <div class="carousel-slide">
+              <figure class="visual-figure">
+                <img src="assets/img/outsourcing-hero.jpg" alt="Operarios trabajando en planta industrial" />
+              </figure>
+              <article class="visual-caption">
+                <p class="eyebrow">Industria y planta</p>
+                <h3>Cuando una línea o un turno no pueden frenar.</h3>
+                <p>La cobertura se piensa para áreas productivas donde la continuidad operativa tiene impacto directo sobre tiempos, calidad y ritmo de trabajo.</p>
+              </article>
+            </div>
+            <div class="carousel-slide">
+              <figure class="visual-figure">
+                <img src="assets/img/logistics-hero.jpg" alt="Depósito con racks y mercadería en circulación" />
+              </figure>
+              <article class="visual-caption">
+                <p class="eyebrow">Depósitos y logística</p>
+                <h3>Refuerzos para stock, movimiento y tareas operativas de soporte.</h3>
+                <p>Sirve para cubrir momentos donde la circulación de mercadería, el picking o la preparación de pedidos exigen más manos y más orden.</p>
+              </article>
+            </div>
+            <div class="carousel-slide">
+              <figure class="visual-figure">
+                <img src="assets/img/companies-hero.jpg" alt="Reunión ejecutiva para coordinar cobertura operativa" />
+              </figure>
+              <article class="visual-caption">
+                <p class="eyebrow">Coordinación</p>
+                <h3>Seguimiento y encuadre para que la cobertura no quede suelta.</h3>
+                <p>No se trata solo de disponer personal. Se trata de ordenar cómo se inicia, se acompaña y se sostiene la respuesta para la empresa.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-dots" aria-label="Cambiar imagen">
+          <button class="carousel-dot is-active" type="button" aria-pressed="true"></button>
+          <button class="carousel-dot" type="button" aria-pressed="false"></button>
+          <button class="carousel-dot" type="button" aria-pressed="false"></button>
         </div>
       </div>
     </section>
@@ -147,58 +198,66 @@
       <div class="container">
         <div class="summary-grid">
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Beneficio operativo</p>
-            <h3>Más continuidad en áreas donde la actividad diaria no puede esperar.</h3>
-            <p>La empresa gana respaldo para sostener ritmo de trabajo y cobertura real.</p>
+            <p class="eyebrow">Operación</p>
+            <h3>Picos, zafras, reemplazos y continuidad donde el ritmo diario pesa.</h3>
+            <p>La tercerización ayuda cuando una necesidad concreta no puede esperar a una solución más lenta o más pesada internamente.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Beneficio administrativo</p>
-            <h3>Menor carga interna para coordinar altas, rotación y seguimiento diario.</h3>
-            <p>Se libera tiempo del equipo propio para enfocarse en control y operación.</p>
+            <p class="eyebrow">Administración</p>
+            <h3>Menos carga sobre el equipo interno y más prolijidad para coordinar.</h3>
+            <p>La empresa descarga parte de la gestión sin perder visibilidad sobre lo que necesita sostener.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Escenarios habituales</p>
-            <h3>Zafras, depósitos, retail, hotelería, plantas y operaciones con variación de demanda.</h3>
-            <p>Es especialmente útil donde la flexibilidad cambia el resultado del día.</p>
+            <p class="eyebrow">Seguimiento</p>
+            <h3>Cobertura con más orden, más lectura del contexto y menos improvisación.</h3>
+            <p>Eso hace diferencia especialmente en áreas donde una ausencia o una baja golpean rápido sobre la ejecución.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section-tint">
+    <section class="section-contrast">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Lo que gana la empresa</p>
-          <h2 class="section-title">Orden, flexibilidad y una coordinación más estable en la operación diaria.</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Cómo se trabaja</p>
+          <h2 class="section-title">Una secuencia breve para resolver rápido sin perder criterio.</h2>
         </div>
-        <div class="benefit-grid">
-          <article class="benefit-card" data-reveal>
-            <h3>Respuesta</h3>
-            <p>Se cubren necesidades que aparecen con urgencia sin desordenar la estructura existente.</p>
+        <div class="process-grid">
+          <article class="process-card" data-reveal>
+            <span class="process-index">01</span>
+            <h3>Relevamiento</h3>
+            <p>Se define dónde impacta la necesidad, cuánta urgencia hay y qué perfil o cobertura conviene.</p>
           </article>
-          <article class="benefit-card" data-reveal>
-            <h3>Continuidad</h3>
-            <p>La operación sostiene ritmo y servicio incluso cuando hay ausencias o picos de actividad.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">02</span>
+            <h3>Coordinación</h3>
+            <p>Se ordena el inicio del servicio con alcance, tiempos y forma de seguimiento visibles.</p>
           </article>
-          <article class="benefit-card" data-reveal>
+          <article class="process-card" data-reveal>
+            <span class="process-index">03</span>
+            <h3>Implementación</h3>
+            <p>La cobertura se activa con foco en continuidad y apoyo al funcionamiento diario.</p>
+          </article>
+          <article class="process-card" data-reveal>
+            <span class="process-index">04</span>
             <h3>Seguimiento</h3>
-            <p>La interlocución es clara y permite ajustar dotación o prioridades con rapidez.</p>
+            <p>Se monitorea para ajustar rápido y sostener la respuesta donde realmente importa.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section-final">
       <div class="container">
-        <div class="dark-panel cta-strip" data-reveal>
+        <div class="cta-banner" data-reveal>
           <div>
-            <p class="section-kicker">Empresas</p>
-            <h2 class="section-title">Si hoy el problema es cobertura, reemplazo o continuidad, conviene relevarlo con datos concretos.</h2>
-            <p class="section-copy">Desde Empresas podés dejar zona, volumen y urgencia para ordenar el primer paso.</p>
+            <p class="eyebrow">Empresas</p>
+            <h2 class="section-title">Si la cobertura impacta sobre la operación, conviene plantearla rápido y con orden.</h2>
+            <p class="section-lead">Desde Empresas podés dejar el caso mejor encuadrado para definir alcance, prioridad y siguiente paso sin demoras innecesarias.</p>
           </div>
           <div class="button-row">
-            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar cobertura</a>
-            <a class="btn btn-ghost" href="contacto/">Contactar</a>
+            <a class="btn btn-gold" href="empresas/#consulta-empresa">Registrar necesidad</a>
+            <a class="btn btn-silver" href="contacto/">Contactar</a>
           </div>
         </div>
       </div>
@@ -209,19 +268,19 @@
     <div class="container">
       <div class="footer-shell">
         <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-            <p class="footer-copy">Cobertura, continuidad operativa y coordinación con una conversación comercial clara y bien llevada.</p>
-            <div class="footer-meta">
-              <span>Colonia del Sacramento</span>
-              <span>Lunes a viernes | 8:00 a 18:00</span>
-            </div>
+          <div>
+            <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+              <span class="brand-plaque">
+                <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+              </span>
+            </a>
+            <p class="footer-copy">Valor Humano acompaña empresas con selección, tercerización, payroll y asesoramiento logístico desde una conversación clara, sobria y bien orientada a decisión.</p>
           </div>
           <div>
             <h3 class="footer-title">Servicios</h3>
             <div class="footer-links">
               <a href="seleccion-de-personal/">Selección de personal</a>
-              <a href="tercerizacion-de-personal/">Tercerización</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
               <a href="payroll/">Payroll</a>
               <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
             </div>
@@ -229,7 +288,8 @@
           <div>
             <h3 class="footer-title">Empresa</h3>
             <div class="footer-links">
-              <a href="nosotros/">Nosotros</a>
+              <a href="./">Inicio</a>
+              <a href="nosotros/">Quiénes somos</a>
               <a href="empresas/">Empresas</a>
               <a href="empleos/">Empleos</a>
               <a href="contacto/">Contacto</a>
@@ -238,20 +298,35 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:jhonatan-stemphelet@hotmail.com">jhonatan-stemphelet@hotmail.com</a>
-              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">WhatsApp 098 803 512</a>
+              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
               <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero consultar por tercerización de personal.">WhatsApp 098 803 512</a>
+              <span>Colonia y zona de influencia</span>
+            </div>
+            <div class="social-list" style="margin-top: 0.9rem;">
+              <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero consultar por tercerización de personal.">
+                <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+                <span>WhatsApp</span>
+              </a>
+              <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+                <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+                <span>Instagram</span>
+              </a>
+              <span class="social-placeholder">
+                <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+                <span>Facebook pendiente</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="legal-row">
-          <span>Valor Humano. Tercerización de personal para empresas.</span>
+        <div class="legal-line">
+          <span>Valor Humano. Consultora de personas, administración laboral y operación.</span>
           <span>Todos los derechos reservados.</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260422a"></script>
+  <script src="js/main.js?v=20260422b"></script>
 </body>
 </html>

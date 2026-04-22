@@ -25,27 +25,54 @@ function setupHeaderState() {
 function setupNavigation() {
   const toggle = document.querySelector(".nav-toggle");
   const panel = document.querySelector(".nav-panel");
+  const servicesToggle = document.querySelector("[data-services-toggle]");
+  const servicesMenu = document.querySelector("[data-services-menu]");
 
   if (!toggle || !panel) return;
 
+  const closeServicesMenu = () => {
+    if (!servicesToggle || !servicesMenu) return;
+    servicesToggle.classList.remove("is-active");
+    servicesToggle.setAttribute("aria-expanded", "false");
+    servicesMenu.classList.remove("is-open");
+  };
+
   const closeNav = () => {
-    document.body.classList.remove("nav-open");
+    document.body.classList.remove("menu-open");
     toggle.setAttribute("aria-expanded", "false");
+    closeServicesMenu();
   };
 
   toggle.addEventListener("click", () => {
-    const isOpen = document.body.classList.toggle("nav-open");
+    const isOpen = document.body.classList.toggle("menu-open");
     toggle.setAttribute("aria-expanded", String(isOpen));
+    if (!isOpen) closeServicesMenu();
   });
+
+  if (servicesToggle && servicesMenu) {
+    servicesToggle.addEventListener("click", () => {
+      if (window.innerWidth <= 1100) return;
+
+      const isOpen = servicesMenu.classList.toggle("is-open");
+      servicesToggle.classList.toggle("is-active", isOpen);
+      servicesToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+  }
 
   panel.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeNav);
   });
 
   document.addEventListener("click", (event) => {
-    if (!document.body.classList.contains("nav-open")) return;
-    if (panel.contains(event.target) || toggle.contains(event.target)) return;
-    closeNav();
+    const clickedInsideNav = panel.contains(event.target) || toggle.contains(event.target);
+
+    if (window.innerWidth > 1100 && servicesToggle && servicesMenu) {
+      const clickedInsideServices = servicesToggle.contains(event.target) || servicesMenu.contains(event.target);
+      if (!clickedInsideServices) closeServicesMenu();
+    }
+
+    if (!document.body.classList.contains("menu-open")) return;
+    if (!clickedInsideNav) closeNav();
   });
 
   document.addEventListener("keydown", (event) => {
@@ -53,7 +80,13 @@ function setupNavigation() {
   });
 
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 1100) closeNav();
+    if (window.innerWidth > 1100) {
+      document.body.classList.remove("menu-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+    if (window.innerWidth <= 1100) {
+      closeServicesMenu();
+    }
   });
 }
 
@@ -130,9 +163,7 @@ function setSubmittingState(form, label) {
     button.disabled = true;
   });
 
-  if (submitButton) {
-    submitButton.textContent = label;
-  }
+  if (submitButton) submitButton.textContent = label;
 }
 
 function setupContactForms() {
@@ -158,7 +189,7 @@ function setupContactForms() {
   if (currentUrl.searchParams.get("consulta") === "ok") {
     forms.forEach((form) => {
       const showStatus = bindFormStatus(form);
-      showStatus("success", "Tu consulta fue enviada correctamente. En breve continuamos el contacto.");
+      showStatus("success", "Tu consulta fue enviada correctamente. En breve seguimos el contacto.");
     });
   }
 }
@@ -167,7 +198,7 @@ function validateCvFile(file) {
   if (!file) {
     return {
       valid: false,
-      message: "Adjunta tu CV para completar la postulacion."
+      message: "Adjunta tu CV para completar la postulación."
     };
   }
 
@@ -184,7 +215,7 @@ function validateCvFile(file) {
   if (file.size > maxCvSizeBytes) {
     return {
       valid: false,
-      message: "El archivo supera el maximo de 10 MB permitido."
+      message: "El archivo supera el máximo de 10 MB permitido."
     };
   }
 
@@ -228,11 +259,10 @@ function setupJobsForm() {
 
   const currentUrl = new URL(window.location.href);
   const fileInput = form.querySelector('input[type="file"]');
-  const submitButton = form.querySelector('button[type="submit"]');
   const showStatus = bindFormStatus(form, { placement: "before" });
 
   if (currentUrl.searchParams.get("postulacion") === "ok") {
-    showStatus("success", "Tu postulacion fue enviada correctamente. Si el llamado sigue activo, vamos a continuar por los datos que dejaste.");
+    showStatus("success", "Tu postulación fue enviada correctamente. Si el llamado sigue activo, continuamos por los datos que dejaste.");
   }
 
   if (fileInput) {
@@ -264,9 +294,6 @@ function setupJobsForm() {
     }
 
     setSubmittingState(form, "Enviando...");
-    if (submitButton) {
-      submitButton.textContent = "Enviando...";
-    }
   });
 
   form.querySelectorAll('[data-channel="whatsapp"]').forEach((button) => {
@@ -282,7 +309,7 @@ function setupJobsForm() {
       }
 
       const lines = collectFormLines(form, { includeFiles: true });
-      openWhatsApp(`Hola Valor Humano,\n\n${lines.join("\n")}\n\nContinuo la postulacion por este canal y adjunto mi CV.`);
+      openWhatsApp(`Hola Valor Humano,\n\n${lines.join("\n")}\n\nContinúo la postulación por este canal y adjunto mi CV.`);
     });
   });
 }

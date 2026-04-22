@@ -3,273 +3,251 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Página para empresas de Valor Humano: relevamiento comercial, proceso de trabajo, preguntas frecuentes y formulario de consulta." />
+  <meta name="description" content="Página para empresas de Valor Humano: relevamiento, definición de servicio, contacto y formulario para iniciar selección, tercerización, payroll o logística." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0f141c" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Valor Humano" />
   <meta property="og:title" content="Empresas | Valor Humano" />
-  <meta property="og:description" content="Una entrada comercial clara para ordenar la necesidad y activar el servicio correcto según contexto, urgencia y operación." />
+  <meta property="og:description" content="Ingresá la necesidad de tu empresa y definí el servicio correcto con una conversación clara y bien orientada." />
   <title>Empresas | Valor Humano</title>
   <base href="../" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422a" />
+  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
+  <link rel="stylesheet" href="css/style.css?v=20260422b" />
 </head>
 <body class="page-enterprises">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header">
-    <div class="container header-shell">
-      <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
-        <img class="brand-logo" src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-      </a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-        <span class="nav-toggle-label">Abrir menú</span>
-      </button>
-      <nav class="nav-panel" id="nav-panel" aria-label="Principal">
-        <ul class="nav-menu">
-          <li><a href="./">Inicio</a></li>
-          <li><a href="nosotros/">Nosotros</a></li>
-          <li><a href="seleccion-de-personal/">Selección de personal</a></li>
-          <li><a href="tercerizacion-de-personal/">Tercerización</a></li>
-          <li><a href="payroll/">Payroll</a></li>
-          <li><a href="asesoramiento-logistico/">Asesoramiento logístico</a></li>
-          <li><a class="active" href="empresas/">Empresas</a></li>
-          <li><a href="empleos/">Empleos</a></li>
-          <li><a href="contacto/">Contacto</a></li>
-        </ul>
-        <a class="btn btn-gold nav-cta" href="#consulta-empresa">Consulta empresa</a>
-      </nav>
+    <div class="container">
+      <div class="header-shell">
+        <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+          <span class="brand-plaque">
+            <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+          <span class="nav-toggle-label">Abrir menú</span>
+        </button>
+        <nav class="nav-panel" id="nav-panel" aria-label="Principal">
+          <ul class="nav-menu">
+            <li><a href="./">Inicio</a></li>
+            <li class="nav-item has-popover">
+              <button class="services-toggle" type="button" data-services-toggle aria-expanded="false" aria-controls="services-menu">Servicios</button>
+              <div class="services-popover" id="services-menu" data-services-menu>
+                <div class="services-popover-grid">
+                  <a class="service-pop-card" href="seleccion-de-personal/">
+                    <span>Selección</span>
+                    <strong>Selección de personal</strong>
+                    <em>Perfiles mejor relevados para decidir con más respaldo.</em>
+                  </a>
+                  <a class="service-pop-card" href="tercerizacion-de-personal/">
+                    <span>Tercerización</span>
+                    <strong>Tercerización de personal</strong>
+                    <em>Cobertura para continuidad operativa, reemplazos y picos.</em>
+                  </a>
+                  <a class="service-pop-card" href="payroll/">
+                    <span>Payroll</span>
+                    <strong>Payroll</strong>
+                    <em>Administración laboral ordenada, trazable y confiable.</em>
+                  </a>
+                  <a class="service-pop-card" href="asesoramiento-logistico/">
+                    <span>Logística</span>
+                    <strong>Asesoramiento logístico</strong>
+                    <em>Layout, stock, picking y flujo con criterio operativo.</em>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li><a class="active" href="empresas/">Empresas</a></li>
+            <li><a href="empleos/">Empleos</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+          </ul>
+          <div class="nav-mobile-services">
+            <p>Servicios</p>
+            <div class="nav-mobile-links">
+              <a href="seleccion-de-personal/">Selección de personal</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
+              <a href="payroll/">Payroll</a>
+              <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
+            </div>
+          </div>
+          <a class="btn btn-gold nav-cta" href="#consulta-empresa">Consulta empresa</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main id="contenido">
+  <main class="site-main" id="contenido">
     <section class="page-hero">
-      <div class="container page-hero-shell">
-        <article class="page-hero-copy" data-reveal>
+      <div class="container page-hero-grid">
+        <article class="panel page-copy" data-reveal>
           <p class="eyebrow">Empresas</p>
-          <h1 class="page-hero-title">Una entrada comercial clara para ordenar la necesidad y activar el servicio correcto.</h1>
-          <p class="page-hero-lead">Esta página está pensada para relevar qué está pasando hoy, cómo impacta, cuál es la urgencia y qué frente conviene activar: selección, tercerización, payroll o asesoramiento logístico.</p>
-          <ul class="page-hero-points">
-            <li>El vínculo empieza por relevamiento y contexto, no por una respuesta genérica.</li>
-            <li>Se define servicio, alcance inicial y siguiente paso con buena jerarquía.</li>
-            <li>La consulta se canaliza al correo indicado y se confirma con mensaje de éxito.</li>
-          </ul>
+          <h1 class="page-title">La entrada comercial para ordenar la necesidad y empezar por el frente correcto.</h1>
+          <p class="page-summary">Esta página está pensada para empresas. Acá se plantea el caso, se define el servicio de interés y se abre una conversación clara para encuadrar selección, tercerización, payroll o asesoramiento logístico.</p>
           <div class="button-row">
             <a class="btn btn-gold" href="#consulta-empresa">Registrar empresa</a>
-            <a class="btn btn-light" href="contacto/">Ver contacto</a>
+            <a class="btn btn-silver" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta para mi empresa.">Hablar por WhatsApp</a>
           </div>
+          <ul class="page-checklist">
+            <li>Relevamiento inicial para entender contexto, urgencia e impacto.</li>
+            <li>Definición del servicio correcto y del siguiente paso más razonable.</li>
+            <li>Acompañamiento comercial y profesional desde el primer intercambio.</li>
+          </ul>
         </article>
-
-        <aside class="page-hero-side" data-reveal>
-          <div class="page-hero-media">
-            <img src="assets/img/companies-hero.jpg" alt="Reunión ejecutiva para relevar una necesidad empresarial" />
+        <aside class="page-side" data-reveal>
+          <div class="page-media">
+            <img src="assets/img/companies-hero.jpg" alt="Reunión ejecutiva para analizar necesidades de una empresa" />
           </div>
-          <div class="hero-micro">
-            <article class="hero-micro-item">
-              <strong>Relevamiento</strong>
-              <span>Se entiende el caso y la urgencia.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Definición</strong>
-              <span>Se encuadra el servicio correcto.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Siguiente paso</strong>
-              <span>Se ordena cómo avanzar.</span>
-            </article>
+          <div class="page-side-note">
+            <strong>Qué hace Valor Humano</strong>
+            <span>Ayuda a resolver necesidades de personal, administración y operación con mejor orden y mejor criterio.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Cómo se inicia</strong>
+            <span>Con una consulta clara que permita entender qué problema hay que resolver primero.</span>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section-tint">
+    <section class="section-tight">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Cómo inicia el vínculo</p>
-          <h2 class="section-title">Un proceso breve para pasar de la necesidad al servicio correcto con más orden.</h2>
+        <div class="summary-grid">
+          <article class="summary-card" data-reveal>
+            <p class="eyebrow">Selección</p>
+            <h3>Cuando hace falta incorporar con más respaldo y mejor lectura del puesto.</h3>
+            <p>Ideal para vacantes donde la decisión pesa y conviene filtrar mejor antes de avanzar.</p>
+          </article>
+          <article class="summary-card" data-reveal>
+            <p class="eyebrow">Tercerización</p>
+            <h3>Cuando la operación necesita cobertura, reemplazos o flexibilidad.</h3>
+            <p>Útil para sostener continuidad en picos de trabajo, zafras o necesidades temporales.</p>
+          </article>
+          <article class="summary-card" data-reveal>
+            <p class="eyebrow">Payroll y logística</p>
+            <h3>Cuando la empresa necesita descargar gestión o revisar orden operativo.</h3>
+            <p>Sirve para administración laboral sensible y para operaciones donde el flujo pide más criterio.</p>
+          </article>
         </div>
-        <div class="timeline-grid">
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">01</span>
-            <h3>Consulta inicial</h3>
-            <p>La empresa deja datos sobre necesidad, servicio, zona, urgencia y contexto actual.</p>
+      </div>
+    </section>
+
+    <section class="section-contrast">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Proceso para empresas</p>
+          <h2 class="section-title">Un recorrido breve para pasar de la necesidad al servicio correcto.</h2>
+        </div>
+        <div class="process-grid">
+          <article class="process-card" data-reveal>
+            <span class="process-index">01</span>
+            <h3>Primer contacto</h3>
+            <p>La empresa deja su consulta con servicio de interés, contexto y prioridad visible.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">02</span>
+          <article class="process-card" data-reveal>
+            <span class="process-index">02</span>
             <h3>Relevamiento</h3>
-            <p>Se analiza si el problema hoy está en incorporación, cobertura, nómina u operación.</p>
+            <p>Se ordena el caso según urgencia, impacto y tipo de necesidad.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">03</span>
-            <h3>Definición del frente</h3>
-            <p>Se propone por qué servicio conviene avanzar y con qué alcance inicial.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">03</span>
+            <h3>Definición</h3>
+            <p>Se plantea qué servicio conviene y por dónde es más razonable empezar.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">04</span>
-            <h3>Seguimiento</h3>
-            <p>La consulta continúa por el canal correcto con una respuesta más clara y ejecutiva.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">04</span>
+            <h3>Acompañamiento</h3>
+            <p>La relación se sostiene con seguimiento, claridad y foco en resolución.</p>
           </article>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="container">
-        <div class="summary-grid">
-          <article class="summary-card" data-reveal>
-            <p class="section-kicker">Qué gana la empresa</p>
-            <h3>Un inicio comercial más ordenado y menos vueltas antes de actuar.</h3>
-            <p>La prioridad es comprender bien el problema y evitar mezclar frentes que necesitan respuestas distintas.</p>
-          </article>
-          <article class="summary-card" data-reveal>
-            <p class="section-kicker">Qué conviene dejar claro</p>
-            <h3>Tipo de necesidad, localidad, volumen estimado, urgencia y área afectada.</h3>
-            <p>Con esos datos ya es posible plantear mejor el caso y definir por dónde empezar.</p>
-          </article>
-          <article class="summary-card" data-reveal>
-            <p class="section-kicker">Qué se activa desde acá</p>
-            <h3>Selección, tercerización, payroll o asesoramiento logístico según el caso real.</h3>
-            <p>La página está pensada para convertir y ordenar, no para recargar información.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-tight">
-      <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Preguntas frecuentes</p>
-          <h2 class="section-title">Lo básico para avanzar con más claridad desde el primer intercambio.</h2>
-        </div>
-        <div class="faq-grid">
-          <details class="faq-card" data-reveal>
-            <summary>¿Qué pasa después de enviar la consulta?</summary>
-            <p>La información llega al correo definido para empresas y se responde con un primer encuadre del caso, servicio sugerido y próximo paso.</p>
-          </details>
-          <details class="faq-card" data-reveal>
-            <summary>¿Hace falta saber ya qué servicio necesito?</summary>
-            <p>No. Si la empresa todavía no tiene claro si conviene selección, cobertura, payroll o logística, se puede relevar igual y definirlo juntos.</p>
-          </details>
-          <details class="faq-card" data-reveal>
-            <summary>¿Qué datos ayudan a responder mejor?</summary>
-            <p>Localidad, urgencia, volumen, área impactada y una breve descripción de la necesidad actual. Cuanto más concreto esté planteado, mejor se ordena la respuesta.</p>
-          </details>
-          <details class="faq-card" data-reveal>
-            <summary>¿Se puede continuar por WhatsApp?</summary>
-            <p>Sí. El formulario ordena el inicio y WhatsApp queda disponible como canal directo para continuar la conversación.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="consulta-empresa">
       <div class="container form-layout">
-        <article class="form-card" data-reveal>
-          <p class="section-kicker">Formulario para empresas</p>
-          <h2>Dejá tu consulta y ordenamos el primer intercambio.</h2>
-          <p class="section-copy">Este formulario se envía a jhonatan-stemphelet@hotmail.com y muestra confirmación en la misma página.</p>
+        <article class="panel form-card" id="consulta-empresa" data-reveal>
+          <p class="eyebrow">Formulario para empresas</p>
+          <h2 class="section-title">Dejá la consulta bien planteada.</h2>
+          <p class="section-lead">El formulario llega a <strong>jhonatan-stemphelet@hotmail.com</strong> para ordenar el contacto inicial.</p>
 
-          <form class="form-grid" data-contact-form data-form-recipient="jhonatan-stemphelet@hotmail.com" method="POST">
-            <input type="hidden" name="_subject" value="Consulta web - Empresas - Valor Humano" />
+          <form data-contact-form data-form-recipient="jhonatan-stemphelet@hotmail.com">
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_subject" value="Nueva consulta empresa desde valorhumano.com.uy" />
             <input type="hidden" name="_next" value="" />
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hp-field" />
 
-            <div class="field">
-              <label for="empresa-nombre">Nombre y apellido</label>
-              <input id="empresa-nombre" name="nombre" type="text" autocomplete="name" required />
-            </div>
-            <div class="field">
-              <label for="empresa-empresa">Empresa</label>
-              <input id="empresa-empresa" name="empresa" type="text" autocomplete="organization" required />
-            </div>
-            <div class="field">
-              <label for="empresa-cargo">Cargo</label>
-              <input id="empresa-cargo" name="cargo" type="text" autocomplete="organization-title" required />
-            </div>
-            <div class="field">
-              <label for="empresa-telefono">Teléfono o WhatsApp</label>
-              <input id="empresa-telefono" name="telefono" type="tel" autocomplete="tel" required />
-            </div>
-            <div class="field">
-              <label for="empresa-email">Correo electrónico</label>
-              <input id="empresa-email" name="email" type="email" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="empresa-localidad">Ciudad o zona</label>
-              <input id="empresa-localidad" name="localidad" type="text" autocomplete="address-level2" required />
-            </div>
-            <div class="field full">
-              <label for="empresa-servicio">Servicio de interés</label>
-              <select id="empresa-servicio" name="servicio" required>
-                <option value="">Seleccionar servicio</option>
-                <option value="Selección de personal">Selección de personal</option>
-                <option value="Tercerización de personal">Tercerización de personal</option>
-                <option value="Payroll">Payroll</option>
-                <option value="Asesoramiento logístico">Asesoramiento logístico</option>
-                <option value="Todavía no está definido">Todavía no está definido</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="empresa-volumen">Volumen estimado</label>
-              <input id="empresa-volumen" name="volumen" type="text" placeholder="1 vacante, 10 operarios, revisión de depósito..." required />
-            </div>
-            <div class="field">
-              <label for="empresa-urgencia">Urgencia</label>
-              <select id="empresa-urgencia" name="urgencia" required>
-                <option value="">Seleccionar urgencia</option>
-                <option value="Inmediata">Inmediata</option>
-                <option value="Esta semana">Esta semana</option>
-                <option value="Este mes">Este mes</option>
-                <option value="A definir">A definir</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="empresa-mensaje">Mensaje</label>
-              <textarea id="empresa-mensaje" name="mensaje" placeholder="Contanos qué está pasando hoy, qué área está impactada y qué necesitás resolver." required></textarea>
-            </div>
-            <div class="field full">
-              <div class="button-row">
-                <button class="btn btn-gold" type="submit">Enviar consulta</button>
-                <a class="btn btn-light" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta para mi empresa.">Hablar por WhatsApp</a>
+            <div class="field-grid">
+              <div class="field">
+                <label for="empresa-nombre">Nombre y apellido</label>
+                <input id="empresa-nombre" name="Nombre y apellido" type="text" placeholder="Quién realiza la consulta" required />
               </div>
+              <div class="field">
+                <label for="empresa-empresa">Empresa</label>
+                <input id="empresa-empresa" name="Empresa" type="text" placeholder="Nombre de la empresa" required />
+              </div>
+              <div class="field">
+                <label for="empresa-telefono">Teléfono</label>
+                <input id="empresa-telefono" name="Teléfono" type="tel" placeholder="098 000 000" required />
+              </div>
+              <div class="field">
+                <label for="empresa-email">Correo</label>
+                <input id="empresa-email" name="Correo" type="email" placeholder="empresa@dominio.com" required />
+              </div>
+              <div class="field">
+                <label for="empresa-servicio">Servicio de interés</label>
+                <select id="empresa-servicio" name="Servicio de interés" required>
+                  <option value="">Seleccionar</option>
+                  <option>Selección de personal</option>
+                  <option>Tercerización de personal</option>
+                  <option>Payroll</option>
+                  <option>Asesoramiento logístico</option>
+                  <option>No estoy seguro todavía</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="empresa-ubicacion">Ubicación o rubro</label>
+                <input id="empresa-ubicacion" name="Ubicación o rubro" type="text" placeholder="Colonia, industria, retail, etc." />
+              </div>
+              <div class="field is-full">
+                <label for="empresa-mensaje">Mensaje</label>
+                <textarea id="empresa-mensaje" name="Mensaje" placeholder="Contanos qué necesitás resolver, con qué urgencia y en qué área impacta." required></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-gold" type="submit">Registrar empresa</button>
+              <a class="btn btn-ghost" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta para mi empresa.">Hablar por WhatsApp</a>
             </div>
           </form>
         </article>
 
-        <aside class="side-card" data-reveal>
-          <p class="section-kicker">Antes de enviar</p>
-          <h2>Cuanto más concreta esté la necesidad, mejor se ordena la respuesta.</h2>
-          <ul class="bullet-list">
-            <li>Tipo de necesidad y servicio que hoy parece más cercano.</li>
-            <li>Zona, urgencia y volumen estimado.</li>
-            <li>Qué parte de la empresa está sintiendo el problema.</li>
-          </ul>
-          <div class="contact-grid" style="margin-top: 1.1rem;">
-            <article class="contact-card">
-              <h3>Correo general</h3>
-              <p class="contact-value">jhonatan-stemphelet@hotmail.com</p>
-              <p>Canal donde se recibe este formulario.</p>
-            </article>
-            <article class="contact-card">
-              <h3>WhatsApp</h3>
-              <p class="contact-value">098 803 512</p>
-              <p>Canal directo para continuar la conversación.</p>
-            </article>
-            <article class="contact-card">
-              <h3>Cobertura</h3>
-              <p class="contact-value">Colonia y zona oeste</p>
-              <p>Con alcance según servicio y necesidad.</p>
-            </article>
+        <aside class="panel support-card" data-reveal>
+          <p class="eyebrow">Preguntas frecuentes</p>
+          <div class="faq-grid">
+            <details class="faq-item" open>
+              <summary>¿Tengo que saber ya qué servicio necesito?</summary>
+              <p>No necesariamente. Si el caso todavía no está del todo definido, conviene explicarlo igual para encuadrarlo mejor.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Puedo consultar por más de un frente a la vez?</summary>
+              <p>Sí. Muchas veces la necesidad combina cobertura, administración o un punto operativo que conviene ordenar en conjunto.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Qué conviene incluir en el primer contacto?</summary>
+              <p>Servicio de interés, urgencia, rubro, ubicación y una breve descripción del problema a resolver.</p>
+            </details>
+            <details class="faq-item">
+              <summary>¿Cómo sigue después del formulario?</summary>
+              <p>Se toma contacto para relevar mejor el caso y definir con más claridad el siguiente paso.</p>
+            </details>
           </div>
         </aside>
       </div>
@@ -280,19 +258,19 @@
     <div class="container">
       <div class="footer-shell">
         <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-            <p class="footer-copy">Página comercial para empresas con formulario, proceso de trabajo y preguntas frecuentes.</p>
-            <div class="footer-meta">
-              <span>Colonia del Sacramento</span>
-              <span>Lunes a viernes | 8:00 a 18:00</span>
-            </div>
+          <div>
+            <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+              <span class="brand-plaque">
+                <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+              </span>
+            </a>
+            <p class="footer-copy">Valor Humano acompaña empresas con selección, tercerización, payroll y asesoramiento logístico desde una conversación clara, sobria y bien orientada a decisión.</p>
           </div>
           <div>
             <h3 class="footer-title">Servicios</h3>
             <div class="footer-links">
               <a href="seleccion-de-personal/">Selección de personal</a>
-              <a href="tercerizacion-de-personal/">Tercerización</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
               <a href="payroll/">Payroll</a>
               <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
             </div>
@@ -300,8 +278,8 @@
           <div>
             <h3 class="footer-title">Empresa</h3>
             <div class="footer-links">
-              <a href="nosotros/">Nosotros</a>
-              <a href="empresas/">Empresas</a>
+              <a href="./">Inicio</a>
+              <a href="nosotros/">Quiénes somos</a>
               <a href="empleos/">Empleos</a>
               <a href="contacto/">Contacto</a>
             </div>
@@ -309,20 +287,35 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:jhonatan-stemphelet@hotmail.com">jhonatan-stemphelet@hotmail.com</a>
-              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">WhatsApp 098 803 512</a>
+              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
               <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta para mi empresa.">WhatsApp 098 803 512</a>
+              <span>Colonia y zona de influencia</span>
+            </div>
+            <div class="social-list" style="margin-top: 0.9rem;">
+              <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta para mi empresa.">
+                <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+                <span>WhatsApp</span>
+              </a>
+              <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+                <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+                <span>Instagram</span>
+              </a>
+              <span class="social-placeholder">
+                <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+                <span>Facebook pendiente</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="legal-row">
-          <span>Valor Humano. Empresas.</span>
+        <div class="legal-line">
+          <span>Valor Humano. Consultora de personas, administración laboral y operación.</span>
           <span>Todos los derechos reservados.</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260422a"></script>
+  <script src="js/main.js?v=20260422b"></script>
 </body>
 </html>

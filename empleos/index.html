@@ -3,207 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Empleos en Valor Humano: postulación guiada por formulario, correo, WhatsApp e Instagram, separada del recorrido comercial para empresas." />
+  <meta name="description" content="Empleos en Valor Humano: postulación guiada, base de datos, WhatsApp, Instagram y correo para enviar CV sin depender de listados fijos." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0f141c" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Valor Humano" />
   <meta property="og:title" content="Empleos | Valor Humano" />
-  <meta property="og:description" content="Postulación simple por formulario, correo o WhatsApp para dejar CV y sumarse a base de candidatos." />
+  <meta property="og:description" content="Canales para postularte, dejar tu CV y sumarte a la base de datos de Valor Humano." />
   <title>Empleos | Valor Humano</title>
   <base href="../" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422a" />
+  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
+  <link rel="stylesheet" href="css/style.css?v=20260422b" />
 </head>
 <body class="page-jobs">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header">
-    <div class="container header-shell">
-      <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
-        <img class="brand-logo" src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-      </a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-        <span class="nav-toggle-label">Abrir menú</span>
-      </button>
-      <nav class="nav-panel" id="nav-panel" aria-label="Principal">
-        <ul class="nav-menu">
-          <li><a href="./">Inicio</a></li>
-          <li><a href="nosotros/">Nosotros</a></li>
-          <li><a href="seleccion-de-personal/">Selección de personal</a></li>
-          <li><a href="tercerizacion-de-personal/">Tercerización</a></li>
-          <li><a href="payroll/">Payroll</a></li>
-          <li><a href="asesoramiento-logistico/">Asesoramiento logístico</a></li>
-          <li><a href="empresas/">Empresas</a></li>
-          <li><a class="active" href="empleos/">Empleos</a></li>
-          <li><a href="contacto/">Contacto</a></li>
-        </ul>
-        <a class="btn btn-gold nav-cta" href="#postularme">Postularme</a>
-      </nav>
+    <div class="container">
+      <div class="header-shell">
+        <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+          <span class="brand-plaque">
+            <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+          <span class="nav-toggle-label">Abrir menú</span>
+        </button>
+        <nav class="nav-panel" id="nav-panel" aria-label="Principal">
+          <ul class="nav-menu">
+            <li><a href="./">Inicio</a></li>
+            <li class="nav-item has-popover">
+              <button class="services-toggle" type="button" data-services-toggle aria-expanded="false" aria-controls="services-menu">Servicios</button>
+              <div class="services-popover" id="services-menu" data-services-menu>
+                <div class="services-popover-grid">
+                  <a class="service-pop-card" href="seleccion-de-personal/">
+                    <span>Selección</span>
+                    <strong>Selección de personal</strong>
+                    <em>Perfiles mejor relevados para decidir con más respaldo.</em>
+                  </a>
+                  <a class="service-pop-card" href="tercerizacion-de-personal/">
+                    <span>Tercerización</span>
+                    <strong>Tercerización de personal</strong>
+                    <em>Cobertura para continuidad operativa, reemplazos y picos.</em>
+                  </a>
+                  <a class="service-pop-card" href="payroll/">
+                    <span>Payroll</span>
+                    <strong>Payroll</strong>
+                    <em>Administración laboral ordenada, trazable y confiable.</em>
+                  </a>
+                  <a class="service-pop-card" href="asesoramiento-logistico/">
+                    <span>Logística</span>
+                    <strong>Asesoramiento logístico</strong>
+                    <em>Layout, stock, picking y flujo con criterio operativo.</em>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li><a href="empresas/">Empresas</a></li>
+            <li><a class="active" href="empleos/">Empleos</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+          </ul>
+          <div class="nav-mobile-services">
+            <p>Servicios</p>
+            <div class="nav-mobile-links">
+              <a href="seleccion-de-personal/">Selección de personal</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
+              <a href="payroll/">Payroll</a>
+              <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
+            </div>
+          </div>
+          <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main id="contenido">
+  <main class="site-main" id="contenido">
     <section class="page-hero">
-      <div class="container page-hero-shell">
-        <article class="page-hero-copy" data-reveal>
+      <div class="container page-hero-grid">
+        <article class="panel page-copy" data-reveal>
           <p class="eyebrow">Empleos</p>
-          <h1 class="page-hero-title">Una postulación simple, clara y separada del circuito comercial.</h1>
-          <p class="page-hero-lead">Acá no se listan vacantes. La idea es guiar al candidato para dejar CV, referencia y datos de contacto por formulario, correo o WhatsApp sin mezclar la postulación con el recorrido para empresas.</p>
-          <ul class="page-hero-points">
-            <li>Podés sumarte a base de datos o postularte por referencia.</li>
-            <li>El correo de selección es seleccion@valorhumano.com.uy.</li>
-            <li>WhatsApp e Instagram quedan disponibles como canales complementarios.</li>
-          </ul>
+          <h1 class="page-title">Un espacio simple para postularte y dejar tu CV bien presentado.</h1>
+          <p class="page-summary">La web no depende de publicar vacantes una por una. Empleos funciona como canal de postulación, base de datos y derivación desde redes o llamados externos, con un recorrido claro para quien quiere acercar su perfil.</p>
           <div class="button-row">
             <a class="btn btn-gold" href="#postularme">Postularme</a>
-            <a class="btn btn-light" href="mailto:seleccion@valorhumano.com.uy">Escribir por correo</a>
+            <a class="btn btn-silver" href="mailto:seleccion@valorhumano.com.uy">Enviar correo</a>
           </div>
+          <ul class="page-checklist">
+            <li>Postulación por formulario, correo o WhatsApp.</li>
+            <li>Base de datos para futuras búsquedas y llamados externos.</li>
+            <li>Canales separados del contenido comercial para hacerlo más simple.</li>
+          </ul>
         </article>
-
-        <aside class="page-hero-side" data-reveal>
-          <div class="page-hero-media">
-            <img src="assets/img/jobs-hero.jpg" alt="Entrevista laboral y proceso de postulación" />
+        <aside class="page-side" data-reveal>
+          <div class="page-media">
+            <img src="assets/img/jobs-hero.jpg" alt="Profesional revisando postulaciones y currículums" />
           </div>
-          <div class="hero-micro">
-            <article class="hero-micro-item">
-              <strong>Formulario</strong>
-              <span>CV y datos principales.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>WhatsApp</strong>
-              <span>Canal ágil para seguir.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Base de datos</strong>
-              <span>Para futuras búsquedas.</span>
-            </article>
+          <div class="page-side-note">
+            <strong>Correo visible</strong>
+            <span>seleccion@valorhumano.com.uy</span>
+          </div>
+          <div class="page-side-note">
+            <strong>WhatsApp</strong>
+            <span>098 803 512 para continuar la postulación por canal directo.</span>
           </div>
         </aside>
       </div>
     </section>
 
-    <section class="section-tint">
-      <div class="container">
-        <div class="contact-grid">
-          <article class="contact-card" data-reveal>
-            <p class="section-kicker">Correo</p>
-            <h3>seleccion@valorhumano.com.uy</h3>
-            <p>Para enviar CV o consultar por una referencia puntual.</p>
-          </article>
-          <article class="contact-card" data-reveal>
-            <p class="section-kicker">WhatsApp</p>
-            <h3>098 803 512</h3>
-            <p>Canal directo para continuar la postulación y adjuntar CV.</p>
-          </article>
-          <article class="contact-card" data-reveal>
-            <p class="section-kicker">Instagram</p>
-            <h3>Instagram de Valor Humano</h3>
-            <p>Disponible para seguir novedades y contacto inicial.</p>
-          </article>
-        </div>
-        <div class="social-list" style="margin-top: 1rem;" data-reveal>
-          <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero postularme.">
-            <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
-            <span>Postular por WhatsApp</span>
-          </a>
-          <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
-            <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
-            <span>Instagram</span>
-          </a>
-          <span class="social-placeholder">
-            <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
-            <span>Facebook pendiente</span>
-          </span>
-        </div>
-      </div>
-    </section>
-
     <section class="section-tight">
       <div class="container">
-        <div class="timeline-grid">
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">01</span>
-            <h3>Completá tus datos</h3>
-            <p>Nombre, contacto, localidad y puesto o referencia si la tenés.</p>
+        <div class="channel-grid">
+          <article class="channel-card" data-reveal>
+            <p class="eyebrow">Correo</p>
+            <h3>Enviar CV</h3>
+            <p>Podés escribir a seleccion@valorhumano.com.uy con tu CV y breve presentación.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">02</span>
-            <h3>Adjuntá tu CV</h3>
-            <p>El formulario acepta PDF, DOC o DOCX para que la postulación quede completa.</p>
+          <article class="channel-card" data-reveal>
+            <p class="eyebrow">WhatsApp</p>
+            <h3>Continuar por canal directo</h3>
+            <p>Si un llamado lo requiere, el contacto puede seguir por WhatsApp con datos ya ordenados.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">03</span>
-            <h3>Elegí el canal</h3>
-            <p>Podés enviar por formulario, correo o WhatsApp según te quede más cómodo.</p>
+          <article class="channel-card" data-reveal>
+            <p class="eyebrow">Instagram</p>
+            <h3>Seguir llamados</h3>
+            <p>Las búsquedas también pueden difundirse desde redes según el caso o el rubro.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">04</span>
-            <h3>Seguimiento</h3>
-            <p>Si el llamado sigue activo o tu perfil encaja en otra búsqueda, se continúa por los datos dejados.</p>
+          <article class="channel-card" data-reveal>
+            <p class="eyebrow">Base de datos</p>
+            <h3>Quedar disponible</h3>
+            <p>Si hoy no hay una vacante abierta, igual conviene dejar el perfil registrado.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="postularme">
-      <div class="container">
-        <article class="form-card" data-reveal>
-          <p class="section-kicker">Formulario de postulación</p>
-          <h2>Dejá tu CV y tus datos principales.</h2>
-          <p class="section-copy">Si no hay una vacante específica, igual podés sumarte a base de datos para futuras búsquedas.</p>
+    <section class="section">
+      <div class="container form-layout">
+        <article class="panel form-card" id="postularme" data-reveal>
+          <p class="eyebrow">Formulario de postulación</p>
+          <h2 class="section-title">Dejá tus datos y tu CV.</h2>
+          <p class="section-lead">El formulario se envía a <strong>seleccion@valorhumano.com.uy</strong> para continuar el proceso por el canal correspondiente.</p>
 
-          <form class="form-grid" data-jobs-form method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="_subject" value="Postulacion web - Valor Humano" />
+          <form data-jobs-form>
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_subject" value="Nueva postulación desde valorhumano.com.uy" />
             <input type="hidden" name="_next" value="" />
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hp-field" />
 
-            <div class="field">
-              <label for="postulacion-nombre">Nombre y apellido</label>
-              <input id="postulacion-nombre" name="nombre" type="text" autocomplete="name" required />
-            </div>
-            <div class="field">
-              <label for="postulacion-telefono">Teléfono o WhatsApp</label>
-              <input id="postulacion-telefono" name="telefono" type="tel" autocomplete="tel" required />
-            </div>
-            <div class="field">
-              <label for="postulacion-email">Correo electrónico</label>
-              <input id="postulacion-email" name="email" type="email" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="postulacion-localidad">Localidad</label>
-              <input id="postulacion-localidad" name="localidad" type="text" autocomplete="address-level2" required />
-            </div>
-            <div class="field full">
-              <label for="postulacion-referencia">Referencia o puesto</label>
-              <input id="postulacion-referencia" name="referencia" type="text" placeholder="Ejemplo: auxiliar administrativo, operario, sin referencia" required />
-            </div>
-            <div class="field full">
-              <label for="postulacion-cv">Adjuntar CV</label>
-              <input id="postulacion-cv" name="attachment" type="file" accept=".pdf,.doc,.docx" required />
-            </div>
-            <p class="helper-copy full">Formatos admitidos: PDF, DOC o DOCX. Máximo: 10 MB.</p>
-            <div class="field full">
-              <label for="postulacion-mensaje">Mensaje opcional</label>
-              <textarea id="postulacion-mensaje" name="mensaje" placeholder="Podés agregar disponibilidad, experiencia o cualquier aclaración breve."></textarea>
-            </div>
-            <div class="field full">
-              <div class="button-row">
-                <button class="btn btn-gold" type="submit">Enviar postulación</button>
-                <button class="btn btn-light" type="button" data-channel="whatsapp">Postular por WhatsApp</button>
+            <div class="field-grid">
+              <div class="field">
+                <label for="postulante-nombre">Nombre y apellido</label>
+                <input id="postulante-nombre" name="Nombre y apellido" type="text" placeholder="Tu nombre completo" required />
               </div>
+              <div class="field">
+                <label for="postulante-telefono">Teléfono</label>
+                <input id="postulante-telefono" name="Teléfono" type="tel" placeholder="098 000 000" required />
+              </div>
+              <div class="field">
+                <label for="postulante-email">Correo</label>
+                <input id="postulante-email" name="Correo" type="email" placeholder="tu@email.com" required />
+              </div>
+              <div class="field">
+                <label for="postulante-area">Área o rubro</label>
+                <input id="postulante-area" name="Área o rubro" type="text" placeholder="Industria, administración, logística..." />
+              </div>
+              <div class="field is-full">
+                <label for="postulante-mensaje">Mensaje</label>
+                <textarea id="postulante-mensaje" name="Mensaje" placeholder="Contanos brevemente tu experiencia, disponibilidad o llamado de referencia."></textarea>
+              </div>
+              <div class="field is-full">
+                <label for="postulante-cv">Adjuntar CV</label>
+                <input id="postulante-cv" name="CV" type="file" accept=".pdf,.doc,.docx" required />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-gold" type="submit">Enviar postulación</button>
+              <button class="btn btn-ghost" type="button" data-channel="whatsapp">Continuar por WhatsApp</button>
             </div>
           </form>
         </article>
+
+        <aside class="panel support-card" data-reveal>
+          <p class="eyebrow">Canales y redes</p>
+          <ul class="support-list">
+            <li>Correo: seleccion@valorhumano.com.uy</li>
+            <li>WhatsApp: 098 803 512</li>
+            <li>Instagram: @humano_valor</li>
+            <li>Facebook: pendiente</li>
+          </ul>
+          <div class="social-list">
+            <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero postularme.">
+              <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+              <span>WhatsApp</span>
+            </a>
+            <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+              <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+              <span>Instagram</span>
+            </a>
+            <span class="social-placeholder">
+              <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+              <span>Facebook pendiente</span>
+            </span>
+          </div>
+        </aside>
       </div>
     </section>
   </main>
@@ -212,19 +223,19 @@
     <div class="container">
       <div class="footer-shell">
         <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-            <p class="footer-copy">Postulación simple, separada del circuito comercial y pensada para que dejar CV sea claro y fácil.</p>
-            <div class="footer-meta">
-              <span>Colonia del Sacramento</span>
-              <span>Lunes a viernes | 8:00 a 18:00</span>
-            </div>
+          <div>
+            <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+              <span class="brand-plaque">
+                <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+              </span>
+            </a>
+            <p class="footer-copy">Valor Humano acompaña empresas con selección, tercerización, payroll y asesoramiento logístico desde una conversación clara, sobria y bien orientada a decisión.</p>
           </div>
           <div>
             <h3 class="footer-title">Servicios</h3>
             <div class="footer-links">
               <a href="seleccion-de-personal/">Selección de personal</a>
-              <a href="tercerizacion-de-personal/">Tercerización</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
               <a href="payroll/">Payroll</a>
               <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
             </div>
@@ -232,29 +243,44 @@
           <div>
             <h3 class="footer-title">Empresa</h3>
             <div class="footer-links">
-              <a href="nosotros/">Nosotros</a>
+              <a href="./">Inicio</a>
+              <a href="nosotros/">Quiénes somos</a>
               <a href="empresas/">Empresas</a>
-              <a href="empleos/">Empleos</a>
               <a href="contacto/">Contacto</a>
             </div>
           </div>
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
+              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
               <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
               <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero postularme.">WhatsApp 098 803 512</a>
-              <a href="mailto:jhonatan-stemphelet@hotmail.com">jhonatan-stemphelet@hotmail.com</a>
+              <span>Instagram @humano_valor</span>
+            </div>
+            <div class="social-list" style="margin-top: 0.9rem;">
+              <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero postularme.">
+                <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+                <span>WhatsApp</span>
+              </a>
+              <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+                <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+                <span>Instagram</span>
+              </a>
+              <span class="social-placeholder">
+                <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+                <span>Facebook pendiente</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="legal-row">
-          <span>Valor Humano. Empleos.</span>
+        <div class="legal-line">
+          <span>Valor Humano. Consultora de personas, administración laboral y operación.</span>
           <span>Todos los derechos reservados.</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260422a"></script>
+  <script src="js/main.js?v=20260422b"></script>
 </body>
 </html>

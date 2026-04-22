@@ -3,210 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Asesoramiento logístico para empresas con foco en layout, inventarios, stock, picking, rotación y trazabilidad." />
+  <meta name="description" content="Asesoramiento logístico para empresas que necesitan mejorar layout, stock, inventarios, picking, abastecimiento y flujo operativo." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0f141c" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Valor Humano" />
   <meta property="og:title" content="Asesoramiento logístico | Valor Humano" />
-  <meta property="og:description" content="Diagnóstico y mejora continua para depósitos, layout, inventario, stock, abastecimiento y flujo operativo." />
+  <meta property="og:description" content="Diagnóstico y mejora de operación logística con foco en layout, inventario, picking, stock y trazabilidad." />
   <title>Asesoramiento logístico | Valor Humano</title>
   <base href="../" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422a" />
+  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
+  <link rel="stylesheet" href="css/style.css?v=20260422b" />
 </head>
 <body class="page-logistics">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header">
-    <div class="container header-shell">
-      <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
-        <img class="brand-logo" src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-      </a>
-
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-        <span class="nav-toggle-label">Abrir menú</span>
-      </button>
-
-      <nav class="nav-panel" id="nav-panel" aria-label="Principal">
-        <ul class="nav-menu">
-          <li><a href="./">Inicio</a></li>
-          <li><a href="nosotros/">Nosotros</a></li>
-          <li><a href="seleccion-de-personal/">Selección de personal</a></li>
-          <li><a href="tercerizacion-de-personal/">Tercerización</a></li>
-          <li><a href="payroll/">Payroll</a></li>
-          <li><a class="active" href="asesoramiento-logistico/">Asesoramiento logístico</a></li>
-          <li><a href="empresas/">Empresas</a></li>
-          <li><a href="empleos/">Empleos</a></li>
-          <li><a href="contacto/">Contacto</a></li>
-        </ul>
-        <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
-      </nav>
+    <div class="container">
+      <div class="header-shell">
+        <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+          <span class="brand-plaque">
+            <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+          </span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+          <span class="nav-toggle-label">Abrir menú</span>
+        </button>
+        <nav class="nav-panel" id="nav-panel" aria-label="Principal">
+          <ul class="nav-menu">
+            <li><a href="./">Inicio</a></li>
+            <li class="nav-item has-popover">
+              <button class="services-toggle is-active" type="button" data-services-toggle aria-expanded="false" aria-controls="services-menu">Servicios</button>
+              <div class="services-popover" id="services-menu" data-services-menu>
+                <div class="services-popover-grid">
+                  <a class="service-pop-card" href="seleccion-de-personal/">
+                    <span>Selección</span>
+                    <strong>Selección de personal</strong>
+                    <em>Perfiles mejor relevados para decidir con más respaldo.</em>
+                  </a>
+                  <a class="service-pop-card" href="tercerizacion-de-personal/">
+                    <span>Tercerización</span>
+                    <strong>Tercerización de personal</strong>
+                    <em>Cobertura para continuidad operativa, reemplazos y picos.</em>
+                  </a>
+                  <a class="service-pop-card" href="payroll/">
+                    <span>Payroll</span>
+                    <strong>Payroll</strong>
+                    <em>Administración laboral ordenada, trazable y confiable.</em>
+                  </a>
+                  <a class="service-pop-card is-current" href="asesoramiento-logistico/">
+                    <span>Logística</span>
+                    <strong>Asesoramiento logístico</strong>
+                    <em>Layout, stock, picking y flujo con criterio operativo.</em>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li><a href="empresas/">Empresas</a></li>
+            <li><a href="empleos/">Empleos</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+          </ul>
+          <div class="nav-mobile-services">
+            <p>Servicios</p>
+            <div class="nav-mobile-links">
+              <a href="seleccion-de-personal/">Selección de personal</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
+              <a href="payroll/">Payroll</a>
+              <a class="active" href="asesoramiento-logistico/">Asesoramiento logístico</a>
+            </div>
+          </div>
+          <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main id="contenido">
+  <main class="site-main" id="contenido">
     <section class="page-hero">
-      <div class="container page-hero-shell">
-        <article class="page-hero-copy" data-reveal>
+      <div class="container page-hero-grid">
+        <article class="panel page-copy" data-reveal>
           <p class="eyebrow">Asesoramiento logístico</p>
-          <h1 class="page-hero-title">Optimiza tu operación logística con análisis y mejora continua.</h1>
-          <p class="page-hero-lead">Este servicio está pensado para empresas que necesitan ordenar depósito, inventario, layout y flujo operativo con una mirada concreta, aplicada y útil para la operación real.</p>
-          <ul class="page-hero-points">
-            <li>Diagnóstico sobre layout, stock, picking, rotación y abastecimiento.</li>
-            <li>Lectura práctica del uso actual del espacio, los circuitos y la trazabilidad.</li>
-            <li>Recomendaciones aplicables y acompañamiento para implementar mejoras.</li>
-          </ul>
+          <h1 class="page-title">Optimiza tu operación logística con análisis y mejora continua.</h1>
+          <p class="page-summary">Este servicio está pensado para empresas que necesitan ordenar una operación concreta: layout, inventarios, stock, picking, rotación, abastecimiento y trazabilidad tratados desde una mirada práctica del depósito y del flujo real.</p>
           <div class="button-row">
-            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar diagnóstico</a>
-            <a class="btn btn-light" href="contacto/">Hablar con Valor Humano</a>
+            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar asesoramiento</a>
+            <a class="btn btn-silver" href="contacto/">Contactar</a>
           </div>
+          <ul class="page-checklist">
+            <li>Diagnóstico sobre procesos, espacios, flujo y puntos de fricción.</li>
+            <li>Recomendaciones aplicables a layout, inventario, picking y abastecimiento.</li>
+            <li>Acompañamiento para mejorar orden, visibilidad y ritmo operativo.</li>
+          </ul>
         </article>
 
-        <aside class="page-hero-side" data-reveal>
-          <div class="page-hero-media">
-            <img src="assets/img/logistics-hero.jpg" alt="Depósito con racks, pallets y operación logística" />
+        <aside class="page-side" data-reveal>
+          <div class="page-media">
+            <img src="assets/img/logistics-hero.jpg" alt="Depósito con racks, pallets y operación logística en marcha" />
           </div>
-          <div class="hero-micro">
-            <article class="hero-micro-item">
-              <strong>Layout</strong>
-              <span>Circulación y uso del espacio.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Inventario</strong>
-              <span>Stock, conteos y visibilidad.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Flujo</strong>
-              <span>Picking, rotación y abastecimiento.</span>
-            </article>
+          <div class="page-side-note">
+            <strong>Layout</strong>
+            <span>La disposición del espacio incide directo sobre tiempos, errores y circulación.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Stock</strong>
+            <span>Inventario, rotación y abastecimiento necesitan más visibilidad y más criterio.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Flujo</strong>
+            <span>Picking, reposición y movimiento interno se revisan desde la operación real.</span>
           </div>
         </aside>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container two-column">
-        <article class="editorial-card" data-reveal>
-          <p class="section-kicker">Qué se revisa</p>
-          <h2 class="card-title">Operación real, no teoría abstracta ni lenguaje de software.</h2>
-          <p>Se mira cómo entra, se guarda, se mueve, se prepara y se controla la mercadería. El objetivo es entender dónde se pierde orden, tiempo o visibilidad.</p>
-          <ul class="bullet-list">
-            <li>Layout y circulación interna.</li>
-            <li>Inventarios, stock y rotación.</li>
-            <li>Picking, preparación, abastecimiento y trazabilidad.</li>
-            <li>Uso actual del WMS o de los registros disponibles, si existen.</li>
-          </ul>
-        </article>
-
-        <article class="editorial-card" data-reveal>
-          <p class="section-kicker">Cuándo conviene</p>
-          <h2 class="card-title">Cuando el depósito funciona, pero el orden operativo ya no acompaña el crecimiento o la exigencia.</h2>
-          <p>Sirve para empresas que sienten pérdida de tiempo, diferencias de stock, circuitos poco claros o preparación de pedidos con demasiado retrabajo.</p>
-          <ul class="bullet-list">
-            <li>Errores frecuentes en preparación o trazabilidad.</li>
-            <li>Espacio mal aprovechado o recorridos innecesarios.</li>
-            <li>Falta de claridad sobre inventario, abastecimiento o rotación.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-tint">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Cómo se realiza</p>
-          <h2 class="section-title">Levantamiento, análisis, propuesta y acompañamiento para mejorar con criterio práctico.</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Alcance</p>
+          <h2 class="section-title">Un servicio concreto para ordenar procesos y no para vender humo tecnológico.</h2>
         </div>
-
-        <div class="timeline-grid">
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">01</span>
-            <h3>Levantamiento</h3>
-            <p>Se releva operación actual, espacio, flujo, puntos de fricción y prioridades del cliente.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">02</span>
-            <h3>Análisis</h3>
-            <p>Se identifican desvíos en layout, inventario, recorridos, stock o circuitos de preparación.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">03</span>
-            <h3>Recomendaciones</h3>
-            <p>Se plantean mejoras concretas para ordenar la operación según impacto y viabilidad.</p>
-          </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">04</span>
-            <h3>Acompañamiento</h3>
-            <p>Se sigue la implementación para no dejar la mejora solo como informe.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
         <div class="summary-grid">
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Layout y espacio</p>
-            <h3>Lectura del depósito para ordenar circulación, ubicación y uso de racks o pallets.</h3>
-            <p>El foco está puesto en mejorar visibilidad y reducir recorridos innecesarios.</p>
+            <p class="eyebrow">Depósito</p>
+            <h3>Layout, ubicaciones, circulación y uso del espacio.</h3>
+            <p>Se revisa cómo está planteado el depósito y qué impacto tiene eso sobre el trabajo diario.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Inventario y stock</p>
-            <h3>Control, diferencias, rotación y criterios de ubicación con mirada práctica.</h3>
-            <p>Cuando el stock pierde claridad, la operación completa se vuelve más lenta y frágil.</p>
+            <p class="eyebrow">Inventario</p>
+            <h3>Stock, conteos, trazabilidad y visibilidad sobre lo que se mueve.</h3>
+            <p>La prioridad es bajar errores, mejorar control y ordenar mejor la información operativa.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Picking y abastecimiento</p>
-            <h3>Preparación de pedidos y reposición mejor ordenadas para bajar errores y tiempos muertos.</h3>
-            <p>La mejora se busca en el flujo real del trabajo y no en conceptos aislados.</p>
+            <p class="eyebrow">Proceso</p>
+            <h3>Picking, rotación, abastecimiento, preparación y flujo.</h3>
+            <p>Se mira dónde se enlentece la operación, dónde se duplica trabajo y dónde conviene ajustar.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section-tint">
+    <section class="section-contrast">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Beneficios</p>
-          <h2 class="section-title">Más orden, mejor visibilidad y decisiones operativas mejor fundamentadas.</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Cómo se realiza</p>
+          <h2 class="section-title">Levantamiento, análisis, recomendación y acompañamiento.</h2>
         </div>
-        <div class="benefit-grid">
-          <article class="benefit-card" data-reveal>
-            <h3>Visibilidad</h3>
-            <p>Mayor claridad sobre stock, circuitos, prioridades y puntos donde se pierde tiempo.</p>
+        <div class="process-grid">
+          <article class="process-card" data-reveal>
+            <span class="process-index">01</span>
+            <h3>Levantamiento</h3>
+            <p>Se observa la operación, el espacio, las tareas y los cuellos de botella del día a día.</p>
           </article>
-          <article class="benefit-card" data-reveal>
-            <h3>Orden</h3>
-            <p>El depósito gana lógica operativa, mejor uso del espacio y recorridos más coherentes.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">02</span>
+            <h3>Análisis</h3>
+            <p>Se revisan layout, inventario, flujo, tiempos y puntos donde el orden hoy se pierde.</p>
           </article>
-          <article class="benefit-card" data-reveal>
-            <h3>Seguimiento</h3>
-            <p>Las mejoras se plantean para implementarse, no para quedar en una recomendación aislada.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">03</span>
+            <h3>Recomendaciones</h3>
+            <p>Se proponen mejoras concretas, priorizadas y entendibles para la empresa.</p>
+          </article>
+          <article class="process-card" data-reveal>
+            <span class="process-index">04</span>
+            <h3>Acompañamiento</h3>
+            <p>Cuando hace falta, se sigue el ajuste para que la mejora no quede solo en diagnóstico.</p>
           </article>
         </div>
       </div>
     </section>
 
     <section class="section">
+      <div class="container story-grid">
+        <article class="story-card panel" data-reveal>
+          <p class="eyebrow">Resultado esperado</p>
+          <h2 class="card-title">Más orden operativo y mejor lectura para decidir dónde ajustar.</h2>
+          <p class="panel-copy">La mejora no se plantea en abstracto. Se baja a circulación, tiempos, inventario, visibilidad y capacidad de respuesta sobre el flujo real.</p>
+        </article>
+        <article class="story-card panel" data-reveal>
+          <p class="eyebrow">Dónde aplica</p>
+          <h2 class="card-title">Depósitos, centros de distribución y operaciones con mercadería en movimiento.</h2>
+          <p class="panel-copy">Especialmente donde el crecimiento, el desorden o los cambios de volumen empiezan a pegar sobre la eficiencia diaria.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-final">
       <div class="container">
-        <div class="dark-panel cta-strip" data-reveal>
+        <div class="cta-banner" data-reveal>
           <div>
-            <p class="section-kicker">Empresas</p>
-            <h2 class="section-title">Si hoy la operación perdió orden, conviene empezar por el diagnóstico correcto.</h2>
-            <p class="section-copy">Desde Empresas podés dejar datos sobre depósito, stock o flujo para ordenar la consulta desde el inicio.</p>
+            <p class="eyebrow">Empresas</p>
+            <h2 class="section-title">Si la operación ya muestra fricción, conviene revisar flujo, espacio y stock con criterio.</h2>
+            <p class="section-lead">Desde Empresas podés dejar la consulta planteada para revisar alcance, tipo de operación y prioridad con una conversación más ejecutiva.</p>
           </div>
           <div class="button-row">
-            <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar diagnóstico</a>
-            <a class="btn btn-ghost" href="contacto/">Contactar</a>
+            <a class="btn btn-gold" href="empresas/#consulta-empresa">Registrar consulta</a>
+            <a class="btn btn-silver" href="contacto/">Contactar</a>
           </div>
         </div>
       </div>
@@ -217,19 +216,19 @@
     <div class="container">
       <div class="footer-shell">
         <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-            <p class="footer-copy">Asesoramiento logístico para depósitos y operaciones que necesitan más orden, visibilidad y criterio práctico.</p>
-            <div class="footer-meta">
-              <span>Colonia del Sacramento</span>
-              <span>Lunes a viernes | 8:00 a 18:00</span>
-            </div>
+          <div>
+            <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+              <span class="brand-plaque">
+                <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+              </span>
+            </a>
+            <p class="footer-copy">Valor Humano acompaña empresas con selección, tercerización, payroll y asesoramiento logístico desde una conversación clara, sobria y bien orientada a decisión.</p>
           </div>
           <div>
             <h3 class="footer-title">Servicios</h3>
             <div class="footer-links">
               <a href="seleccion-de-personal/">Selección de personal</a>
-              <a href="tercerizacion-de-personal/">Tercerización</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
               <a href="payroll/">Payroll</a>
               <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
             </div>
@@ -237,7 +236,8 @@
           <div>
             <h3 class="footer-title">Empresa</h3>
             <div class="footer-links">
-              <a href="nosotros/">Nosotros</a>
+              <a href="./">Inicio</a>
+              <a href="nosotros/">Quiénes somos</a>
               <a href="empresas/">Empresas</a>
               <a href="empleos/">Empleos</a>
               <a href="contacto/">Contacto</a>
@@ -246,20 +246,35 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:jhonatan-stemphelet@hotmail.com">jhonatan-stemphelet@hotmail.com</a>
-              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">WhatsApp 098 803 512</a>
+              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
               <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero consultar por asesoramiento logístico.">WhatsApp 098 803 512</a>
+              <span>Colonia y zona de influencia</span>
+            </div>
+            <div class="social-list" style="margin-top: 0.9rem;">
+              <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero consultar por asesoramiento logístico.">
+                <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+                <span>WhatsApp</span>
+              </a>
+              <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+                <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+                <span>Instagram</span>
+              </a>
+              <span class="social-placeholder">
+                <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+                <span>Facebook pendiente</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="legal-row">
-          <span>Valor Humano. Asesoramiento logístico para empresas.</span>
+        <div class="legal-line">
+          <span>Valor Humano. Consultora de personas, administración laboral y operación.</span>
           <span>Todos los derechos reservados.</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260422a"></script>
+  <script src="js/main.js?v=20260422b"></script>
 </body>
 </html>

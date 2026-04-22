@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Selección de personal para empresas con relevamiento del perfil, entrevistas, referencias y shortlist para decidir con más respaldo." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0f141c" />
+  <meta name="theme-color" content="#0b0c10" />
   <meta name="format-detection" content="telephone=no" />
   <meta property="og:locale" content="es_UY" />
   <meta property="og:type" content="website" />
@@ -18,126 +18,166 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
-  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422a" />
+  <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
+  <link rel="stylesheet" href="css/style.css?v=20260422b" />
 </head>
 <body class="page-selection">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
   <header class="site-header">
-    <div class="container header-shell">
-      <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
-        <img class="brand-logo" src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-      </a>
+    <div class="container">
+      <div class="header-shell">
+        <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+          <span class="brand-plaque">
+            <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+          </span>
+        </a>
 
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
-        <span></span><span></span><span></span>
-        <span class="nav-toggle-label">Abrir menú</span>
-      </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+          <span class="nav-toggle-label">Abrir menú</span>
+        </button>
 
-      <nav class="nav-panel" id="nav-panel" aria-label="Principal">
-        <ul class="nav-menu">
-          <li><a href="./">Inicio</a></li>
-          <li><a href="nosotros/">Nosotros</a></li>
-          <li><a class="active" href="seleccion-de-personal/">Selección de personal</a></li>
-          <li><a href="tercerizacion-de-personal/">Tercerización</a></li>
-          <li><a href="payroll/">Payroll</a></li>
-          <li><a href="asesoramiento-logistico/">Asesoramiento logístico</a></li>
-          <li><a href="empresas/">Empresas</a></li>
-          <li><a href="empleos/">Empleos</a></li>
-          <li><a href="contacto/">Contacto</a></li>
-        </ul>
-        <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
-      </nav>
+        <nav class="nav-panel" id="nav-panel" aria-label="Principal">
+          <ul class="nav-menu">
+            <li><a href="./">Inicio</a></li>
+            <li class="nav-item has-popover">
+              <button class="services-toggle is-active" type="button" data-services-toggle aria-expanded="false" aria-controls="services-menu">Servicios</button>
+              <div class="services-popover" id="services-menu" data-services-menu>
+                <div class="services-popover-grid">
+                  <a class="service-pop-card is-current" href="seleccion-de-personal/">
+                    <span>Selección</span>
+                    <strong>Selección de personal</strong>
+                    <em>Perfiles mejor relevados para decidir con más respaldo.</em>
+                  </a>
+                  <a class="service-pop-card" href="tercerizacion-de-personal/">
+                    <span>Tercerización</span>
+                    <strong>Tercerización de personal</strong>
+                    <em>Cobertura para continuidad operativa, reemplazos y picos.</em>
+                  </a>
+                  <a class="service-pop-card" href="payroll/">
+                    <span>Payroll</span>
+                    <strong>Payroll</strong>
+                    <em>Administración laboral ordenada, trazable y confiable.</em>
+                  </a>
+                  <a class="service-pop-card" href="asesoramiento-logistico/">
+                    <span>Logística</span>
+                    <strong>Asesoramiento logístico</strong>
+                    <em>Layout, stock, picking y flujo con criterio operativo.</em>
+                  </a>
+                </div>
+              </div>
+            </li>
+            <li><a href="empresas/">Empresas</a></li>
+            <li><a href="empleos/">Empleos</a></li>
+            <li><a href="contacto/">Contacto</a></li>
+          </ul>
+
+          <div class="nav-mobile-services">
+            <p>Servicios</p>
+            <div class="nav-mobile-links">
+              <a class="active" href="seleccion-de-personal/">Selección de personal</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
+              <a href="payroll/">Payroll</a>
+              <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
+            </div>
+          </div>
+
+          <a class="btn btn-gold nav-cta" href="empresas/#consulta-empresa">Consulta empresa</a>
+        </nav>
+      </div>
     </div>
   </header>
 
-  <main id="contenido">
+  <main class="site-main" id="contenido">
     <section class="page-hero">
-      <div class="container page-hero-shell">
-        <article class="page-hero-copy" data-reveal>
+      <div class="container page-hero-grid">
+        <article class="panel page-copy" data-reveal>
           <p class="eyebrow">Selección de personal</p>
-          <h1 class="page-hero-title">Selección de talento con visión estratégica y empatía.</h1>
-          <p class="page-hero-lead">La selección suma cuando la empresa necesita comprender bien el puesto, filtrar con criterio y decidir con más base que una revisión rápida de CV.</p>
-          <ul class="page-hero-points">
-            <li>Relevamiento del perfil, contexto del puesto y nivel de exigencia real.</li>
-            <li>Filtro curricular, entrevistas, referencias y shortlist final.</li>
-            <li>Acompañamiento para que la decisión llegue mejor respaldada.</li>
-          </ul>
+          <h1 class="page-title">Selección de talento con visión estratégica y empatía.</h1>
+          <p class="page-summary">La selección suma cuando la empresa necesita comprender bien el puesto, filtrar con criterio y decidir con una base más sólida que una revisión rápida de CV.</p>
           <div class="button-row">
             <a class="btn btn-gold" href="empresas/#consulta-empresa">Solicitar asesoramiento</a>
-            <a class="btn btn-light" href="contacto/">Hablar con Valor Humano</a>
+            <a class="btn btn-silver" href="contacto/">Hablar con Valor Humano</a>
           </div>
+          <ul class="page-checklist">
+            <li>Relevamiento del rol, del equipo y del contexto real del puesto.</li>
+            <li>Filtro curricular, entrevistas, referencias y shortlist final.</li>
+            <li>Acompañamiento para comparar mejor y decidir con menos riesgo.</li>
+          </ul>
         </article>
 
-        <aside class="page-hero-side" data-reveal>
-          <div class="page-hero-media">
-            <img src="assets/img/selection-hero.jpg" alt="Entrevista profesional en una reunión de selección" />
+        <aside class="page-side" data-reveal>
+          <div class="page-media">
+            <img src="assets/img/selection-hero.jpg" alt="Entrevista profesional dentro de un proceso de selección" />
           </div>
-          <div class="hero-micro">
-            <article class="hero-micro-item">
-              <strong>Lectura del rol</strong>
-              <span>Se entiende el puesto antes de buscar.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Filtro serio</strong>
-              <span>Menos ruido, más ajuste al caso.</span>
-            </article>
-            <article class="hero-micro-item">
-              <strong>Decisión</strong>
-              <span>Comparación final con mejor contexto.</span>
-            </article>
+          <div class="page-side-note">
+            <strong>Lectura del puesto</strong>
+            <span>Antes de buscar, se encuadra bien el perfil y el tipo de ajuste que la empresa necesita.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Filtro serio</strong>
+            <span>Menos ruido, más foco en experiencia, criterio y forma de trabajo.</span>
+          </div>
+          <div class="page-side-note">
+            <strong>Decisión mejor acompañada</strong>
+            <span>La terna final llega con más contexto para comparar mejor.</span>
           </div>
         </aside>
       </div>
     </section>
 
     <section class="section-tight">
-      <div class="container two-column">
-        <article class="editorial-card" data-reveal>
-          <p class="section-kicker">Qué problema resuelve</p>
+      <div class="container editorial-grid">
+        <article class="panel editorial-card" data-reveal>
+          <p class="eyebrow">Qué problema resuelve</p>
           <h2 class="card-title">Reduce riesgo cuando una incorporación pesa sobre el equipo, el cliente o la operación.</h2>
-          <p>Conviene cuando el puesto requiere comprensión real del contexto, no solo difusión de aviso y acumulación de postulaciones.</p>
+          <p class="panel-copy">Conviene cuando la vacante requiere comprensión real del contexto, lectura del perfil y una secuencia más cuidada para llegar a una decisión mejor fundada.</p>
           <ul class="bullet-list">
-            <li>Cuando una mala incorporación genera costo, demora y retrabajo.</li>
-            <li>Cuando hace falta evaluar experiencia, criterio y ajuste al equipo.</li>
-            <li>Cuando la empresa necesita respaldo para decidir mejor.</li>
+            <li>Cuando una mala incorporación genera costo, demora o retrabajo.</li>
+            <li>Cuando hace falta evaluar criterio, recorrido y ajuste al equipo.</li>
+            <li>Cuando la empresa necesita respaldo para decidir con más claridad.</li>
           </ul>
         </article>
 
-        <article class="image-card" data-reveal>
-          <img src="assets/img/selection-process.jpg" alt="Revisión de perfiles y entrevistas dentro de un proceso de selección" />
-        </article>
+        <figure class="image-frame" data-reveal>
+          <img src="assets/img/selection-process.jpg" alt="Revisión de perfiles y entrevistas en una reunión de selección" />
+        </figure>
       </div>
     </section>
 
-    <section class="section-tint">
+    <section class="section-contrast">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Proceso</p>
-          <h2 class="section-title">Una secuencia clara para acompañar la búsqueda con mejor criterio y menos improvisación.</h2>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Proceso</p>
+          <h2 class="section-title">Una secuencia clara para buscar con más criterio y menos improvisación.</h2>
         </div>
 
-        <div class="timeline-grid">
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">01</span>
+        <div class="process-grid process-grid-wide">
+          <article class="process-card" data-reveal>
+            <span class="process-index">01</span>
             <h3>Relevamiento</h3>
-            <p>Se trabaja puesto, entorno, urgencia, estilo de equipo y señales que importan de verdad.</p>
+            <p>Puesto, entorno, urgencia, equipo y señales que realmente importan para el caso.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">02</span>
+          <article class="process-card" data-reveal>
+            <span class="process-index">02</span>
             <h3>Filtro curricular</h3>
             <p>Se ordena el volumen, se descarta lo que no ajusta y se prioriza lo que merece avanzar.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">03</span>
+          <article class="process-card" data-reveal>
+            <span class="process-index">03</span>
             <h3>Entrevistas</h3>
-            <p>Se revisa experiencia, recorrido, criterio, motivación y forma de trabajo del perfil.</p>
+            <p>Se revisa experiencia, recorrido, criterio, motivación y forma concreta de trabajar.</p>
           </article>
-          <article class="timeline-card" data-reveal>
-            <span class="timeline-step">04</span>
-            <h3>Referencias y shortlist</h3>
-            <p>Se consolidan referencias, se arma la terna o shortlist y se acompaña la decisión final.</p>
+          <article class="process-card" data-reveal>
+            <span class="process-index">04</span>
+            <h3>Referencias</h3>
+            <p>Se valida información relevante para bajar incertidumbre en posiciones sensibles.</p>
+          </article>
+          <article class="process-card" data-reveal>
+            <span class="process-index">05</span>
+            <h3>Shortlist y decisión</h3>
+            <p>Se presenta la terna o shortlist final y se acompaña el momento de decidir.</p>
           </article>
         </div>
       </div>
@@ -147,17 +187,17 @@
       <div class="container">
         <div class="summary-grid">
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Qué incluye</p>
+            <p class="eyebrow">Qué incluye</p>
             <h3>Relevamiento, entrevistas, referencias y acompañamiento.</h3>
             <p>La búsqueda se trabaja con orden, lectura del puesto y foco en la decisión empresarial.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Perfiles</p>
+            <p class="eyebrow">Perfiles</p>
             <h3>Administrativos, comerciales, operativos, mandos medios y posiciones sensibles.</h3>
-            <p>El servicio se adapta a búsquedas donde el ajuste cultural y funcional cambia el resultado.</p>
+            <p>El servicio se adapta a búsquedas donde el ajuste técnico y la forma de trabajo cambian el resultado.</p>
           </article>
           <article class="summary-card" data-reveal>
-            <p class="section-kicker">Resultado</p>
+            <p class="eyebrow">Resultado</p>
             <h3>Más respaldo, menos error y mejor lectura para comparar candidatos.</h3>
             <p>La empresa decide con una base más prolija, no solo con apuro.</p>
           </article>
@@ -165,20 +205,21 @@
       </div>
     </section>
 
-    <section class="section-tint">
+    <section class="section-contrast">
       <div class="container">
-        <div class="section-intro" data-reveal>
-          <p class="section-kicker">Beneficios para la empresa</p>
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Beneficios</p>
           <h2 class="section-title">Un proceso mejor llevado ayuda a decidir mejor y a bajar riesgo.</h2>
         </div>
-        <div class="benefit-grid">
+
+        <div class="benefits-grid">
           <article class="benefit-card" data-reveal>
             <h3>Más contexto</h3>
-            <p>La vacante se analiza dentro del puesto, el equipo y la exigencia real de la empresa.</p>
+            <p>La vacante se analiza dentro del puesto, del equipo y de la exigencia real de la empresa.</p>
           </article>
           <article class="benefit-card" data-reveal>
             <h3>Más rapidez útil</h3>
-            <p>La velocidad importa, pero siempre después de encuadrar bien el caso y priorizar bien.</p>
+            <p>La velocidad importa, pero después de encuadrar bien el caso y priorizar bien el filtro.</p>
           </article>
           <article class="benefit-card" data-reveal>
             <h3>Mejor ajuste</h3>
@@ -188,17 +229,17 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section-final">
       <div class="container">
-        <div class="dark-panel cta-strip" data-reveal>
+        <div class="cta-banner" data-reveal>
           <div>
-            <p class="section-kicker">Empresas</p>
-            <h2 class="section-title">Si la vacante ya está planteada, conviene empezar por perfil, contexto y urgencia.</h2>
-            <p class="section-copy">Desde Empresas podés dejar la búsqueda mejor ordenada para que la conversación arranque con más claridad.</p>
+            <p class="eyebrow">Empresas</p>
+            <h2 class="section-title">Si la vacante ya está planteada, conviene ordenar primero perfil, contexto y urgencia.</h2>
+            <p class="section-lead">Desde Empresas podés dejar la búsqueda mejor encuadrada para que la conversación empiece con más claridad y mejor criterio.</p>
           </div>
           <div class="button-row">
             <a class="btn btn-gold" href="empresas/#consulta-empresa">Registrar búsqueda</a>
-            <a class="btn btn-ghost" href="contacto/">Contactar</a>
+            <a class="btn btn-silver" href="contacto/">Contactar</a>
           </div>
         </div>
       </div>
@@ -209,19 +250,24 @@
     <div class="container">
       <div class="footer-shell">
         <div class="footer-grid">
-          <div class="footer-brand">
-            <img src="assets/img/logo-valor-humano-metal.svg" alt="Valor Humano" />
-            <p class="footer-copy">Selección, cobertura, payroll y operación con una conversación clara, criterio comercial y seguimiento profesional.</p>
+          <div>
+            <a class="brand-link" href="./" aria-label="Valor Humano, volver al inicio">
+              <span class="brand-plaque">
+                <img class="brand-logo" src="assets/brand/logo-valor-humano-clean.png" alt="Valor Humano" />
+              </span>
+            </a>
+            <p class="footer-copy">Valor Humano acompaña empresas con selección, tercerización, payroll y asesoramiento logístico desde una conversación clara, sobria y bien orientada a decisión.</p>
             <div class="footer-meta">
-              <span>Colonia del Sacramento</span>
-              <span>Lunes a viernes | 8:00 a 18:00</span>
+              <span class="meta-pill">Colonia del Sacramento</span>
+              <span class="meta-pill">Cobertura para empresas</span>
+              <span class="meta-pill">Lunes a viernes | 8:00 a 18:00</span>
             </div>
           </div>
           <div>
             <h3 class="footer-title">Servicios</h3>
             <div class="footer-links">
               <a href="seleccion-de-personal/">Selección de personal</a>
-              <a href="tercerizacion-de-personal/">Tercerización</a>
+              <a href="tercerizacion-de-personal/">Tercerización de personal</a>
               <a href="payroll/">Payroll</a>
               <a href="asesoramiento-logistico/">Asesoramiento logístico</a>
             </div>
@@ -229,7 +275,8 @@
           <div>
             <h3 class="footer-title">Empresa</h3>
             <div class="footer-links">
-              <a href="nosotros/">Nosotros</a>
+              <a href="./">Inicio</a>
+              <a href="nosotros/">Quiénes somos</a>
               <a href="empresas/">Empresas</a>
               <a href="empleos/">Empleos</a>
               <a href="contacto/">Contacto</a>
@@ -238,20 +285,35 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:jhonatan-stemphelet@hotmail.com">jhonatan-stemphelet@hotmail.com</a>
-              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">WhatsApp 098 803 512</a>
+              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
               <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">WhatsApp 098 803 512</a>
+              <span>Colonia y zona de influencia</span>
+            </div>
+            <div class="social-list" style="margin-top: 0.9rem;">
+              <a class="social-link" href="#" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta.">
+                <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
+                <span>WhatsApp</span>
+              </a>
+              <a class="social-link" href="https://www.instagram.com/humano_valor?igsh=dDNteng3dHF6cWFy" target="_blank" rel="noreferrer">
+                <img class="social-icon" src="assets/brand/icon-instagram.svg" alt="" />
+                <span>Instagram</span>
+              </a>
+              <span class="social-placeholder">
+                <img class="social-icon" src="assets/brand/icon-facebook.svg" alt="" />
+                <span>Facebook pendiente</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="legal-row">
-          <span>Valor Humano. Selección de personal para empresas.</span>
+        <div class="legal-line">
+          <span>Valor Humano. Consultora de personas, administración laboral y operación.</span>
           <span>Todos los derechos reservados.</span>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="js/main.js?v=20260422a"></script>
+  <script src="js/main.js?v=20260422b"></script>
 </body>
 </html>
