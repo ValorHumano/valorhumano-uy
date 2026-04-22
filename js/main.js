@@ -231,6 +231,7 @@ function setupSliders() {
     if (!track || slides.length < 2) return;
 
     let index = 0;
+    let timer = null;
 
     const sync = () => {
       track.style.transform = `translateX(-${index * 100}%)`;
@@ -240,24 +241,47 @@ function setupSliders() {
       });
     };
 
-    prev?.addEventListener("click", () => {
-      index = index === 0 ? slides.length - 1 : index - 1;
+    const goTo = (nextIndex) => {
+      index = nextIndex;
       sync();
+    };
+
+    const nextSlide = () => {
+      goTo(index === slides.length - 1 ? 0 : index + 1);
+    };
+
+    const stopAuto = () => {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = null;
+    };
+
+    const startAuto = () => {
+      stopAuto();
+      timer = window.setInterval(nextSlide, 6500);
+    };
+
+    prev?.addEventListener("click", () => {
+      goTo(index === 0 ? slides.length - 1 : index - 1);
     });
 
     next?.addEventListener("click", () => {
-      index = index === slides.length - 1 ? 0 : index + 1;
-      sync();
+      nextSlide();
     });
 
     dots.forEach((dot, dotIndex) => {
       dot.addEventListener("click", () => {
-        index = dotIndex;
-        sync();
+        goTo(dotIndex);
       });
     });
 
     sync();
+    startAuto();
+
+    slider.addEventListener("mouseenter", stopAuto);
+    slider.addEventListener("mouseleave", startAuto);
+    slider.addEventListener("focusin", stopAuto);
+    slider.addEventListener("focusout", startAuto);
   });
 }
 
