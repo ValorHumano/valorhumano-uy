@@ -23,18 +23,6 @@ const destinationByKind = {
   jobs: "VH_FORWARD_JOBS"
 };
 
-const fallbackDestinations = {
-  contact: [
-    [106, 104, 111, 110, 97, 116, 97, 110].map((code) => String.fromCharCode(code)).join(""),
-    [115, 116, 101, 109, 112, 104, 101, 108, 101, 116].map((code) => String.fromCharCode(code)).join("")
-  ].join("-") + "@" + String.fromCharCode(104, 111, 116, 109, 97, 105, 108) + "." + "com",
-  enterprise: [
-    [106, 104, 111, 110, 97, 116, 97, 110].map((code) => String.fromCharCode(code)).join(""),
-    [115, 116, 101, 109, 112, 104, 101, 108, 101, 116].map((code) => String.fromCharCode(code)).join("")
-  ].join("-") + "@" + String.fromCharCode(104, 111, 116, 109, 97, 105, 108) + "." + "com",
-  jobs: ["seleccion", "valores", "humanos"].join("") + "@" + String.fromCharCode(103, 109, 97, 105, 108) + "." + "com"
-};
-
 function json(payload, status = 200) {
   return new Response(JSON.stringify(payload), {
     status,
@@ -45,15 +33,22 @@ function json(payload, status = 200) {
   });
 }
 
+function readEnv(key) {
+  if (typeof Netlify !== "undefined" && Netlify.env?.get) {
+    return String(Netlify.env.get(key) || "").trim();
+  }
+
+  if (typeof process !== "undefined" && process.env?.[key]) {
+    return String(process.env[key] || "").trim();
+  }
+
+  return "";
+}
+
 function getDestination(kind) {
   const key = destinationByKind[kind];
   if (!key) return "";
-
-  if (typeof Netlify !== "undefined" && Netlify.env?.get) {
-    return (Netlify.env.get(key) || fallbackDestinations[kind] || "").trim();
-  }
-
-  return fallbackDestinations[kind] || "";
+  return readEnv(key);
 }
 
 export default async (req, context) => {
