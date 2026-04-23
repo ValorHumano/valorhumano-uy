@@ -1,4 +1,4 @@
-const publicContactEmail = "contacto@valorhumano.com.uy";
+﻿const publicContactEmail = "contacto@valorhumano.com.uy";
 const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
@@ -6,7 +6,7 @@ const productionBackendOrigin = "https://valorhumano.netlify.app";
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
-  jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
+  jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
 
 function getCleanUrl() {
@@ -38,7 +38,7 @@ function getApiUrl(path) {
 
 function openWhatsApp(message) {
   const text = message || "Hola Valor Humano, quiero hacer una consulta.";
-  const target = new URL("api/whatsapp", `${getBackendOrigin()}/`);
+  const target = new URL("api/whatsapp", getBackendOrigin().replace(/\/$/, "") + "/");
   target.searchParams.set("text", text);
   window.open(target.toString(), "_blank", "noopener");
 }
@@ -233,7 +233,15 @@ function bindStatus(form) {
 
 function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
-  return getApiUrl(`api/form-submit/${kind}`);
+  return getApiUrl("api/form-submit/" + kind);
+}
+
+function setNextUrl(form) {
+  const nextField = form.querySelector('input[name="_next"]');
+  if (!nextField) return;
+
+  const successKey = form.dataset.successKey || "ok";
+  nextField.value = `${getCleanUrl()}?${successKey}=ok`;
 }
 
 function validateCv(file) {
@@ -279,37 +287,29 @@ function setSubmittingState(form) {
 function setupForms() {
   const forms = document.querySelectorAll("form[data-form-kind]");
   if (!forms.length) return;
-
   forms.forEach((form) => {
     const showStatus = bindStatus(form);
     const formKind = form.dataset.formKind || "contact";
     form.action = getFormEndpoint(form);
     form.method = "POST";
     if (formKind === "jobs") form.enctype = "multipart/form-data";
-
     form.addEventListener("submit", async (event) => {
+      event.preventDefault();
       if (!form.reportValidity()) {
-        event.preventDefault();
         return;
       }
-
       if (formKind === "jobs") {
         const fileField = form.querySelector('input[type="file"]');
         const result = validateCv(fileField && fileField.files ? fileField.files[0] : null);
-
         if (!result.valid) {
-          event.preventDefault();
           showStatus("error", result.message);
           return;
         }
       }
-
-      event.preventDefault();
       const restoreState = setSubmittingState(form);
       const payload = new FormData(form);
       payload.set("_page", getCleanUrl());
       payload.set("_visible_contact", formKind === "jobs" ? publicJobsEmail : publicContactEmail);
-
       try {
         const response = await fetch(getFormEndpoint(form), {
           method: "POST",
@@ -318,18 +318,15 @@ function setupForms() {
             Accept: "application/json"
           }
         });
-
         let data = null;
         try {
           data = await response.json();
         } catch (error) {
           data = null;
         }
-
         if (!response.ok || !data?.ok) {
           throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
         }
-
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
       } catch (error) {
@@ -437,3 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupJobsMailShortcut();
   setupSliders();
 });
+
+
+
+

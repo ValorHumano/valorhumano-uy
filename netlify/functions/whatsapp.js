@@ -1,4 +1,4 @@
-const corsHeaders = {
+﻿const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Accept, Content-Type",
@@ -27,13 +27,13 @@ export default async (req) => {
   }
 
   if (req.method !== "GET") {
-    return new Response("Método no permitido.", { status: 405, headers: corsHeaders });
+    return new Response("Metodo no permitido.", { status: 405, headers: corsHeaders });
   }
 
   const number = getWhatsAppNumber();
 
   if (!number) {
-    return new Response("El canal de WhatsApp todavía no está configurado.", {
+    return new Response("El canal de WhatsApp todavia no esta configurado.", {
       status: 500,
       headers: {
         ...corsHeaders,

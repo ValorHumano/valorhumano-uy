@@ -1,4 +1,4 @@
-const corsHeaders = {
+﻿const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Accept, Content-Type",
@@ -14,7 +14,7 @@ const subjectByKind = {
 const successByKind = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
-  jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
+  jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
 
 const destinationByKind = {
@@ -57,14 +57,14 @@ export default async (req, context) => {
   }
 
   if (req.method !== "POST") {
-    return json({ ok: false, message: "Método no permitido." }, 405);
+    return json({ ok: false, message: "Metodo no permitido." }, 405);
   }
 
   const kind = context.params?.kind || "contact";
   const destination = getDestination(kind);
 
   if (!destination) {
-    return json({ ok: false, message: "El canal todavía no está configurado." }, 500);
+    return json({ ok: false, message: "El canal todavia no esta configurado." }, 500);
   }
 
   try {
@@ -86,7 +86,7 @@ export default async (req, context) => {
 
     if (replyTo) relay.append("_replyto", replyTo);
     if (visibleContact) relay.append("Canal visible", visibleContact);
-    if (page) relay.append("Página de origen", page);
+    if (page) relay.append("Pagina de origen", page);
 
     const response = await fetch(`https://formsubmit.co/${encodeURIComponent(destination)}`, {
       method: "POST",
