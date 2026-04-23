@@ -67,6 +67,15 @@ function setupReveal() {
   const elements = document.querySelectorAll("[data-reveal]");
   if (!elements.length) return;
 
+  const revealIfInView = (element) => {
+    const rect = element.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) {
+      element.classList.add("is-visible");
+      return true;
+    }
+    return false;
+  };
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -81,7 +90,10 @@ function setupReveal() {
     }
   );
 
-  elements.forEach((element) => observer.observe(element));
+  elements.forEach((element) => {
+    if (revealIfInView(element)) return;
+    observer.observe(element);
+  });
 }
 
 function setupWhatsAppLinks() {
@@ -286,6 +298,7 @@ function setupSliders() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("js-enhanced");
   setupHeader();
   setupNavigation();
   setupReveal();
