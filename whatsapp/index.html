@@ -87,21 +87,10 @@
   <script>
     (function () {
       const text = new URLSearchParams(window.location.search).get("text") || "Hola Valor Humano, quiero hacer una consulta.";
-      const usesBackend = (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost")
-        || window.location.hostname.endsWith("netlify.app");
-      const target = usesBackend
-        ? new URL("/api/whatsapp", (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost")
-          ? "http://127.0.0.1:8888"
-          : "https://valorhumano.netlify.app")
-        : new URL("https://wa.me/");
-      if (usesBackend) {
-        target.searchParams.set("text", text);
-      } else {
-        target.pathname += [53, 57, 56, 57, 56, 56, 48, 51, 53, 49, 50]
-          .map(function (code) { return String.fromCharCode(code); })
-          .join("");
-        target.searchParams.set("text", text);
-      }
+      const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+      const backendOrigin = isLocal ? "http://127.0.0.1:8888" : "https://valorhumano.netlify.app";
+      const target = new URL("/api/whatsapp", backendOrigin);
+      target.searchParams.set("text", text);
       const fallback = document.getElementById("fallback-link");
 
       if (fallback) fallback.href = target.toString();
@@ -111,5 +100,3 @@
   </script>
 </body>
 </html>
-
-
