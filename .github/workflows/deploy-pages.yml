@@ -43,6 +43,7 @@ jobs:
           cp -R empresas dist/empresas
           cp -R empleos dist/empleos
           cp -R contacto dist/contacto
+          cp -R whatsapp dist/whatsapp
           cp *.html dist/
           cp robots.txt dist/robots.txt
           cp _headers dist/_headers
