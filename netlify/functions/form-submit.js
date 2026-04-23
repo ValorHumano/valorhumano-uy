@@ -1,4 +1,6 @@
-﻿const corsHeaders = {
+import { readPrivateValue } from "./_config.js";
+
+const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Accept, Content-Type",
@@ -33,22 +35,10 @@ function json(payload, status = 200) {
   });
 }
 
-function readEnv(key) {
-  if (typeof Netlify !== "undefined" && Netlify.env?.get) {
-    return String(Netlify.env.get(key) || "").trim();
-  }
-
-  if (typeof process !== "undefined" && process.env?.[key]) {
-    return String(process.env[key] || "").trim();
-  }
-
-  return "";
-}
-
 function getDestination(kind) {
   const key = destinationByKind[kind];
   if (!key) return "";
-  return readEnv(key);
+  return readPrivateValue(key);
 }
 
 export default async (req, context) => {

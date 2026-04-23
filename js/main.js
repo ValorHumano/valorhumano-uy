@@ -1,4 +1,4 @@
-﻿const publicContactEmail = "contacto@valorhumano.com.uy";
+const publicContactEmail = "contacto@valorhumano.com.uy";
 const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
@@ -9,6 +9,8 @@ const formSuccessMessages = {
   jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
 
+let backendAvailabilityPromise = null;
+
 function getCleanUrl() {
   const url = new URL(window.location.href);
   url.search = "";
@@ -18,6 +20,21 @@ function getCleanUrl() {
 
 function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+}
+
+function getSiteBasePath() {
+  if (isLocalHost()) return "/";
+
+  if (window.location.hostname.endsWith("github.io")) {
+    const [repoSlug] = window.location.pathname.split("/").filter(Boolean);
+    return repoSlug ? `/${repoSlug}/` : "/";
+  }
+
+  return "/";
+}
+
+function getSiteUrl(path = "") {
+  return new URL(path.replace(/^\//, ""), `${window.location.origin}${getSiteBasePath()}`).toString();
 }
 
 function getBackendOrigin() {
@@ -33,14 +50,41 @@ function getBackendOrigin() {
 }
 
 function getApiUrl(path) {
-  return new URL(path.replace(/^\//, ""), `${getBackendOrigin()}/`).toString();
+  return new URL(path.replace(/^\//, ""), `${getBackendOrigin().replace(/\/$/, "")}/`).toString();
+}
+
+function getWhatsAppEntryUrl(message) {
+  const target = new URL("whatsapp/", getSiteUrl(""));
+  target.searchParams.set("text", message || "Hola Valor Humano, quiero hacer una consulta.");
+  return target.toString();
 }
 
 function openWhatsApp(message) {
-  const text = message || "Hola Valor Humano, quiero hacer una consulta.";
-  const target = new URL("api/whatsapp", getBackendOrigin().replace(/\/$/, "") + "/");
-  target.searchParams.set("text", text);
-  window.open(target.toString(), "_blank", "noopener");
+  window.open(getWhatsAppEntryUrl(message), "_blank", "noopener");
+}
+
+async function isBackendAvailable() {
+  if (backendAvailabilityPromise) return backendAvailabilityPromise;
+
+  const target = getApiUrl("api/whatsapp");
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 1800);
+
+  backendAvailabilityPromise = fetch(target, {
+    method: "OPTIONS",
+    mode: "cors",
+    signal: controller.signal,
+    headers: {
+      Accept: "application/json"
+    }
+  })
+    .then((response) => response.ok)
+    .catch(() => false)
+    .finally(() => {
+      window.clearTimeout(timeout);
+    });
+
+  return backendAvailabilityPromise;
 }
 
 function setupHeader() {
@@ -163,6 +207,7 @@ function setupReveal() {
 
 function setupWhatsAppLinks() {
   document.querySelectorAll("[data-wa-link]").forEach((link) => {
+    link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
     link.addEventListener("click", (event) => {
       event.preventDefault();
       openWhatsApp(link.dataset.waMessage);
@@ -236,12 +281,61 @@ function getFormEndpoint(form) {
   return getApiUrl("api/form-submit/" + kind);
 }
 
-function setNextUrl(form) {
-  const nextField = form.querySelector('input[name="_next"]');
-  if (!nextField) return;
+function getPublicEmail(formKind) {
+  return formKind === "jobs" ? publicJobsEmail : publicContactEmail;
+}
 
-  const successKey = form.dataset.successKey || "ok";
-  nextField.value = `${getCleanUrl()}?${successKey}=ok`;
+function buildMailtoDetails(form, formKind) {
+  const alias = getPublicEmail(formKind);
+  const subject =
+    formKind === "enterprise"
+      ? "Consulta empresa | Valor Humano"
+      : formKind === "jobs"
+        ? "Postulacion | Valor Humano"
+        : "Consulta | Valor Humano";
+
+  const lines = ["Hola Valor Humano,", ""];
+
+  Array.from(form.elements).forEach((field) => {
+    if (!field || !field.name || field.name.startsWith("_")) return;
+    if (field.type === "file" || field.type === "submit" || field.type === "button") return;
+
+    const value = typeof field.value === "string" ? field.value.trim() : "";
+    if (!value) return;
+    lines.push(`${field.name}: ${value}`);
+  });
+
+  if (formKind === "jobs") {
+    lines.push("", "Adjuntar CV: agregar archivo manualmente desde el cliente de correo.");
+  }
+
+  return {
+    alias,
+    subject,
+    body: lines.join("\n")
+  };
+}
+
+function openMailClient(alias, subject, body) {
+  const mailto = new URL(`mailto:${alias}`);
+  if (subject) mailto.searchParams.set("subject", subject);
+  if (body) mailto.searchParams.set("body", body);
+  window.location.href = mailto.toString();
+}
+
+function startMailFallback(form, formKind, showStatus) {
+  const { alias, subject, body } = buildMailtoDetails(form, formKind);
+
+  showStatus(
+    "success",
+    formKind === "jobs"
+      ? "Abrimos tu cliente de correo con el alias visible. Adjunta tu CV antes de enviar la postulación."
+      : "Abrimos tu cliente de correo con el alias visible para continuar la consulta."
+  );
+
+  window.setTimeout(() => {
+    openMailClient(alias, subject, body);
+  }, 160);
 }
 
 function validateCv(file) {
@@ -268,7 +362,7 @@ function setSubmittingState(form) {
   const buttons = Array.from(form.querySelectorAll("button"));
   const previousLabels = buttons.map((button) => button.textContent);
 
-  form.querySelectorAll("button").forEach((button) => {
+  buttons.forEach((button) => {
     button.disabled = true;
   });
 
@@ -287,17 +381,20 @@ function setSubmittingState(form) {
 function setupForms() {
   const forms = document.querySelectorAll("form[data-form-kind]");
   if (!forms.length) return;
+
   forms.forEach((form) => {
     const showStatus = bindStatus(form);
     const formKind = form.dataset.formKind || "contact";
+
     form.action = getFormEndpoint(form);
     form.method = "POST";
     if (formKind === "jobs") form.enctype = "multipart/form-data";
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (!form.reportValidity()) {
-        return;
-      }
+
+      if (!form.reportValidity()) return;
+
       if (formKind === "jobs") {
         const fileField = form.querySelector('input[type="file"]');
         const result = validateCv(fileField && fileField.files ? fileField.files[0] : null);
@@ -306,11 +403,20 @@ function setupForms() {
           return;
         }
       }
+
       const restoreState = setSubmittingState(form);
       const payload = new FormData(form);
       payload.set("_page", getCleanUrl());
-      payload.set("_visible_contact", formKind === "jobs" ? publicJobsEmail : publicContactEmail);
+      payload.set("_visible_contact", getPublicEmail(formKind));
+
       try {
+        const backendAvailable = await isBackendAvailable();
+
+        if (!backendAvailable) {
+          startMailFallback(form, formKind, showStatus);
+          return;
+        }
+
         const response = await fetch(getFormEndpoint(form), {
           method: "POST",
           body: payload,
@@ -318,19 +424,29 @@ function setupForms() {
             Accept: "application/json"
           }
         });
+
         let data = null;
+
         try {
           data = await response.json();
         } catch (error) {
           data = null;
         }
+
         if (!response.ok || !data?.ok) {
           throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
         }
+
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
       } catch (error) {
-        showStatus("error", error?.message || "No se pudo enviar la consulta en este momento.");
+        const backendAvailable = await isBackendAvailable();
+
+        if (!backendAvailable) {
+          startMailFallback(form, formKind, showStatus);
+        } else {
+          showStatus("error", "No se pudo enviar la consulta en este momento. Probá nuevamente o escribinos al correo visible.");
+        }
       } finally {
         restoreState();
       }
@@ -434,7 +550,3 @@ document.addEventListener("DOMContentLoaded", () => {
   setupJobsMailShortcut();
   setupSliders();
 });
-
-
-
-

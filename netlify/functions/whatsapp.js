@@ -1,24 +1,14 @@
-﻿const corsHeaders = {
+import { readPrivateValue } from "./_config.js";
+
+const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Accept, Content-Type",
   "Cache-Control": "no-store"
 };
 
-function readEnv(key) {
-  if (typeof Netlify !== "undefined" && Netlify.env?.get) {
-    return String(Netlify.env.get(key) || "").trim();
-  }
-
-  if (typeof process !== "undefined" && process.env?.[key]) {
-    return String(process.env[key] || "").trim();
-  }
-
-  return "";
-}
-
 function getWhatsAppNumber() {
-  return readEnv("VH_WHATSAPP_NUMBER").replace(/\D+/g, "");
+  return readPrivateValue("VH_WHATSAPP_NUMBER").replace(/\D+/g, "");
 }
 
 export default async (req) => {
