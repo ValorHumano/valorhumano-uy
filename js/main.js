@@ -2,7 +2,6 @@ const publicContactEmail = "contacto@valorhumano.com.uy";
 const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
-const productionBackendOrigin = "https://valorhumano.netlify.app";
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
@@ -39,18 +38,21 @@ function getSiteUrl(path = "") {
 
 function getBackendOrigin() {
   if (isLocalHost()) {
-    return window.location.port === "8888" ? window.location.origin : "http://127.0.0.1:8888";
+    return window.location.port === "8888" ? window.location.origin : "";
   }
 
   if (window.location.hostname.endsWith("netlify.app")) {
     return window.location.origin;
   }
 
-  return productionBackendOrigin;
+  const configuredOrigin = document.querySelector('meta[name="vh-backend-origin"]')?.content?.trim();
+  return configuredOrigin || "";
 }
 
 function getApiUrl(path) {
-  return new URL(path.replace(/^\//, ""), `${getBackendOrigin().replace(/\/$/, "")}/`).toString();
+  const backendOrigin = getBackendOrigin();
+  if (!backendOrigin) return "";
+  return new URL(path.replace(/^\//, ""), `${backendOrigin.replace(/\/$/, "")}/`).toString();
 }
 
 function getWhatsAppEntryUrl(message) {
@@ -67,6 +69,11 @@ async function isBackendAvailable() {
   if (backendAvailabilityPromise) return backendAvailabilityPromise;
 
   const target = getApiUrl("api/whatsapp");
+  if (!target) {
+    backendAvailabilityPromise = Promise.resolve(false);
+    return backendAvailabilityPromise;
+  }
+
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 1800);
 
@@ -278,7 +285,7 @@ function bindStatus(form) {
 
 function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
-  return getApiUrl("api/form-submit/" + kind);
+  return getApiUrl("api/form-submit/" + kind) || getCleanUrl();
 }
 
 function getPublicEmail(formKind) {

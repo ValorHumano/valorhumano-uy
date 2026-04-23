@@ -117,14 +117,12 @@
       const isGitHubPages = window.location.hostname.endsWith("github.io");
       const repoSlug = isGitHubPages ? (window.location.pathname.split("/").filter(Boolean)[0] || "") : "";
       const siteBasePath = isGitHubPages && repoSlug ? `/${repoSlug}/` : "/";
+      const configuredOrigin = document.querySelector('meta[name="vh-backend-origin"]')?.content?.trim();
       const backendOrigin = isLocal
-        ? "http://127.0.0.1:8888"
+        ? (window.location.port === "8888" ? window.location.origin : "")
         : window.location.hostname.endsWith("netlify.app")
           ? window.location.origin
-          : "https://valorhumano.netlify.app";
-      const target = new URL("/api/whatsapp", backendOrigin);
-
-      target.searchParams.set("text", text);
+          : (configuredOrigin || "");
 
       if (continueLink) {
         continueLink.href = new URL("contacto/", `${window.location.origin}${siteBasePath}`).toString();
@@ -145,6 +143,16 @@
         });
       }
 
+      if (!backendOrigin) {
+        if (status) {
+          status.textContent = "El acceso inmediato de WhatsApp todavia no esta disponible en este canal. Podes continuar por el correo institucional o desde la pagina de contacto.";
+        }
+        return;
+      }
+
+      const target = new URL("/api/whatsapp", backendOrigin);
+      target.searchParams.set("text", text);
+
       fetch(target.toString(), {
         method: "OPTIONS",
         mode: "cors",
@@ -155,13 +163,13 @@
         .then(function (response) {
           if (!response.ok) throw new Error("unavailable");
           if (status) {
-            status.textContent = "Te estamos redirigiendo a WhatsApp para continuar la conversación desde el acceso oficial.";
+            status.textContent = "Te estamos redirigiendo a WhatsApp para continuar la conversacion desde el acceso oficial.";
           }
           window.location.replace(target.toString());
         })
         .catch(function () {
           if (status) {
-            status.textContent = "El acceso instantáneo de WhatsApp todavía no está disponible en este entorno. Podés continuar por el correo institucional o desde la página de contacto.";
+            status.textContent = "El acceso inmediato de WhatsApp todavia no esta disponible en este entorno. Podes continuar por el correo institucional o desde la pagina de contacto.";
           }
         });
     })();
