@@ -5,16 +5,20 @@ const corsHeaders = {
   "Cache-Control": "no-store"
 };
 
-function getWhatsAppNumber() {
-  const fallbackNumber = [53, 57, 56, 57, 56, 56, 48, 51, 53, 49, 50]
-    .map((code) => String.fromCharCode(code))
-    .join("");
-
+function readEnv(key) {
   if (typeof Netlify !== "undefined" && Netlify.env?.get) {
-    return (Netlify.env.get("VH_WHATSAPP_NUMBER") || fallbackNumber).replace(/\D+/g, "");
+    return String(Netlify.env.get(key) || "").trim();
   }
 
-  return fallbackNumber;
+  if (typeof process !== "undefined" && process.env?.[key]) {
+    return String(process.env[key] || "").trim();
+  }
+
+  return "";
+}
+
+function getWhatsAppNumber() {
+  return readEnv("VH_WHATSAPP_NUMBER").replace(/\D+/g, "");
 }
 
 export default async (req) => {
