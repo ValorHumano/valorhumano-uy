@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#F4F1EB" />
+  <title>WhatsApp | Valor Humano</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f1eb;
+      --panel: rgba(255, 255, 255, 0.92);
+      --text: #23303a;
+      --muted: #5f6a75;
+      --line: rgba(96, 107, 118, 0.14);
+      --gold: linear-gradient(135deg, #fff7e7 0%, #e8d2a4 18%, #c79c57 52%, #edd9ad 80%, #fffdf7 100%);
+      --shadow: 0 20px 50px rgba(77, 88, 99, 0.12);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: Manrope, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(210, 216, 223, 0.52), transparent 24%),
+        radial-gradient(circle at left 10%, rgba(231, 216, 187, 0.48), transparent 22%),
+        linear-gradient(180deg, #f4f1eb 0%, #efebe4 100%);
+    }
+
+    main {
+      width: min(100%, 560px);
+      padding: 32px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2.1rem, 4vw, 2.9rem);
+      line-height: 1;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      margin-top: 22px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: #2f281d;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(178, 138, 73, 0.18);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Abriendo el canal oficial de Valor Humano.</h1>
+    <p>Te estamos redirigiendo a WhatsApp para continuar la conversación desde el acceso oficial.</p>
+    <a id="fallback-link" href="./">Abrir WhatsApp</a>
+  </main>
+
+  <script>
+    (function () {
+      const text = new URLSearchParams(window.location.search).get("text") || "Hola Valor Humano, quiero hacer una consulta.";
+      const backendOrigin = (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost")
+        ? "http://127.0.0.1:8888"
+        : "https://valorhumano.netlify.app";
+      const target = new URL("/api/whatsapp", backendOrigin);
+      target.searchParams.set("text", text);
+      const fallback = document.getElementById("fallback-link");
+
+      if (fallback) fallback.href = target.toString();
+
+      window.location.replace(target.toString());
+    })();
+  </script>
+</body>
+</html>
+
+

@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422-light-premium" />
+  <link rel="stylesheet" href="css/style.css?v=20260423-final-review" />
 </head>
 <body class="page-selection">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -35,7 +35,7 @@
 
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
           <span></span><span></span><span></span>
-          <span class="nav-toggle-label">Abrir menú</span>
+          <span class="nav-toggle-label">Menú</span>
         </button>
 
         <nav class="nav-panel" id="nav-panel" aria-label="Principal">
@@ -44,7 +44,12 @@
             <li><a class="active" aria-current="page" href="seleccion-de-personal/">Selección</a></li>
             <li><a href="tercerizacion-de-personal/">Tercerización</a></li>
             <li><a href="payroll/">Payroll</a></li>
-            <li><a href="asesoramiento-logistico/">Logística</a></li>
+            <li class="has-submenu">
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-haspopup="true">Otros servicios</button>
+              <div class="submenu-panel">
+                <a href="asesoramiento-logistico/">Logística</a>
+              </div>
+            </li>
             <li><a href="empresas/">Empresas</a></li>
             <li><a href="empleos/">Empleos</a></li>
             <li><a href="contacto/">Contacto</a></li>
@@ -263,8 +268,8 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
-              <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="contacto/#formulario-contacto">contacto@valorhumano.com.uy</a>
+              <a href="empleos/#postularme">seleccion@valorhumano.com.uy</a>
               <span>Colonia del Sacramento y cobertura para empresas</span>
               <span>Lunes a viernes, de 8:00 a 18:00</span>
             </div>
@@ -292,6 +297,8 @@
     <img src="assets/brand/icon-whatsapp.svg" alt="" />
   </a>
 
-  <script src="js/main.js?v=20260422-light-premium"></script>
+  <script src="js/main.js?v=20260423-final-review"></script>
 </body>
 </html>
+
+

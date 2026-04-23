@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260422-light-premium" />
+  <link rel="stylesheet" href="css/style.css?v=20260423-final-review" />
 </head>
 <body class="page-outsourcing">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -35,7 +35,7 @@
 
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" aria-label="Abrir menú">
           <span></span><span></span><span></span>
-          <span class="nav-toggle-label">Abrir menú</span>
+          <span class="nav-toggle-label">Menú</span>
         </button>
 
         <nav class="nav-panel" id="nav-panel" aria-label="Principal">
@@ -44,7 +44,12 @@
             <li><a href="seleccion-de-personal/">Selección</a></li>
             <li><a class="active" aria-current="page" href="tercerizacion-de-personal/">Tercerización</a></li>
             <li><a href="payroll/">Payroll</a></li>
-            <li><a href="asesoramiento-logistico/">Logística</a></li>
+            <li class="has-submenu">
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-haspopup="true">Otros servicios</button>
+              <div class="submenu-panel">
+                <a href="asesoramiento-logistico/">Logística</a>
+              </div>
+            </li>
             <li><a href="empresas/">Empresas</a></li>
             <li><a href="empleos/">Empleos</a></li>
             <li><a href="contacto/">Contacto</a></li>
@@ -142,23 +147,23 @@
           <div class="slider-track" data-slider-track>
             <article class="slider-slide" data-slide>
               <figure class="slider-figure">
-                <img src="assets/img/outsourcing-hospitality-optimized.jpg" alt="Personal de hotelería trabajando en recepción" />
+                <img src="assets/img/outsourcing-retail-optimized.jpg" alt="Personal tercerizado cubriendo atención y operación comercial en un punto de venta" />
               </figure>
               <div class="slider-caption">
-                <p class="eyebrow">Hotelería y servicio</p>
-                <h3>Operaciones donde la atención no puede perder continuidad.</h3>
-                <p>La cobertura ayuda cuando recepción, limpieza, servicio o apoyo operativo necesitan una respuesta ágil y bien coordinada.</p>
+                <p class="eyebrow">Retail y servicio</p>
+                <h3>Coberturas para puntos de atención donde el trabajo sigue mientras cambia la dotación.</h3>
+                <p>La tercerización ayuda cuando locales, comercios o servicios de atención necesitan refuerzo rápido y una continuidad bien sostenida.</p>
               </div>
             </article>
 
             <article class="slider-slide" data-slide>
               <figure class="slider-figure">
-                <img src="assets/img/outsourcing-retail-optimized.jpg" alt="Equipo de retail coordinando tareas dentro de un local comercial" />
+                <img src="assets/img/outsourcing-hospitality-optimized.jpg" alt="Personal tercerizado reforzando la atención y la coordinación en un entorno de servicio" />
               </figure>
               <div class="slider-caption">
-                <p class="eyebrow">Retail y supermercados</p>
-                <h3>Refuerzos para puntos donde el contacto diario con el cliente exige continuidad.</h3>
-                <p>Reposición, soporte comercial y atención en sala con mayor flexibilidad para absorber cambios de dotación o demanda.</p>
+                <p class="eyebrow">Industria y operaciones</p>
+                <h3>Refuerzos para líneas de trabajo donde la ejecución diaria necesita orden y cobertura.</h3>
+                <p>Útil para sostener ritmo de operación, tareas de apoyo y coordinación en áreas donde una baja se siente enseguida.</p>
               </div>
             </article>
 
@@ -296,8 +301,8 @@
           <div>
             <h3 class="footer-title">Contacto</h3>
             <div class="footer-links">
-              <a href="mailto:contacto@valorhumano.com.uy">contacto@valorhumano.com.uy</a>
-              <a href="mailto:seleccion@valorhumano.com.uy">seleccion@valorhumano.com.uy</a>
+              <a href="contacto/#formulario-contacto">contacto@valorhumano.com.uy</a>
+              <a href="empleos/#postularme">seleccion@valorhumano.com.uy</a>
               <span>Colonia del Sacramento y cobertura para empresas</span>
               <span>Lunes a viernes, de 8:00 a 18:00</span>
             </div>
@@ -325,6 +330,8 @@
     <img src="assets/brand/icon-whatsapp.svg" alt="" />
   </a>
 
-  <script src="js/main.js?v=20260422-light-premium"></script>
+  <script src="js/main.js?v=20260423-final-review"></script>
 </body>
 </html>
+
+

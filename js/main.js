@@ -1,8 +1,13 @@
-const whatsappNumber = ["598", "9880", "3512"].join("");
-const defaultFormRecipient = ["jhonatan", "stemphelet"].join("-") + "@" + String.fromCharCode(104, 111, 116, 109, 97, 105, 108) + "." + "com";
-const jobsFormRecipient = "seleccion@valorhumano.com.uy";
+const publicContactEmail = "contacto@valorhumano.com.uy";
+const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
+const productionBackendOrigin = "https://valorhumano.netlify.app";
+const formSuccessMessages = {
+  contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
+  enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
+  jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
+};
 
 function getCleanUrl() {
   const url = new URL(window.location.href);
@@ -11,9 +16,33 @@ function getCleanUrl() {
   return url.toString();
 }
 
+function isLocalHost() {
+  return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+}
+
+function getBackendOrigin() {
+  if (isLocalHost()) {
+    return window.location.port === "8888" ? window.location.origin : "http://127.0.0.1:8888";
+  }
+
+  if (window.location.hostname.endsWith("netlify.app")) {
+    return window.location.origin;
+  }
+
+  return productionBackendOrigin;
+}
+
+function getApiUrl(path) {
+  return new URL(path.replace(/^\//, ""), `${getBackendOrigin()}/`).toString();
+}
+
 function openWhatsApp(message) {
   const text = message || "Hola Valor Humano, quiero hacer una consulta.";
-  window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+  const target = isLocalHost() && window.location.port !== "8888"
+    ? new URL("whatsapp/", document.baseURI)
+    : new URL("api/whatsapp", `${getBackendOrigin()}/`);
+  target.searchParams.set("text", text);
+  window.open(target.toString(), "_blank", "noopener");
 }
 
 function setupHeader() {
@@ -31,17 +60,46 @@ function setupHeader() {
 function setupNavigation() {
   const toggle = document.querySelector(".nav-toggle");
   const panel = document.querySelector(".nav-panel");
+  const submenuItems = Array.from(document.querySelectorAll(".has-submenu"));
 
   if (!toggle || !panel) return;
+
+  const syncSubmenuState = (item, expanded) => {
+    const button = item.querySelector(".submenu-toggle");
+    if (!button) return;
+    item.classList.toggle("is-open", expanded);
+    button.setAttribute("aria-expanded", String(expanded));
+  };
+
+  const closeSubmenus = (exceptItem = null) => {
+    submenuItems.forEach((item) => {
+      if (item === exceptItem) return;
+      syncSubmenuState(item, false);
+    });
+  };
 
   const closeNav = () => {
     document.body.classList.remove("nav-open");
     toggle.setAttribute("aria-expanded", "false");
+    closeSubmenus();
   };
 
   toggle.addEventListener("click", () => {
     const open = document.body.classList.toggle("nav-open");
     toggle.setAttribute("aria-expanded", String(open));
+    if (!open) closeSubmenus();
+  });
+
+  submenuItems.forEach((item) => {
+    const button = item.querySelector(".submenu-toggle");
+    if (!button) return;
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const willOpen = !item.classList.contains("is-open");
+      closeSubmenus(item);
+      syncSubmenuState(item, willOpen);
+    });
   });
 
   panel.querySelectorAll("a").forEach((link) => {
@@ -49,17 +107,26 @@ function setupNavigation() {
   });
 
   document.addEventListener("click", (event) => {
+    const clickedInsidePanel = panel.contains(event.target);
+    const clickedToggle = toggle.contains(event.target);
+    const clickedSubmenu = submenuItems.some((item) => item.contains(event.target));
+
+    if (!clickedSubmenu) closeSubmenus();
+
     if (!document.body.classList.contains("nav-open")) return;
-    const clickedInside = panel.contains(event.target) || toggle.contains(event.target);
-    if (!clickedInside) closeNav();
+    if (!clickedInsidePanel && !clickedToggle) closeNav();
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeNav();
+    if (event.key === "Escape") {
+      closeSubmenus();
+      closeNav();
+    }
   });
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 1080) closeNav();
+    if (window.innerWidth > 1080) closeSubmenus();
   });
 }
 
@@ -105,6 +172,49 @@ function setupWhatsAppLinks() {
   });
 }
 
+async function copyText(value) {
+  if (!value) return false;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    await navigator.clipboard.writeText(value);
+    return true;
+  }
+
+  const helper = document.createElement("textarea");
+  helper.value = value;
+  helper.setAttribute("readonly", "");
+  helper.style.position = "absolute";
+  helper.style.left = "-9999px";
+  document.body.appendChild(helper);
+  helper.select();
+
+  const copied = document.execCommand("copy");
+  document.body.removeChild(helper);
+  return copied;
+}
+
+function setupCopyEmailButtons() {
+  document.querySelectorAll("[data-copy-email]").forEach((control) => {
+    const originalLabel = control.textContent.trim();
+    const copiedLabel = control.dataset.copiedLabel || "Correo copiado";
+
+    control.addEventListener("click", async (event) => {
+      event.preventDefault();
+
+      try {
+        const copied = await copyText(control.dataset.copyEmail || "");
+        control.textContent = copied ? copiedLabel : originalLabel;
+      } catch (error) {
+        control.textContent = originalLabel;
+      }
+
+      window.setTimeout(() => {
+        control.textContent = originalLabel;
+      }, 1800);
+    });
+  });
+}
+
 function bindStatus(form) {
   const host = form.closest(".form-card") || form.parentElement;
   if (!host) return () => {};
@@ -123,24 +233,9 @@ function bindStatus(form) {
   };
 }
 
-function getRecipient(kind) {
-  if (kind === "jobs") return jobsFormRecipient;
-  return defaultFormRecipient;
-}
-
-function setFormEndpoint(form) {
+function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
-  form.action = `https://formsubmit.co/${getRecipient(kind)}`;
-  form.method = "POST";
-  if (kind === "jobs") form.enctype = "multipart/form-data";
-}
-
-function setNextUrl(form) {
-  const nextField = form.querySelector('input[name="_next"]');
-  if (!nextField) return;
-
-  const successKey = form.dataset.successKey || "ok";
-  nextField.value = `${getCleanUrl()}?${successKey}=ok`;
+  return getApiUrl(`api/form-submit/${kind}`);
 }
 
 function validateCv(file) {
@@ -164,48 +259,85 @@ function validateCv(file) {
 
 function setSubmittingState(form) {
   const submitButton = form.querySelector('button[type="submit"]');
+  const buttons = Array.from(form.querySelectorAll("button"));
+  const previousLabels = buttons.map((button) => button.textContent);
+
   form.querySelectorAll("button").forEach((button) => {
     button.disabled = true;
   });
 
   if (submitButton) submitButton.textContent = "Enviando...";
+
+  return () => {
+    buttons.forEach((button, index) => {
+      button.disabled = false;
+      if (typeof previousLabels[index] === "string") {
+        button.textContent = previousLabels[index];
+      }
+    });
+  };
 }
 
 function setupForms() {
   const forms = document.querySelectorAll("form[data-form-kind]");
   if (!forms.length) return;
 
-  const currentUrl = new URL(window.location.href);
-
   forms.forEach((form) => {
     const showStatus = bindStatus(form);
-    const successKey = form.dataset.successKey || "ok";
+    const formKind = form.dataset.formKind || "contact";
+    form.action = getFormEndpoint(form);
+    form.method = "POST";
+    if (formKind === "jobs") form.enctype = "multipart/form-data";
 
-    setFormEndpoint(form);
-    setNextUrl(form);
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-    if (currentUrl.searchParams.get(successKey) === "ok") {
-      showStatus("success", "Tu mensaje fue enviado correctamente. En breve seguimos el contacto.");
-    }
-
-    form.addEventListener("submit", (event) => {
       if (!form.reportValidity()) {
-        event.preventDefault();
         return;
       }
 
-      if ((form.dataset.formKind || "") === "jobs") {
+      if (formKind === "jobs") {
         const fileField = form.querySelector('input[type="file"]');
         const result = validateCv(fileField && fileField.files ? fileField.files[0] : null);
 
         if (!result.valid) {
-          event.preventDefault();
           showStatus("error", result.message);
           return;
         }
       }
 
-      setSubmittingState(form);
+      const restoreState = setSubmittingState(form);
+      const payload = new FormData(form);
+      payload.set("_page", getCleanUrl());
+      payload.set("_visible_contact", formKind === "jobs" ? publicJobsEmail : publicContactEmail);
+
+      try {
+        const response = await fetch(getFormEndpoint(form), {
+          method: "POST",
+          body: payload,
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        let data = null;
+        try {
+          data = await response.json();
+        } catch (error) {
+          data = null;
+        }
+
+        if (!response.ok || !data?.ok) {
+          throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
+        }
+
+        form.reset();
+        showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
+      } catch (error) {
+        showStatus("error", error?.message || "No se pudo enviar la consulta en este momento.");
+      } finally {
+        restoreState();
+      }
     });
   });
 }
@@ -214,21 +346,19 @@ function setupJobsMailShortcut() {
   const button = document.querySelector("[data-jobs-mail]");
   if (!button) return;
 
-  button.addEventListener("click", () => {
-    const form = document.querySelector('form[data-form-kind="jobs"]');
-    const name = form?.querySelector('input[name="Nombre y apellido"]')?.value?.trim() || "";
-    const email = form?.querySelector('input[name="Correo"]')?.value?.trim() || "";
-    const area = form?.querySelector('input[name="Area o rubro"]')?.value?.trim() || "";
-    const body = [
-      "Hola Valor Humano, comparto mi postulacion.",
-      name ? `Nombre: ${name}` : "",
-      email ? `Correo: ${email}` : "",
-      area ? `Area o rubro: ${area}` : "",
-      "",
-      "Adjunto CV."
-    ].filter(Boolean).join("\n");
+  const originalLabel = button.textContent.trim();
 
-    window.location.href = `mailto:${jobsFormRecipient}?subject=${encodeURIComponent("Postulacion Valor Humano")}&body=${encodeURIComponent(body)}`;
+  button.addEventListener("click", async () => {
+    try {
+      const copied = await copyText(publicJobsEmail);
+      button.textContent = copied ? "Correo copiado" : originalLabel;
+    } catch (error) {
+      button.textContent = originalLabel;
+    }
+
+    window.setTimeout(() => {
+      button.textContent = originalLabel;
+    }, 1800);
   });
 }
 
@@ -303,6 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupReveal();
   setupWhatsAppLinks();
+  setupCopyEmailButtons();
   setupForms();
   setupJobsMailShortcut();
   setupSliders();
