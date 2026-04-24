@@ -8,8 +8,6 @@ const formSuccessMessages = {
   jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
 
-let backendAvailabilityPromise = null;
-
 function getCleanUrl() {
   const url = new URL(window.location.href);
   url.search = "";
@@ -36,62 +34,14 @@ function getSiteUrl(path = "") {
   return new URL(path.replace(/^\//, ""), `${window.location.origin}${getSiteBasePath()}`).toString();
 }
 
-function getBackendOrigin() {
-  if (isLocalHost()) {
-    return window.location.port === "8888" ? window.location.origin : "";
-  }
-
-  if (window.location.hostname.endsWith("netlify.app")) {
-    return window.location.origin;
-  }
-
-  const configuredOrigin = document.querySelector('meta[name="vh-backend-origin"]')?.content?.trim();
-  return configuredOrigin || "";
-}
-
 function getApiUrl(path) {
-  const backendOrigin = getBackendOrigin();
-  if (!backendOrigin) return "";
-  return new URL(path.replace(/^\//, ""), `${backendOrigin.replace(/\/$/, "")}/`).toString();
+  return getSiteUrl(path);
 }
 
 function getWhatsAppEntryUrl(message) {
-  const target = new URL("whatsapp/", getSiteUrl(""));
+  const target = new URL("go/whatsapp", getSiteUrl(""));
   target.searchParams.set("text", message || "Hola Valor Humano, quiero hacer una consulta.");
   return target.toString();
-}
-
-function openWhatsApp(message) {
-  window.open(getWhatsAppEntryUrl(message), "_blank", "noopener");
-}
-
-async function isBackendAvailable() {
-  if (backendAvailabilityPromise) return backendAvailabilityPromise;
-
-  const target = getApiUrl("api/whatsapp");
-  if (!target) {
-    backendAvailabilityPromise = Promise.resolve(false);
-    return backendAvailabilityPromise;
-  }
-
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 1800);
-
-  backendAvailabilityPromise = fetch(target, {
-    method: "OPTIONS",
-    mode: "cors",
-    signal: controller.signal,
-    headers: {
-      Accept: "application/json"
-    }
-  })
-    .then((response) => response.ok)
-    .catch(() => false)
-    .finally(() => {
-      window.clearTimeout(timeout);
-    });
-
-  return backendAvailabilityPromise;
 }
 
 function setupHeader() {
@@ -215,10 +165,8 @@ function setupReveal() {
 function setupWhatsAppLinks() {
   document.querySelectorAll("[data-wa-link]").forEach((link) => {
     link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      openWhatsApp(link.dataset.waMessage);
-    });
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
   });
 }
 
@@ -285,64 +233,11 @@ function bindStatus(form) {
 
 function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
-  return getApiUrl("api/form-submit/" + kind) || getCleanUrl();
+  return getApiUrl(`api/forms/${kind}`);
 }
 
 function getPublicEmail(formKind) {
   return formKind === "jobs" ? publicJobsEmail : publicContactEmail;
-}
-
-function buildMailtoDetails(form, formKind) {
-  const alias = getPublicEmail(formKind);
-  const subject =
-    formKind === "enterprise"
-      ? "Consulta empresa | Valor Humano"
-      : formKind === "jobs"
-        ? "Postulacion | Valor Humano"
-        : "Consulta | Valor Humano";
-
-  const lines = ["Hola Valor Humano,", ""];
-
-  Array.from(form.elements).forEach((field) => {
-    if (!field || !field.name || field.name.startsWith("_")) return;
-    if (field.type === "file" || field.type === "submit" || field.type === "button") return;
-
-    const value = typeof field.value === "string" ? field.value.trim() : "";
-    if (!value) return;
-    lines.push(`${field.name}: ${value}`);
-  });
-
-  if (formKind === "jobs") {
-    lines.push("", "Adjuntar CV: agregar archivo manualmente desde el cliente de correo.");
-  }
-
-  return {
-    alias,
-    subject,
-    body: lines.join("\n")
-  };
-}
-
-function openMailClient(alias, subject, body) {
-  const mailto = new URL(`mailto:${alias}`);
-  if (subject) mailto.searchParams.set("subject", subject);
-  if (body) mailto.searchParams.set("body", body);
-  window.location.href = mailto.toString();
-}
-
-function startMailFallback(form, formKind, showStatus) {
-  const { alias, subject, body } = buildMailtoDetails(form, formKind);
-
-  showStatus(
-    "success",
-    formKind === "jobs"
-      ? "Abrimos tu cliente de correo con el alias visible. Adjunta tu CV antes de enviar la postulación."
-      : "Abrimos tu cliente de correo con el alias visible para continuar la consulta."
-  );
-
-  window.setTimeout(() => {
-    openMailClient(alias, subject, body);
-  }, 160);
 }
 
 function validateCv(file) {
@@ -417,13 +312,6 @@ function setupForms() {
       payload.set("_visible_contact", getPublicEmail(formKind));
 
       try {
-        const backendAvailable = await isBackendAvailable();
-
-        if (!backendAvailable) {
-          startMailFallback(form, formKind, showStatus);
-          return;
-        }
-
         const response = await fetch(getFormEndpoint(form), {
           method: "POST",
           body: payload,
@@ -444,16 +332,14 @@ function setupForms() {
           throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
         }
 
+        if (!data.deliveryId) {
+          throw new Error("No hubo confirmacion verificable del proveedor de correo.");
+        }
+
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
       } catch (error) {
-        const backendAvailable = await isBackendAvailable();
-
-        if (!backendAvailable) {
-          startMailFallback(form, formKind, showStatus);
-        } else {
-          showStatus("error", "No se pudo enviar la consulta en este momento. Probá nuevamente o escribinos al correo visible.");
-        }
+        showStatus("error", error?.message || "No se pudo enviar la consulta en este momento. Proba nuevamente o escribinos al correo visible.");
       } finally {
         restoreState();
       }
@@ -519,7 +405,7 @@ function setupSliders() {
 
     const startAuto = () => {
       stopAuto();
-      timer = window.setInterval(nextSlide, 6500);
+      timer = window.setInterval(nextSlide, 7600);
     };
 
     prev?.addEventListener("click", () => {

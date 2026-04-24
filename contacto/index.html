@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260423-final-review" />
+  <link rel="stylesheet" href="css/style.css?v=20260423-production-real" />
 </head>
 <body class="page-contact">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -137,14 +137,9 @@
         <article class="form-card" id="formulario-contacto" data-reveal>
           <p class="eyebrow">Formulario</p>
           <h2 class="section-title">Dejá tu consulta.</h2>
-          <p class="form-note">El formulario deriva al canal general para continuar la conversación con más orden y responder por el medio que corresponda.</p>
+          <p class="form-note">La confirmacion se muestra solo cuando el proveedor acepta el envio. Si hay un problema, vas a ver el estado real del formulario.</p>
 
           <form data-form-kind="contact" data-success-key="contacto">
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_subject" value="Nueva consulta desde valorhumano.com.uy" />
-            <input type="hidden" name="_next" value="" />
-
             <div class="field-grid">
               <div class="field">
                 <label for="contacto-nombre">Nombre</label>
@@ -152,7 +147,7 @@
               </div>
               <div class="field">
                 <label for="contacto-telefono">Teléfono</label>
-                <input id="contacto-telefono" name="Teléfono" type="tel" placeholder="Tu teléfono de contacto" required />
+                <input id="contacto-telefono" name="Telefono" type="tel" placeholder="Tu teléfono de contacto" required />
               </div>
               <div class="field">
                 <label for="contacto-email">Correo</label>
@@ -254,7 +249,7 @@
               <span>Lunes a viernes, de 8:00 a 18:00</span>
             </div>
             <div class="social-list">
-              <a class="social-link" href="whatsapp/" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta." aria-label="Hablar por WhatsApp con Valor Humano">
+              <a class="social-link" href="go/whatsapp" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta." aria-label="Hablar por WhatsApp con Valor Humano">
                 <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
                 <span>WhatsApp Valor Humano</span>
               </a>
@@ -277,11 +272,11 @@
     </div>
   </footer>
 
-  <a class="floating-wa" href="whatsapp/" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta." aria-label="Hablar por WhatsApp con Valor Humano">
+  <a class="floating-wa" href="go/whatsapp" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta." aria-label="Hablar por WhatsApp con Valor Humano">
     <img src="assets/brand/icon-whatsapp.svg" alt="" />
   </a>
 
-  <script src="js/main.js?v=20260423-production-lock"></script>
+  <script src="js/main.js?v=20260423-production-real"></script>
 </body>
 </html>
 

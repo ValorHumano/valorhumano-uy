@@ -33,9 +33,6 @@ jobs:
           missing=()
           [[ -z "${NETLIFY_AUTH_TOKEN}" ]] && missing+=("NETLIFY_AUTH_TOKEN")
           [[ -z "${NETLIFY_SITE_ID}" ]] && missing+=("NETLIFY_SITE_ID")
-          [[ -z "${VH_FORWARD_CONTACT}" ]] && missing+=("VH_FORWARD_CONTACT")
-          [[ -z "${VH_FORWARD_JOBS}" ]] && missing+=("VH_FORWARD_JOBS")
-          [[ -z "${VH_WHATSAPP_NUMBER}" ]] && missing+=("VH_WHATSAPP_NUMBER")
 
           if (( ${#missing[@]} > 0 )); then
             echo "Faltan secrets requeridos para publicar Netlify: ${missing[*]}" >&2
@@ -44,25 +41,6 @@ jobs:
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          VH_FORWARD_CONTACT: ${{ secrets.VH_FORWARD_CONTACT }}
-          VH_FORWARD_JOBS: ${{ secrets.VH_FORWARD_JOBS }}
-          VH_WHATSAPP_NUMBER: ${{ secrets.VH_WHATSAPP_NUMBER }}
-
-      - name: Create private function config
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat > netlify/functions/private-config.json <<EOF
-          {
-            "VH_FORWARD_CONTACT": "${VH_FORWARD_CONTACT}",
-            "VH_FORWARD_JOBS": "${VH_FORWARD_JOBS}",
-            "VH_WHATSAPP_NUMBER": "${VH_WHATSAPP_NUMBER}"
-          }
-          EOF
-        env:
-          VH_FORWARD_CONTACT: ${{ secrets.VH_FORWARD_CONTACT }}
-          VH_FORWARD_JOBS: ${{ secrets.VH_FORWARD_JOBS }}
-          VH_WHATSAPP_NUMBER: ${{ secrets.VH_WHATSAPP_NUMBER }}
 
       - name: Deploy to Netlify
         run: npx netlify-cli@latest deploy --dir=. --functions netlify/functions --prod --message "GitHub Actions ${GITHUB_SHA}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"

@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon.svg" />
   <link rel="apple-touch-icon" href="assets/brand/logo-valor-humano-clean.png" />
-  <link rel="stylesheet" href="css/style.css?v=20260423-final-review" />
+  <link rel="stylesheet" href="css/style.css?v=20260423-production-real" />
 </head>
 <body class="page-enterprises">
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -176,14 +176,9 @@
         <article class="form-card" id="consulta-empresa" data-reveal>
           <p class="eyebrow">Formulario para empresas</p>
           <h2 class="section-title">Dejá la consulta bien planteada.</h2>
-          <p class="form-note">El formulario abre una conversación comercial para entender la necesidad, definir el servicio correcto y seguir el caso por el canal más conveniente.</p>
+          <p class="form-note">La confirmacion se muestra solo cuando el proveedor acepta el envio y la consulta queda entregada al canal comercial correspondiente.</p>
 
           <form data-form-kind="enterprise" data-success-key="empresa">
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_subject" value="Nueva consulta empresa desde valorhumano.com.uy" />
-            <input type="hidden" name="_next" value="" />
-
             <div class="field-grid">
               <div class="field">
                 <label for="empresa-nombre">Nombre y apellido</label>
@@ -195,7 +190,7 @@
               </div>
               <div class="field">
                 <label for="empresa-telefono">Teléfono</label>
-                <input id="empresa-telefono" name="Teléfono" type="tel" placeholder="Tu teléfono de contacto" required />
+                <input id="empresa-telefono" name="Telefono" type="tel" placeholder="Tu teléfono de contacto" required />
               </div>
               <div class="field">
                 <label for="empresa-email">Correo</label>
@@ -203,7 +198,7 @@
               </div>
               <div class="field">
                 <label for="empresa-servicio">Servicio de interés</label>
-                <select id="empresa-servicio" name="Servicio de interés" required>
+                <select id="empresa-servicio" name="Servicio de interes" required>
                   <option value="">Seleccionar</option>
                   <option>Selección de personal</option>
                   <option>Tercerización de personal</option>
@@ -300,7 +295,7 @@
               <span>Lunes a viernes, de 8:00 a 18:00</span>
             </div>
             <div class="social-list">
-              <a class="social-link" href="whatsapp/" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta por servicios para empresas." aria-label="Hablar por WhatsApp con Valor Humano">
+              <a class="social-link" href="go/whatsapp" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta por servicios para empresas." aria-label="Hablar por WhatsApp con Valor Humano">
                 <img class="social-icon" src="assets/brand/icon-whatsapp.svg" alt="" />
                 <span>WhatsApp Valor Humano</span>
               </a>
@@ -323,11 +318,11 @@
     </div>
   </footer>
 
-  <a class="floating-wa" href="whatsapp/" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta por servicios para empresas." aria-label="Hablar por WhatsApp con Valor Humano">
+  <a class="floating-wa" href="go/whatsapp" data-wa-link data-wa-message="Hola Valor Humano, quiero hacer una consulta por servicios para empresas." aria-label="Hablar por WhatsApp con Valor Humano">
     <img src="assets/brand/icon-whatsapp.svg" alt="" />
   </a>
 
-  <script src="js/main.js?v=20260423-production-lock"></script>
+  <script src="js/main.js?v=20260423-production-real"></script>
 </body>
 </html>
 

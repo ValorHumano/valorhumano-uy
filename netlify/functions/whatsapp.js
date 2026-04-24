@@ -24,7 +24,7 @@ export default async (req) => {
 
   if (!number) {
     return new Response("El canal de WhatsApp todavia no esta configurado.", {
-      status: 500,
+      status: 503,
       headers: {
         ...corsHeaders,
         "Content-Type": "text/plain; charset=utf-8"
@@ -33,13 +33,22 @@ export default async (req) => {
   }
 
   const url = new URL(req.url);
-  const text = url.searchParams.get("text") || "Hola Valor Humano, quiero hacer una consulta.";
+  const text = String(url.searchParams.get("text") || "Hola Valor Humano, quiero hacer una consulta.")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 500);
   const target = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 
-  return Response.redirect(target, 302);
+  return new Response(null, {
+    status: 302,
+    headers: {
+      ...corsHeaders,
+      Location: target
+    }
+  });
 };
 
 export const config = {
-  path: "/api/whatsapp",
+  path: "/go/whatsapp",
   method: ["GET", "OPTIONS"]
 };

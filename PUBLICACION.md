@@ -1,49 +1,62 @@
-# Publicacion final
+# Publicacion y configuracion
 
-## Estado del entregable
+## Arquitectura objetivo
 
-- El sitio quedo resuelto como estatico multipagina, con rutas limpias y sin dependencia de previews temporales.
-- La fuente unica del sitio es `render-site.ps1`.
-- El workflow de GitHub Pages en [deploy-pages.yml](/C:/Users/jhona/Downloads/valor_humano_updated/.github/workflows/deploy-pages.yml:1) ahora ejecuta la regeneracion del sitio antes de publicar.
-- `robots.txt` tambien queda incluido en la salida.
+- El sitio debe salir de Netlify como origen principal.
+- El frontend, los formularios y la ruta de WhatsApp comparten el mismo origen productivo.
+- GitHub Pages queda solo como despliegue manual secundario. Ya no publica automaticamente en cada push.
 
-## Rutas listas para publicacion
+## Formularios
 
-- `/`
-- `/nosotros/`
-- `/seleccion-de-personal/`
-- `/tercerizacion-de-personal/`
-- `/payroll/`
-- `/asesoramiento-logistico/`
-- `/empresas/`
-- `/empleos/`
-- `/contacto/`
+Los formularios quedaron preparados para envio server-side con SendGrid desde funciones Netlify.
 
-## URL publicada
+Variables requeridas en Netlify:
 
-La salida estatica de esta version queda publicada en GitHub Pages en:
+- `SENDGRID_API_KEY`
+- `VH_MAIL_FROM`
+- `VH_MAIL_FROM_NAME`
+- `VH_FORWARD_CONTACT`
+- `VH_FORWARD_JOBS`
 
-- `https://jhonatan202020.github.io/valorhumano-uy/`
+Rutas productivas:
 
-Cuando exista dominio propio:
+- `POST /api/forms/contact`
+- `POST /api/forms/enterprise`
+- `POST /api/forms/jobs`
 
-- `https://www.valorhumano.com.uy`
-- `https://valorhumano.com.uy`
+El frontend solo muestra exito cuando el backend responde `ok: true` y el proveedor devuelve un `deliveryId` verificable.
 
-## Estado tecnico de publicacion
+## WhatsApp
 
-La carpeta ya se inicializo como repositorio git, se empujo a `jhonatan202020/valorhumano-uy` y GitHub Pages quedo configurado para publicar via workflow.
+La web ya no usa la ruta publica `whatsapp/`.
 
-La URL `https://valorhumano.github.io/valorhumano-uy/` no se pudo usar porque ese usuario no existe hoy en GitHub. La variante limpia real disponible desde este entorno es la publicada arriba.
+Variable requerida en Netlify:
 
-## Dominio propio
+- `VH_WHATSAPP_NUMBER`
 
-Cuando se quiera pasar a dominio final:
+Ruta productiva:
 
-1. Configurar `www.valorhumano.com.uy` como custom domain en GitHub Pages.
-2. Apuntar DNS del dominio al host configurado por GitHub Pages.
-3. Activar HTTPS desde Pages cuando quede disponible.
+- `GET /go/whatsapp`
 
-## Nota final
+La web apunta a esa ruta y el numero queda solo en configuracion privada del servidor.
 
-No conviene volver a publicar este proyecto en previews numericas, tuneles o slugs efimeros. La salida correcta para esta version es una publicacion estatica estable con nombre limpio.
+## Deploy
+
+El workflow principal es `.github/workflows/deploy-netlify.yml`.
+
+Secrets requeridos en GitHub Actions para publicar:
+
+- `NETLIFY_AUTH_TOKEN`
+- `NETLIFY_SITE_ID`
+
+Las variables operativas del sitio no se escriben mas en archivos del repo ni en `private-config.json`.
+Se leen solo desde variables privadas del entorno Netlify.
+
+## Regla operativa
+
+No dar por resuelto el funcionamiento productivo mientras falte cualquiera de estas condiciones:
+
+- deploy Netlify exitoso
+- variables privadas cargadas en Netlify
+- prueba real de `go/whatsapp`
+- aceptacion real de SendGrid para los tres formularios
