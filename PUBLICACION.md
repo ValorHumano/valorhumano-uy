@@ -28,7 +28,7 @@ El frontend solo muestra exito cuando el backend responde `ok: true` y el provee
 
 ## WhatsApp
 
-La web ya no usa la ruta publica `whatsapp/`.
+La web ya no usa la ruta publica anterior de WhatsApp.
 
 Variable requerida en Netlify:
 
