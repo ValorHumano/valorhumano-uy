@@ -1,13 +1,12 @@
-const publicContactEmail = "contacto@valorhumano.com.uy";
-const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
-let copyFeedbackTimer = null;
+let toastTimer = null;
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
+const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
 
 function getCleanUrl() {
   const url = new URL(window.location.href);
@@ -20,10 +19,14 @@ function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 }
 
+function isGithubPagesHost() {
+  return window.location.hostname.endsWith("github.io");
+}
+
 function getSiteBasePath() {
   if (isLocalHost()) return "/";
 
-  if (window.location.hostname.endsWith("github.io")) {
+  if (isGithubPagesHost()) {
     const [repoSlug] = window.location.pathname.split("/").filter(Boolean);
     return repoSlug ? `/${repoSlug}/` : "/";
   }
@@ -163,36 +166,7 @@ function setupReveal() {
   });
 }
 
-function setupWhatsAppLinks() {
-  document.querySelectorAll("[data-wa-link]").forEach((link) => {
-    link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-  });
-}
-
-async function copyText(value) {
-  if (!value) return false;
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    await navigator.clipboard.writeText(value);
-    return true;
-  }
-
-  const helper = document.createElement("textarea");
-  helper.value = value;
-  helper.setAttribute("readonly", "");
-  helper.style.position = "absolute";
-  helper.style.left = "-9999px";
-  document.body.appendChild(helper);
-  helper.select();
-
-  const copied = document.execCommand("copy");
-  document.body.removeChild(helper);
-  return copied;
-}
-
-function ensureCopyFeedback() {
+function ensureToast() {
   let feedback = document.querySelector(".copy-feedback");
 
   if (feedback) return feedback;
@@ -205,46 +179,38 @@ function ensureCopyFeedback() {
   return feedback;
 }
 
-function showCopyFeedback(message, status = "success") {
-  const feedback = ensureCopyFeedback();
+function showToast(message, status = "success") {
+  const feedback = ensureToast();
 
   feedback.textContent = message;
   feedback.dataset.status = status;
   feedback.classList.add("is-visible");
 
-  if (copyFeedbackTimer) {
-    window.clearTimeout(copyFeedbackTimer);
+  if (toastTimer) {
+    window.clearTimeout(toastTimer);
   }
 
-  copyFeedbackTimer = window.setTimeout(() => {
+  toastTimer = window.setTimeout(() => {
     feedback.classList.remove("is-visible");
   }, 2200);
 }
 
-function setupCopyEmailButtons() {
-  document.querySelectorAll("[data-copy-email]").forEach((control) => {
-    control.addEventListener("click", async (event) => {
-      event.preventDefault();
+function setupWhatsAppLinks() {
+  document.querySelectorAll("[data-wa-link]").forEach((link) => {
+    if (isGithubPagesHost()) {
+      link.href = "#";
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        showToast(staticFallbackMessage, "error");
+      });
+      return;
+    }
 
-      try {
-        const email = control.dataset.copyEmail || "";
-        const copied = await copyText(email);
-
-        if (!copied) {
-          showCopyFeedback("No se pudo copiar el correo visible.", "error");
-          return;
-        }
-
-        control.classList.add("is-copied");
-        showCopyFeedback(control.dataset.copiedLabel || `Correo copiado: ${email}`);
-      } catch (error) {
-        showCopyFeedback("No se pudo copiar el correo visible.", "error");
-      }
-
-      window.setTimeout(() => {
-        control.classList.remove("is-copied");
-      }, 1800);
-    });
+    link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
   });
 }
 
@@ -269,10 +235,6 @@ function bindStatus(form) {
 function getFormEndpoint(form) {
   const kind = form.dataset.formKind || "contact";
   return getApiUrl(`api/forms/${kind}`);
-}
-
-function getPublicEmail(formKind) {
-  return formKind === "jobs" ? publicJobsEmail : publicContactEmail;
 }
 
 function validateCv(file) {
@@ -327,6 +289,14 @@ function setupForms() {
     form.method = "POST";
     if (formKind === "jobs") form.enctype = "multipart/form-data";
 
+    if (isGithubPagesHost()) {
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        showStatus("error", staticFallbackMessage);
+      });
+      return;
+    }
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -344,7 +314,6 @@ function setupForms() {
       const restoreState = setSubmittingState(form);
       const payload = new FormData(form);
       payload.set("_page", getCleanUrl());
-      payload.set("_visible_contact", getPublicEmail(formKind));
 
       try {
         const response = await fetch(getFormEndpoint(form), {
@@ -374,7 +343,7 @@ function setupForms() {
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
       } catch (error) {
-        showStatus("error", error?.message || "No se pudo enviar la consulta en este momento. Proba nuevamente o escribinos al correo visible.");
+        showStatus("error", error?.message || "No se pudo enviar la consulta en este momento. Proba nuevamente mas tarde.");
       } finally {
         restoreState();
       }
@@ -453,7 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupReveal();
   setupWhatsAppLinks();
-  setupCopyEmailButtons();
   setupForms();
   setupSliders();
 });
