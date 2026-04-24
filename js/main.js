@@ -2,6 +2,7 @@ const publicContactEmail = "contacto@valorhumano.com.uy";
 const publicJobsEmail = "seleccion@valorhumano.com.uy";
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
+let copyFeedbackTimer = null;
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
@@ -191,23 +192,57 @@ async function copyText(value) {
   return copied;
 }
 
+function ensureCopyFeedback() {
+  let feedback = document.querySelector(".copy-feedback");
+
+  if (feedback) return feedback;
+
+  feedback = document.createElement("p");
+  feedback.className = "copy-feedback";
+  feedback.setAttribute("role", "status");
+  feedback.setAttribute("aria-live", "polite");
+  document.body.appendChild(feedback);
+  return feedback;
+}
+
+function showCopyFeedback(message, status = "success") {
+  const feedback = ensureCopyFeedback();
+
+  feedback.textContent = message;
+  feedback.dataset.status = status;
+  feedback.classList.add("is-visible");
+
+  if (copyFeedbackTimer) {
+    window.clearTimeout(copyFeedbackTimer);
+  }
+
+  copyFeedbackTimer = window.setTimeout(() => {
+    feedback.classList.remove("is-visible");
+  }, 2200);
+}
+
 function setupCopyEmailButtons() {
   document.querySelectorAll("[data-copy-email]").forEach((control) => {
-    const originalLabel = control.textContent.trim();
-    const copiedLabel = control.dataset.copiedLabel || "Correo copiado";
-
     control.addEventListener("click", async (event) => {
       event.preventDefault();
 
       try {
-        const copied = await copyText(control.dataset.copyEmail || "");
-        control.textContent = copied ? copiedLabel : originalLabel;
+        const email = control.dataset.copyEmail || "";
+        const copied = await copyText(email);
+
+        if (!copied) {
+          showCopyFeedback("No se pudo copiar el correo visible.", "error");
+          return;
+        }
+
+        control.classList.add("is-copied");
+        showCopyFeedback(control.dataset.copiedLabel || `Correo copiado: ${email}`);
       } catch (error) {
-        control.textContent = originalLabel;
+        showCopyFeedback("No se pudo copiar el correo visible.", "error");
       }
 
       window.setTimeout(() => {
-        control.textContent = originalLabel;
+        control.classList.remove("is-copied");
       }, 1800);
     });
   });
@@ -347,26 +382,6 @@ function setupForms() {
   });
 }
 
-function setupJobsMailShortcut() {
-  const button = document.querySelector("[data-jobs-mail]");
-  if (!button) return;
-
-  const originalLabel = button.textContent.trim();
-
-  button.addEventListener("click", async () => {
-    try {
-      const copied = await copyText(publicJobsEmail);
-      button.textContent = copied ? "Correo copiado" : originalLabel;
-    } catch (error) {
-      button.textContent = originalLabel;
-    }
-
-    window.setTimeout(() => {
-      button.textContent = originalLabel;
-    }, 1800);
-  });
-}
-
 function setupSliders() {
   document.querySelectorAll("[data-slider]").forEach((slider) => {
     const track = slider.querySelector("[data-slider-track]");
@@ -440,6 +455,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setupWhatsAppLinks();
   setupCopyEmailButtons();
   setupForms();
-  setupJobsMailShortcut();
   setupSliders();
 });

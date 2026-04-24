@@ -18,6 +18,9 @@ Variables requeridas en Netlify:
 - `VH_FORWARD_CONTACT`
 - `VH_FORWARD_JOBS`
 
+El formulario de empleos ya envia el CV como adjunto real desde la funcion server-side.
+No depende de `mailto`, del cliente de correo del usuario ni de cargas manuales fuera del sitio.
+
 Rutas productivas:
 
 - `POST /api/forms/contact`
@@ -39,6 +42,22 @@ Ruta productiva:
 - `GET /go/whatsapp`
 
 La web apunta a esa ruta y el numero queda solo en configuracion privada del servidor.
+
+## Correos visibles del dominio
+
+Los alias visibles del frontend son:
+
+- `contacto@valorhumano.com.uy`
+- `seleccion@valorhumano.com.uy`
+
+Mientras el dominio y sus alias no esten activos de verdad, el frontend no debe abrir `mailto`.
+Los enlaces visibles deben funcionar como copia segura del alias publico y el contacto real debe resolverse por formulario server-side.
+
+Configuracion externa pendiente fuera del repo:
+
+- DNS activo para `valorhumano.com.uy`
+- alias o forwarding operativo para los correos visibles del dominio
+- verificacion real de que esos alias no rebotan antes de volver a habilitar compose directo
 
 ## Deploy
 
