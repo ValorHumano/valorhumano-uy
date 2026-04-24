@@ -7,16 +7,10 @@ const corsHeaders = {
   "Cache-Control": "no-store"
 };
 
-const publicAliasByKind = {
-  contact: "contacto@valorhumano.com.uy",
-  enterprise: "contacto@valorhumano.com.uy",
-  jobs: "seleccion@valorhumano.com.uy"
-};
-
 const subjectByKind = {
-  contact: "Nueva consulta desde valorhumano.com.uy",
-  enterprise: "Nueva consulta empresa desde valorhumano.com.uy",
-  jobs: "Nueva postulacion desde valorhumano.com.uy"
+  contact: "Nueva consulta desde Valor Humano",
+  enterprise: "Nueva consulta de empresa desde Valor Humano",
+  jobs: "Nueva postulacion desde Valor Humano"
 };
 
 const successByKind = {
@@ -37,11 +31,6 @@ const requiredFieldsByKind = {
   jobs: ["Nombre y apellido", "Telefono", "Correo"]
 };
 
-const nameAliases = new Map([
-  ["Teléfono", "Telefono"],
-  ["Servicio de interés", "Servicio de interes"]
-]);
-
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
 
@@ -57,10 +46,6 @@ function json(payload, status = 200) {
 
 function normalizeKind(kind) {
   return Object.prototype.hasOwnProperty.call(destinationByKind, kind) ? kind : "";
-}
-
-function normalizeFieldName(key) {
-  return key;
 }
 
 function cleanText(value, maxLength = 4000) {
@@ -125,14 +110,13 @@ function buildFieldMap(formData) {
   const fields = {};
 
   for (const [key, value] of formData.entries()) {
-    if (!key || key.startsWith("_")) continue;
+    if (!key || key.startsWith("_") || key === "CV") continue;
     if (typeof value !== "string") continue;
 
-    const normalizedKey = normalizeFieldName(key);
     const normalizedValue = cleanText(value);
 
     if (!normalizedValue) continue;
-    fields[normalizedKey] = normalizedValue;
+    fields[key] = normalizedValue;
   }
 
   return fields;
@@ -157,16 +141,14 @@ function validateFields(kind, fields) {
 function buildRows(fields) {
   return Object.entries(fields)
     .map(
-      ([label, value]) =>
-        `<tr><td style="padding:10px 12px;border:1px solid #d8dde3;font-weight:700;color:#20303a;">${escapeHtml(label)}</td><td style="padding:10px 12px;border:1px solid #d8dde3;color:#33424c;">${escapeHtml(value)}</td></tr>`
+      ([label, value]) => `<tr><td style="padding:10px 12px;border:1px solid #d8dde3;font-weight:700;color:#20303a;">${escapeHtml(label)}</td><td style="padding:10px 12px;border:1px solid #d8dde3;color:#33424c;">${escapeHtml(value)}</td></tr>`
     )
     .join("");
 }
 
 function buildHtml(kind, fields, originPage) {
   const rows = buildRows({
-    "Formulario": kind,
-    "Canal visible al usuario": publicAliasByKind[kind],
+    Formulario: kind,
     "Pagina de origen": originPage,
     ...fields
   });
@@ -176,7 +158,7 @@ function buildHtml(kind, fields, originPage) {
   <body style="margin:0;padding:24px;background:#f3f1eb;font-family:Arial,sans-serif;color:#24323b;">
     <div style="max-width:760px;margin:0 auto;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #d8dde3;">
       <div style="padding:24px 28px;background:#102734;color:#ffffff;">
-        <h1 style="margin:0;font-size:24px;line-height:1.2;">Nuevo envio desde valorhumano.com.uy</h1>
+        <h1 style="margin:0;font-size:24px;line-height:1.2;">Nuevo envio desde Valor Humano</h1>
       </div>
       <div style="padding:24px 28px;">
         <p style="margin:0 0 18px;line-height:1.6;">El proveedor acepto un nuevo formulario y lo dejo registrado para seguimiento.</p>
@@ -190,7 +172,6 @@ function buildHtml(kind, fields, originPage) {
 function buildText(kind, fields, originPage) {
   const rows = [
     `Formulario: ${kind}`,
-    `Canal visible al usuario: ${publicAliasByKind[kind]}`,
     `Pagina de origen: ${originPage}`,
     ...Object.entries(fields).map(([label, value]) => `${label}: ${value}`)
   ];
@@ -232,25 +213,11 @@ async function sendWithSendGrid({ to, replyTo, subject, html, text, attachment, 
   const fromName = cleanText(readPrivateValue("VH_MAIL_FROM_NAME"), 120) || "Valor Humano";
 
   const payload = {
-    personalizations: [
-      {
-        to: [{ email: to }],
-        subject
-      }
-    ],
-    from: {
-      email: fromEmail,
-      name: fromName
-    },
+    personalizations: [{ to: [{ email: to }], subject }],
+    from: { email: fromEmail, name: fromName },
     content: [
-      {
-        type: "text/plain",
-        value: text
-      },
-      {
-        type: "text/html",
-        value: html
-      }
+      { type: "text/plain", value: text },
+      { type: "text/html", value: html }
     ],
     custom_args: {
       source: "valorhumano-uy",
@@ -286,9 +253,7 @@ async function sendWithSendGrid({ to, replyTo, subject, html, text, attachment, 
     throw new Error("El proveedor acepto el envio, pero no devolvio un identificador verificable.");
   }
 
-  return {
-    deliveryId
-  };
+  return { deliveryId };
 }
 
 export default async (req, context) => {
@@ -343,12 +308,7 @@ export default async (req, context) => {
       category: kind
     });
 
-    return json({
-      ok: true,
-      provider: "sendgrid",
-      deliveryId: delivery.deliveryId,
-      message: successByKind[kind] || successByKind.contact
-    });
+    return json({ ok: true, provider: "sendgrid", deliveryId: delivery.deliveryId, message: successByKind[kind] || successByKind.contact });
   } catch (error) {
     if (String(error?.message || "").startsWith("Missing configuration:")) {
       return json({ ok: false, message: "El formulario todavia no esta configurado en produccion." }, 503);
