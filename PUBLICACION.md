@@ -4,7 +4,7 @@
 
 - El sitio debe salir de Netlify como origen principal.
 - El frontend, los formularios y la ruta de WhatsApp comparten el mismo origen productivo.
-- GitHub Pages queda solo como despliegue manual secundario. Ya no publica automaticamente en cada push.
+- GitHub Pages queda solo como despliegue estatico secundario. No debe operar contacto, formularios ni WhatsApp.
 
 ## Formularios
 
@@ -18,7 +18,7 @@ Variables requeridas en Netlify:
 - `VH_FORWARD_CONTACT`
 - `VH_FORWARD_JOBS`
 
-El formulario de empleos ya envia el CV como adjunto real desde la funcion server-side.
+El formulario de empleos envia el CV como adjunto real desde la funcion server-side.
 No depende de `mailto`, del cliente de correo del usuario ni de cargas manuales fuera del sitio.
 
 Rutas productivas:
@@ -31,8 +31,6 @@ El frontend solo muestra exito cuando el backend responde `ok: true` y el provee
 
 ## WhatsApp
 
-La web ya no usa la ruta publica anterior de WhatsApp.
-
 Variable requerida en Netlify:
 
 - `VH_WHATSAPP_NUMBER`
@@ -43,21 +41,15 @@ Ruta productiva:
 
 La web apunta a esa ruta y el numero queda solo en configuracion privada del servidor.
 
-## Correos visibles del dominio
+## Privacidad de contacto
 
-Los alias visibles del frontend son:
+No quedan visibles en frontend:
 
-- `contacto@valorhumano.com.uy`
-- `seleccion@valorhumano.com.uy`
+- el numero real de WhatsApp
+- el Hotmail de recepcion comercial
+- el Gmail de recepcion de postulaciones
 
-Mientras el dominio y sus alias no esten activos de verdad, el frontend no debe abrir `mailto`.
-Los enlaces visibles deben funcionar como copia segura del alias publico y el contacto real debe resolverse por formulario server-side.
-
-Configuracion externa pendiente fuera del repo:
-
-- DNS activo para `valorhumano.com.uy`
-- alias o forwarding operativo para los correos visibles del dominio
-- verificacion real de que esos alias no rebotan antes de volver a habilitar compose directo
+El sitio ya no muestra alias de correo no operativos del dominio. El contacto visible para usuarios se resuelve con formularios, WhatsApp y redes oficiales.
 
 ## Deploy
 
@@ -68,14 +60,5 @@ Secrets requeridos en GitHub Actions para publicar:
 - `NETLIFY_AUTH_TOKEN`
 - `NETLIFY_SITE_ID`
 
-Las variables operativas del sitio no se escriben mas en archivos del repo ni en `private-config.json`.
+Las variables operativas del sitio no se escriben en archivos del repo.
 Se leen solo desde variables privadas del entorno Netlify.
-
-## Regla operativa
-
-No dar por resuelto el funcionamiento productivo mientras falte cualquiera de estas condiciones:
-
-- deploy Netlify exitoso
-- variables privadas cargadas en Netlify
-- prueba real de `go/whatsapp`
-- aceptacion real de SendGrid para los tres formularios
