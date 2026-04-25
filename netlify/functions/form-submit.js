@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import { readPrivateValue, readRequiredPrivateValue } from "./_config.js";
 
 const corsHeaders = {
@@ -180,80 +181,81 @@ function buildText(kind, fields, originPage) {
 }
 
 async function buildAttachment(file) {
-  const bytes = await file.arrayBuffer();
+  const bytes = Buffer.from(await file.arrayBuffer());
 
   return {
-    content: Buffer.from(bytes).toString("base64"),
     filename: String(file.name || "cv"),
-    type: getMimeType(file.name, file.type),
-    disposition: "attachment"
+    content: bytes,
+    contentType: getMimeType(file.name, file.type),
+    contentDisposition: "attachment"
   };
 }
 
-function extractProviderError(rawBody) {
-  if (!rawBody) return "El proveedor rechazo el envio.";
-
-  try {
-    const parsed = JSON.parse(rawBody);
-    const firstError = parsed?.errors?.[0];
-    const providerMessage = cleanText(firstError?.message || "", 240);
-
-    if (providerMessage) return `El proveedor rechazo el envio: ${providerMessage}`;
-  } catch (error) {
-    const compact = cleanText(rawBody, 240);
-    if (compact) return `El proveedor rechazo el envio: ${compact}`;
-  }
-
-  return "El proveedor rechazo el envio.";
+function extractProviderError(error) {
+  const rawValue = error?.response || error?.message || error?.cause || "";
+  const compact = cleanText(rawValue, 240);
+  return compact ? `El proveedor rechazo el envio: ${compact}` : "El proveedor rechazo el envio.";
 }
 
-async function sendWithSendGrid({ to, replyTo, subject, html, text, attachment, category }) {
-  const apiKey = readRequiredPrivateValue("SENDGRID_API_KEY");
+function parsePort(value) {
+  const parsed = Number.parseInt(String(value || ""), 10);
+  return Number.isFinite(parsed) ? parsed : 587;
+}
+
+function buildBrevoTransport() {
+  const host = readRequiredPrivateValue("BREVO_SMTP_HOST");
+  const port = parsePort(readPrivateValue("BREVO_SMTP_PORT"));
+  const user = readRequiredPrivateValue("BREVO_SMTP_LOGIN");
+  const pass = readRequiredPrivateValue("BREVO_SMTP_KEY");
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: {
+      user,
+      pass
+    }
+  });
+}
+
+async function sendWithBrevoSmtp({ to, replyTo, subject, html, text, attachment, category }) {
   const fromEmail = readRequiredPrivateValue("VH_MAIL_FROM");
   const fromName = cleanText(readPrivateValue("VH_MAIL_FROM_NAME"), 120) || "Valor Humano";
+  const transporter = buildBrevoTransport();
 
   const payload = {
-    personalizations: [{ to: [{ email: to }], subject }],
-    from: { email: fromEmail, name: fromName },
-    content: [
-      { type: "text/plain", value: text },
-      { type: "text/html", value: html }
-    ],
-    custom_args: {
-      source: "valorhumano-uy",
-      form_kind: category
+    from: { name: fromName, address: fromEmail },
+    to,
+    subject,
+    text,
+    html,
+    headers: {
+      "X-ValorHumano-Source": "valorhumano-uy",
+      "X-ValorHumano-Form-Kind": category
     }
   };
 
   if (replyTo && isValidEmail(replyTo)) {
-    payload.reply_to = { email: replyTo };
+    payload.replyTo = replyTo;
   }
 
   if (attachment) {
     payload.attachments = [attachment];
   }
 
-  const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const result = await transporter.sendMail(payload);
+    const deliveryId = cleanText(result?.messageId || result?.response || "", 500);
 
-  const rawBody = await response.text();
-  const deliveryId = response.headers.get("x-message-id") || response.headers.get("x-request-id") || "";
+    if (!deliveryId) {
+      throw new Error("El proveedor acepto el envio, pero no devolvio un identificador verificable.");
+    }
 
-  if (response.status !== 202) {
-    throw new Error(extractProviderError(rawBody));
+    return { deliveryId };
+  } catch (error) {
+    throw new Error(extractProviderError(error));
   }
-
-  if (!deliveryId) {
-    throw new Error("El proveedor acepto el envio, pero no devolvio un identificador verificable.");
-  }
-
-  return { deliveryId };
 }
 
 export default async (req, context) => {
@@ -298,7 +300,7 @@ export default async (req, context) => {
     const destination = getDestination(kind);
     const html = buildHtml(kind, fields, originPage);
     const text = buildText(kind, fields, originPage);
-    const delivery = await sendWithSendGrid({
+    const delivery = await sendWithBrevoSmtp({
       to: destination,
       replyTo: fields.Correo,
       subject,
@@ -308,7 +310,7 @@ export default async (req, context) => {
       category: kind
     });
 
-    return json({ ok: true, provider: "sendgrid", deliveryId: delivery.deliveryId, message: successByKind[kind] || successByKind.contact });
+    return json({ ok: true, provider: "brevo", deliveryId: delivery.deliveryId, message: successByKind[kind] || successByKind.contact });
   } catch (error) {
     if (String(error?.message || "").startsWith("Missing configuration:")) {
       return json({ ok: false, message: "El formulario todavia no esta configurado en produccion." }, 503);
