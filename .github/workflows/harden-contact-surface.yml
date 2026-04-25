@@ -1,0 +1,62 @@
+name: Harden contact surface
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: harden-contact-surface
+  cancel-in-progress: true
+
+jobs:
+  harden:
+    if: ${{ !contains(github.event.head_commit.message, 'Apply contact surface hardening') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Harden contact surface
+        run: node scripts/harden-contact-surface.mjs
+
+      - name: Verify no public sensitive contact data remains
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -RInE 'mailto:|wa\.me/|api\.whatsapp\.com|098803512|59898803512|jhonatan-stemphelet@hotmail\.com|seleccionvaloreshumanos@gmail\.com|contacto@valorhumano\.com\.uy|seleccion@valorhumano\.com\.uy' -- . \
+            --exclude-dir=.git \
+            --exclude-dir=node_modules \
+            --exclude='whatsapp.js' \
+            --exclude='.env.example' \
+            --exclude='harden-contact-surface.yml' \
+            --exclude='harden-contact-surface.mjs'; then
+            echo 'Sensitive public contact data found.' >&2
+            exit 1
+          fi
+
+      - name: Commit hardened contact surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet; then
+            echo "No contact surface changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Apply contact surface hardening"
+          git push
