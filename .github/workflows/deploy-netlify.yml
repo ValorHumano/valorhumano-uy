@@ -29,24 +29,25 @@ jobs:
       - name: Install function dependencies
         run: npm install
 
-      - name: Check Netlify deploy secrets
-        id: netlify-secrets
+      - name: Validate Netlify deploy secrets
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -n "${NETLIFY_AUTH_TOKEN}" && -n "${NETLIFY_SITE_ID}" ]]; then
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-            echo "Netlify deploy secrets detected."
-          else
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "Netlify deploy skipped: configure NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID as GitHub Actions secrets to publish from this workflow."
+          missing=()
+          [[ -z "${NETLIFY_AUTH_TOKEN}" ]] && missing+=("NETLIFY_AUTH_TOKEN")
+          [[ -z "${NETLIFY_SITE_ID}" ]] && missing+=("NETLIFY_SITE_ID")
+
+          if (( ${#missing[@]} > 0 )); then
+            echo "Faltan secrets requeridos para publicar Netlify: ${missing[*]}" >&2
+            exit 1
           fi
+
+          echo "Netlify deploy secrets detected."
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Deploy to Netlify
-        if: steps.netlify-secrets.outputs.ready == 'true'
         run: npx netlify-cli@latest deploy --dir=. --functions netlify/functions --prod --message "GitHub Actions ${GITHUB_SHA}" --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
