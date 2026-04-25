@@ -10,6 +10,20 @@ const formSuccessMessages = {
 
 const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
 
+const concretePageRoutes = new Map([
+  ["", ""],
+  [".", ""],
+  ["./", ""],
+  ["seleccion-de-personal", "seleccion-de-personal/index.html"],
+  ["tercerizacion-de-personal", "tercerizacion-de-personal/index.html"],
+  ["payroll", "payroll/index.html"],
+  ["asesoramiento-logistico", "asesoramiento-logistico/index.html"],
+  ["empresas", "empresas/index.html"],
+  ["empleos", "empleos/index.html"],
+  ["contacto", "contacto/index.html"],
+  ["nosotros", "nosotros/index.html"]
+]);
+
 function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 }
@@ -29,6 +43,21 @@ function getSiteBasePath() {
 
 function getSiteUrl(path = "") {
   return new URL(path.replace(/^\//, ""), `${window.location.origin}${getSiteBasePath()}`).toString();
+}
+
+function getConcreteInternalPath(rawHref) {
+  if (!rawHref || rawHref.startsWith("#")) return rawHref;
+  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(rawHref)) return rawHref;
+  if (/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(rawHref)) return rawHref;
+
+  const [withoutHash, hash = ""] = rawHref.split("#");
+  const [withoutQuery, query = ""] = withoutHash.split("?");
+  const normalized = withoutQuery.replace(/^\//, "").replace(/\/+$/, "");
+  const concrete = concretePageRoutes.get(normalized);
+
+  if (typeof concrete !== "string") return rawHref;
+
+  return `${concrete}${query ? `?${query}` : ""}${hash ? `#${hash}` : ""}`;
 }
 
 function getApiUrl(path) {
@@ -132,10 +161,10 @@ function injectNavigationFixStyles() {
 function normalizeInternalLinks(scope = document) {
   scope.querySelectorAll("a[href]").forEach((link) => {
     const href = link.getAttribute("href");
-    if (!href || href.startsWith("#")) return;
-    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(href)) return;
-    if (/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(href)) return;
-    link.href = getSiteUrl(href);
+    const concreteHref = getConcreteInternalPath(href);
+    if (!concreteHref || concreteHref.startsWith("#")) return;
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(concreteHref)) return;
+    link.href = getSiteUrl(concreteHref);
   });
 }
 
