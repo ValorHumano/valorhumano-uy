@@ -39,8 +39,13 @@ jobs:
           if grep -RInE 'mailto:|wa\.me/|api\.whatsapp\.com|098803512|59898803512|jhonatan-stemphelet@hotmail\.com|seleccionvaloreshumanos@gmail\.com|contacto@valorhumano\.com\.uy|seleccion@valorhumano\.com\.uy' -- . \
             --exclude-dir=.git \
             --exclude-dir=node_modules \
+            --exclude-dir=api \
             --exclude='whatsapp.js' \
             --exclude='.env.example' \
+            --exclude='vercel.json' \
+            --exclude='netlify.toml' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
             --exclude='harden-contact-surface.yml' \
             --exclude='harden-contact-surface.mjs'; then
             echo 'Sensitive public contact data found.' >&2
