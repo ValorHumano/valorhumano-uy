@@ -1,19 +1,14 @@
 const allowedCvExtensions = [".pdf", ".doc", ".docx"];
 const maxCvSizeBytes = 10 * 1024 * 1024;
 let toastTimer = null;
+
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
-const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
 
-function getCleanUrl() {
-  const url = new URL(window.location.href);
-  url.search = "";
-  url.hash = "";
-  return url.toString();
-}
+const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
 
 function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
@@ -25,12 +20,10 @@ function isGithubPagesHost() {
 
 function getSiteBasePath() {
   if (isLocalHost()) return "/";
-
   if (isGithubPagesHost()) {
     const [repoSlug] = window.location.pathname.split("/").filter(Boolean);
     return repoSlug ? `/${repoSlug}/` : "/";
   }
-
   return "/";
 }
 
@@ -42,42 +35,140 @@ function getApiUrl(path) {
   return getSiteUrl(path);
 }
 
+function getCleanUrl() {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  return url.toString();
+}
+
 function getWhatsAppEntryUrl(message) {
   const target = new URL("go/whatsapp", getSiteUrl(""));
   target.searchParams.set("text", message || "Hola Valor Humano, quiero hacer una consulta.");
   return target.toString();
 }
 
+function injectNavigationFixStyles() {
+  if (document.getElementById("vh-navigation-fix")) return;
+
+  const style = document.createElement("style");
+  style.id = "vh-navigation-fix";
+  style.textContent = `
+    .site-header, .header-shell, .nav-panel, .nav-menu, .nav-menu > li { overflow: visible; }
+    .nav-panel, .nav-menu { min-width: 0; }
+    .nav-menu a, .submenu-toggle, .nav-cta { white-space: nowrap; }
+
+    @media (min-width: 1241px) {
+      .nav-menu { gap: clamp(12px, 1.15vw, 24px); }
+      .brand-logo { width: min(100%, 228px); }
+    }
+
+    @media (max-width: 1240px) {
+      .nav-toggle { display: inline-flex; }
+      .nav-panel {
+        position: fixed;
+        top: 92px;
+        right: 16px;
+        left: 16px;
+        z-index: 980;
+        display: grid;
+        align-items: stretch;
+        justify-content: stretch;
+        gap: 16px;
+        max-height: calc(100vh - 116px);
+        overflow: auto;
+        padding: 18px;
+        border: 1px solid rgba(202, 209, 216, 0.86);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 24px 52px rgba(77, 88, 99, 0.18);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 220ms ease, visibility 220ms ease, transform 220ms ease;
+      }
+      body.nav-open .nav-panel {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+      .nav-menu {
+        display: grid;
+        align-items: stretch;
+        justify-content: stretch;
+        gap: 8px;
+      }
+      .nav-menu a, .submenu-toggle {
+        width: 100%;
+        min-height: 48px;
+        padding: 10px 12px;
+        border-radius: 14px;
+      }
+      .submenu-toggle { justify-content: space-between; }
+      .has-submenu .submenu-panel {
+        position: static;
+        left: auto;
+        display: none;
+        min-width: 0;
+        margin: 4px 0 0;
+        padding: 6px;
+        border-radius: 16px;
+        background: rgba(247, 244, 238, 0.96);
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+      }
+      .has-submenu.is-open .submenu-panel { display: grid; }
+      .nav-cta { width: 100%; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function normalizeInternalLinks(scope = document) {
+  scope.querySelectorAll("a[href]").forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#")) return;
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(href)) return;
+    if (/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(href)) return;
+    link.href = getSiteUrl(href);
+  });
+}
+
 function setupHeader() {
   const header = document.querySelector(".site-header");
   if (!header) return;
 
-  const sync = () => {
-    header.classList.toggle("is-scrolled", window.scrollY > 12);
-  };
-
+  const sync = () => header.classList.toggle("is-scrolled", window.scrollY > 12);
   sync();
   window.addEventListener("scroll", sync, { passive: true });
 }
 
 function setupNavigation() {
+  injectNavigationFixStyles();
+
+  const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
   const panel = document.querySelector(".nav-panel");
   const submenuItems = Array.from(document.querySelectorAll(".has-submenu"));
 
+  normalizeInternalLinks(header || document);
+
   if (!toggle || !panel) return;
 
-  const syncSubmenuState = (item, expanded) => {
+  const setSubmenu = (item, open) => {
     const button = item.querySelector(".submenu-toggle");
-    if (!button) return;
-    item.classList.toggle("is-open", expanded);
-    button.setAttribute("aria-expanded", String(expanded));
+    item.classList.toggle("is-open", open);
+    if (button) button.setAttribute("aria-expanded", String(open));
   };
 
   const closeSubmenus = (exceptItem = null) => {
     submenuItems.forEach((item) => {
-      if (item === exceptItem) return;
-      syncSubmenuState(item, false);
+      if (item !== exceptItem) setSubmenu(item, false);
     });
   };
 
@@ -87,7 +178,9 @@ function setupNavigation() {
     closeSubmenus();
   };
 
-  toggle.addEventListener("click", () => {
+  toggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     const open = document.body.classList.toggle("nav-open");
     toggle.setAttribute("aria-expanded", String(open));
     if (!open) closeSubmenus();
@@ -99,37 +192,30 @@ function setupNavigation() {
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      const willOpen = !item.classList.contains("is-open");
+      event.stopPropagation();
+      const open = !item.classList.contains("is-open");
       closeSubmenus(item);
-      syncSubmenuState(item, willOpen);
+      setSubmenu(item, open);
     });
   });
 
-  panel.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeNav);
-  });
+  panel.querySelectorAll("a").forEach((link) => link.addEventListener("click", closeNav));
 
   document.addEventListener("click", (event) => {
-    const clickedInsidePanel = panel.contains(event.target);
-    const clickedToggle = toggle.contains(event.target);
-    const clickedSubmenu = submenuItems.some((item) => item.contains(event.target));
+    const insidePanel = panel.contains(event.target);
+    const insideToggle = toggle.contains(event.target);
+    const insideSubmenu = submenuItems.some((item) => item.contains(event.target));
 
-    if (!clickedSubmenu) closeSubmenus();
-
-    if (!document.body.classList.contains("nav-open")) return;
-    if (!clickedInsidePanel && !clickedToggle) closeNav();
+    if (!insideSubmenu) closeSubmenus();
+    if (document.body.classList.contains("nav-open") && !insidePanel && !insideToggle) closeNav();
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeSubmenus();
-      closeNav();
-    }
+    if (event.key === "Escape") closeNav();
   });
 
   window.addEventListener("resize", () => {
-    if (window.innerWidth > 1080) closeNav();
-    if (window.innerWidth > 1080) closeSubmenus();
+    if (window.innerWidth > 1240) closeNav();
   });
 }
 
@@ -146,29 +232,21 @@ function setupReveal() {
     return false;
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      });
-    },
-    {
-      threshold: 0.18,
-      rootMargin: "0px 0px -40px 0px"
-    }
-  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.18, rootMargin: "0px 0px -40px 0px" });
 
   elements.forEach((element) => {
-    if (revealIfInView(element)) return;
-    observer.observe(element);
+    if (!revealIfInView(element)) observer.observe(element);
   });
 }
 
 function ensureToast() {
   let feedback = document.querySelector(".copy-feedback");
-
   if (feedback) return feedback;
 
   feedback = document.createElement("p");
@@ -181,18 +259,12 @@ function ensureToast() {
 
 function showToast(message, status = "success") {
   const feedback = ensureToast();
-
   feedback.textContent = message;
   feedback.dataset.status = status;
   feedback.classList.add("is-visible");
 
-  if (toastTimer) {
-    window.clearTimeout(toastTimer);
-  }
-
-  toastTimer = window.setTimeout(() => {
-    feedback.classList.remove("is-visible");
-  }, 2200);
+  if (toastTimer) window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => feedback.classList.remove("is-visible"), 2200);
 }
 
 function setupWhatsAppLinks() {
@@ -225,7 +297,6 @@ function bindStatus(form) {
       status = document.createElement("p");
       host.appendChild(status);
     }
-
     status.className = type === "error" ? "form-error" : "form-success";
     status.setAttribute("aria-live", "polite");
     status.textContent = message;
@@ -238,41 +309,29 @@ function getFormEndpoint(form) {
 }
 
 function validateCv(file) {
-  if (!file) {
-    return { valid: false, message: "Adjunta tu CV para completar la postulacion." };
-  }
+  if (!file) return { valid: false, message: "Adjunta tu CV para completar la postulacion." };
 
   const fileName = file.name.toLowerCase();
   const hasValidExtension = allowedCvExtensions.some((extension) => fileName.endsWith(extension));
 
-  if (!hasValidExtension) {
-    return { valid: false, message: "El CV debe estar en formato PDF, DOC o DOCX." };
-  }
-
-  if (file.size > maxCvSizeBytes) {
-    return { valid: false, message: "El archivo supera el maximo de 10 MB permitido." };
-  }
+  if (!hasValidExtension) return { valid: false, message: "El CV debe estar en formato PDF, DOC o DOCX." };
+  if (file.size > maxCvSizeBytes) return { valid: false, message: "El archivo supera el maximo de 10 MB permitido." };
 
   return { valid: true };
 }
 
 function setSubmittingState(form) {
-  const submitButton = form.querySelector('button[type="submit"]');
   const buttons = Array.from(form.querySelectorAll("button"));
-  const previousLabels = buttons.map((button) => button.textContent);
+  const labels = buttons.map((button) => button.textContent);
+  const submitButton = form.querySelector('button[type="submit"]');
 
-  buttons.forEach((button) => {
-    button.disabled = true;
-  });
-
+  buttons.forEach((button) => { button.disabled = true; });
   if (submitButton) submitButton.textContent = "Enviando...";
 
   return () => {
     buttons.forEach((button, index) => {
       button.disabled = false;
-      if (typeof previousLabels[index] === "string") {
-        button.textContent = previousLabels[index];
-      }
+      if (typeof labels[index] === "string") button.textContent = labels[index];
     });
   };
 }
@@ -299,12 +358,11 @@ function setupForms() {
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-
       if (!form.reportValidity()) return;
 
       if (formKind === "jobs") {
         const fileField = form.querySelector('input[type="file"]');
-        const result = validateCv(fileField && fileField.files ? fileField.files[0] : null);
+        const result = validateCv(fileField?.files?.[0]);
         if (!result.valid) {
           showStatus("error", result.message);
           return;
@@ -319,26 +377,14 @@ function setupForms() {
         const response = await fetch(getFormEndpoint(form), {
           method: "POST",
           body: payload,
-          headers: {
-            Accept: "application/json"
-          }
+          headers: { Accept: "application/json" }
         });
 
         let data = null;
+        try { data = await response.json(); } catch (error) { data = null; }
 
-        try {
-          data = await response.json();
-        } catch (error) {
-          data = null;
-        }
-
-        if (!response.ok || !data?.ok) {
-          throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
-        }
-
-        if (!data.deliveryId) {
-          throw new Error("No hubo confirmacion verificable del proveedor de correo.");
-        }
+        if (!response.ok || !data?.ok) throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
+        if (!data.deliveryId) throw new Error("No hubo confirmacion verificable del proveedor de correo.");
 
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
@@ -377,38 +423,23 @@ function setupSliders() {
       sync();
     };
 
-    const nextSlide = () => {
-      goTo(index === slides.length - 1 ? 0 : index + 1);
-    };
-
+    const nextSlide = () => goTo(index === slides.length - 1 ? 0 : index + 1);
     const stopAuto = () => {
       if (!timer) return;
       window.clearInterval(timer);
       timer = null;
     };
-
     const startAuto = () => {
       stopAuto();
       timer = window.setInterval(nextSlide, 7600);
     };
 
-    prev?.addEventListener("click", () => {
-      goTo(index === 0 ? slides.length - 1 : index - 1);
-    });
-
-    next?.addEventListener("click", () => {
-      nextSlide();
-    });
-
-    dots.forEach((dot, dotIndex) => {
-      dot.addEventListener("click", () => {
-        goTo(dotIndex);
-      });
-    });
+    prev?.addEventListener("click", () => goTo(index === 0 ? slides.length - 1 : index - 1));
+    next?.addEventListener("click", nextSlide);
+    dots.forEach((dot, dotIndex) => dot.addEventListener("click", () => goTo(dotIndex)));
 
     sync();
     startAuto();
-
     slider.addEventListener("mouseenter", stopAuto);
     slider.addEventListener("mouseleave", startAuto);
     slider.addEventListener("focusin", stopAuto);
