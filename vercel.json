@@ -5,70 +5,35 @@
     {
       "source": "/go/whatsapp",
       "destination": "/api/go/whatsapp"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     },
     {
-      "source": "/seleccion-de-personal",
-      "destination": "/seleccion-de-personal/index.html"
+      "source": "/js/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     },
     {
-      "source": "/seleccion-de-personal/",
-      "destination": "/seleccion-de-personal/index.html"
-    },
-    {
-      "source": "/tercerizacion-de-personal",
-      "destination": "/tercerizacion-de-personal/index.html"
-    },
-    {
-      "source": "/tercerizacion-de-personal/",
-      "destination": "/tercerizacion-de-personal/index.html"
-    },
-    {
-      "source": "/payroll",
-      "destination": "/payroll/index.html"
-    },
-    {
-      "source": "/payroll/",
-      "destination": "/payroll/index.html"
-    },
-    {
-      "source": "/asesoramiento-logistico",
-      "destination": "/asesoramiento-logistico/index.html"
-    },
-    {
-      "source": "/asesoramiento-logistico/",
-      "destination": "/asesoramiento-logistico/index.html"
-    },
-    {
-      "source": "/empresas",
-      "destination": "/empresas/index.html"
-    },
-    {
-      "source": "/empresas/",
-      "destination": "/empresas/index.html"
-    },
-    {
-      "source": "/empleos",
-      "destination": "/empleos/index.html"
-    },
-    {
-      "source": "/empleos/",
-      "destination": "/empleos/index.html"
-    },
-    {
-      "source": "/contacto",
-      "destination": "/contacto/index.html"
-    },
-    {
-      "source": "/contacto/",
-      "destination": "/contacto/index.html"
-    },
-    {
-      "source": "/nosotros",
-      "destination": "/nosotros/index.html"
-    },
-    {
-      "source": "/nosotros/",
-      "destination": "/nosotros/index.html"
+      "source": "/css/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
     }
   ]
 }
