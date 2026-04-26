@@ -159,13 +159,7 @@ function injectNavigationFixStyles() {
 }
 
 function normalizeInternalLinks(scope = document) {
-  scope.querySelectorAll("a[href]").forEach((link) => {
-    const href = link.getAttribute("href");
-    const concreteHref = getConcreteInternalPath(href);
-    if (!concreteHref || concreteHref.startsWith("#")) return;
-    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(concreteHref)) return;
-    link.href = getSiteUrl(concreteHref);
-  });
+  // Disabled for Vercel deployment - using absolute paths in HTML
 }
 
 function setupHeader() {
