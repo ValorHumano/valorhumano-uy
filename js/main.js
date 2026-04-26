@@ -460,6 +460,17 @@ function setupSliders() {
   });
 }
 
+function prefillFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const motivo = urlParams.get('motivo');
+  if (motivo) {
+    const textarea = document.querySelector('textarea[name="Mensaje"]');
+    if (textarea && !textarea.value.trim()) {
+      textarea.value = motivo;
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("js-enhanced");
   setupHeader();
@@ -469,4 +480,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setupContactPrefill();
   setupForms();
   setupSliders();
+  prefillFromUrl();
 });

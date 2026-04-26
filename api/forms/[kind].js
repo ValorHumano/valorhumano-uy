@@ -196,7 +196,7 @@ export default async function handler(req, res) {
     const subject = `[Valor Humano] ${labelsByKind[kind]}`;
 
     const info = await transporter.sendMail({
-      from: process.env.MAIL_FROM || `Valor Humano <${getRequiredEnv("SMTP_USER")}>`,
+      from: getRequiredEnv("MAIL_FROM"),
       to: getRecipient(kind),
       replyTo,
       subject,
