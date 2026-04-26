@@ -10,20 +10,6 @@ const formSuccessMessages = {
 
 const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
 
-const concretePageRoutes = new Map([
-  ["", ""],
-  [".", ""],
-  ["./", ""],
-  ["seleccion-de-personal", "seleccion-de-personal/index.html"],
-  ["tercerizacion-de-personal", "tercerizacion-de-personal/index.html"],
-  ["payroll", "payroll/index.html"],
-  ["asesoramiento-logistico", "asesoramiento-logistico/index.html"],
-  ["empresas", "empresas/index.html"],
-  ["empleos", "empleos/index.html"],
-  ["contacto", "contacto/index.html"],
-  ["nosotros", "nosotros/index.html"]
-]);
-
 function isLocalHost() {
   return window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
 }
@@ -43,21 +29,6 @@ function getSiteBasePath() {
 
 function getSiteUrl(path = "") {
   return new URL(path.replace(/^\//, ""), `${window.location.origin}${getSiteBasePath()}`).toString();
-}
-
-function getConcreteInternalPath(rawHref) {
-  if (!rawHref || rawHref.startsWith("#")) return rawHref;
-  if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(rawHref)) return rawHref;
-  if (/\.[a-z0-9]{2,5}(?:[?#].*)?$/i.test(rawHref)) return rawHref;
-
-  const [withoutHash, hash = ""] = rawHref.split("#");
-  const [withoutQuery, query = ""] = withoutHash.split("?");
-  const normalized = withoutQuery.replace(/^\//, "").replace(/\/+$/, "");
-  const concrete = concretePageRoutes.get(normalized);
-
-  if (typeof concrete !== "string") return rawHref;
-
-  return `${concrete}${query ? `?${query}` : ""}${hash ? `#${hash}` : ""}`;
 }
 
 function getApiUrl(path) {
@@ -158,10 +129,6 @@ function injectNavigationFixStyles() {
   document.head.appendChild(style);
 }
 
-function normalizeInternalLinks(scope = document) {
-  // Disabled for Vercel deployment - using absolute paths in HTML
-}
-
 function setupHeader() {
   const header = document.querySelector(".site-header");
   if (!header) return;
@@ -174,12 +141,9 @@ function setupHeader() {
 function setupNavigation() {
   injectNavigationFixStyles();
 
-  const header = document.querySelector(".site-header");
   const toggle = document.querySelector(".nav-toggle");
   const panel = document.querySelector(".nav-panel");
   const submenuItems = Array.from(document.querySelectorAll(".has-submenu"));
-
-  normalizeInternalLinks(header || document);
 
   if (!toggle || !panel) return;
 
@@ -304,9 +268,35 @@ function setupWhatsAppLinks() {
     }
 
     link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
+    link.removeAttribute("target");
+    link.removeAttribute("rel");
   });
+}
+
+function setupContactPrefill() {
+  const params = new URLSearchParams(window.location.search);
+  const motivo = params.get("motivo");
+  if (!motivo) return;
+
+  const form = document.querySelector('form[data-form-kind="contact"]');
+  if (!form) return;
+
+  const motivoField = form.querySelector('[name="Motivo"]');
+  const mensajeField = form.querySelector('[name="Mensaje"]');
+
+  if (motivoField && !motivoField.value) {
+    const matchingOption = Array.from(motivoField.options || []).find((option) => option.textContent === motivo || option.value === motivo);
+    if (matchingOption) motivoField.value = matchingOption.value;
+  }
+
+  if (mensajeField && !mensajeField.value) {
+    mensajeField.value = motivo;
+  }
+
+  const target = document.getElementById("formulario-contacto") || form;
+  window.setTimeout(() => {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 120);
 }
 
 function bindStatus(form) {
@@ -476,6 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupReveal();
   setupWhatsAppLinks();
+  setupContactPrefill();
   setupForms();
   setupSliders();
 });
