@@ -25,15 +25,22 @@ const successMessages = {
   jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
 };
 
+const requiredFieldsByKind = {
+  contact: ["Nombre", "Telefono", "Correo", "Mensaje"],
+  enterprise: ["Nombre y apellido", "Empresa", "Telefono", "Correo", "Servicio de interes", "Mensaje"],
+  jobs: ["Nombre y apellido", "Telefono", "Correo"]
+};
+
 function sendJson(res, statusCode, payload) {
   res.statusCode = statusCode;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
   res.end(JSON.stringify(payload));
 }
 
 function getRequiredEnv(name) {
   const value = process.env[name];
-  if (!value) throw new Error(`Falta configurar la variable de entorno ${name}.`);
+  if (!value) throw new Error(`Missing required private environment variable: ${name}`);
   return value;
 }
 
@@ -72,9 +79,7 @@ function parseRequest(req) {
 }
 
 function validateKind(kind) {
-  if (!allowedKinds.has(kind)) {
-    return "El tipo de formulario no es valido.";
-  }
+  if (!allowedKinds.has(kind)) return "El tipo de formulario no es valido.";
   return null;
 }
 
@@ -90,13 +95,8 @@ function validateCv(file) {
   const originalName = file.originalFilename || file.newFilename || "cv";
   const extension = path.extname(originalName).toLowerCase();
 
-  if (!allowedCvExtensions.has(extension)) {
-    return "El CV debe estar en formato PDF, DOC o DOCX.";
-  }
-
-  if (file.size > maxCvSizeBytes) {
-    return "El archivo supera el maximo de 10 MB permitido.";
-  }
+  if (!allowedCvExtensions.has(extension)) return "El CV debe estar en formato PDF, DOC o DOCX.";
+  if (file.size > maxCvSizeBytes) return "El archivo supera el maximo de 10 MB permitido.";
 
   return null;
 }
@@ -105,29 +105,16 @@ function validatePayload(kind, fields, files) {
   const kindError = validateKind(kind);
   if (kindError) return kindError;
 
-  if (kind === "contact") {
-    return validateRequired(fields, ["Nombre", "Telefono", "Correo", "Mensaje"]);
-  }
+  const requiredError = validateRequired(fields, requiredFieldsByKind[kind] || []);
+  if (requiredError) return requiredError;
 
-  if (kind === "enterprise") {
-    return validateRequired(fields, ["Nombre y apellido", "Empresa", "Telefono", "Correo", "Servicio de interes", "Mensaje"]);
-  }
-
-  if (kind === "jobs") {
-    const requiredError = validateRequired(fields, ["Nombre y apellido", "Telefono", "Correo"]);
-    if (requiredError) return requiredError;
-    return validateCv(getUploadedFile(files));
-  }
-
+  if (kind === "jobs") return validateCv(getUploadedFile(files));
   return null;
 }
 
 function getRecipient(kind) {
-  if (kind === "jobs") {
-    return process.env.JOBS_TO || process.env.MAIL_TO || process.env.CONTACT_TO || "jhonatan-stemphelet@hotmail.com";
-  }
-
-  return process.env.CONTACT_TO || process.env.MAIL_TO || "jhonatan-stemphelet@hotmail.com";
+  if (kind === "jobs") return getRequiredEnv("JOBS_TO");
+  return getRequiredEnv("CONTACT_TO");
 }
 
 function buildPlainText(kind, fields) {
@@ -202,9 +189,7 @@ export default async function handler(req, res) {
     const { fields, files } = await parseRequest(req);
     const payloadError = validatePayload(kind, fields, files);
 
-    if (payloadError) {
-      return sendJson(res, 400, { ok: false, message: payloadError });
-    }
+    if (payloadError) return sendJson(res, 400, { ok: false, message: payloadError });
 
     const transporter = createTransporter();
     const replyTo = fields.Correo || undefined;
@@ -226,10 +211,16 @@ export default async function handler(req, res) {
       deliveryId: info.messageId || info.response || "sent"
     });
   } catch (error) {
-    console.error("Valor Humano form error", error);
+    console.error("Valor Humano form delivery failed", {
+      kind,
+      message: error?.message,
+      code: error?.code,
+      command: error?.command
+    });
+
     return sendJson(res, 500, {
       ok: false,
-      message: "No se pudo enviar la consulta en este momento. Revisa la configuracion SMTP o proba nuevamente."
+      message: "No se pudo enviar el formulario en este momento. Proba nuevamente mas tarde o contactanos por otro canal."
     });
   }
 }
