@@ -1,12 +1,14 @@
 function getContactTarget(req) {
   const rawText = req.query?.text;
   const text = Array.isArray(rawText) ? rawText[0] : rawText;
-  const base = "/contacto/#contacto-form";
+  const params = new URLSearchParams();
 
-  if (!text || typeof text !== "string") return base;
+  if (typeof text === "string" && text.trim()) {
+    params.set("motivo", text.trim().slice(0, 240));
+  }
 
-  const params = new URLSearchParams({ motivo: text.slice(0, 240) });
-  return `${base}?${params.toString()}`;
+  const query = params.toString();
+  return `/contacto/${query ? `?${query}` : ""}#formulario-contacto`;
 }
 
 export default function handler(req, res) {
