@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import path from "node:path";
 import formidable from "formidable";
 import nodemailer from "nodemailer";
@@ -175,7 +174,7 @@ function buildAttachments(kind, files) {
   return [
     {
       filename: cv.originalFilename || "CV",
-      content: fs.createReadStream(cv.filepath),
+      path: cv.filepath,
       contentType: cv.mimetype || undefined
     }
   ];
@@ -206,12 +205,16 @@ export default async function handler(req, res) {
 
     if (kind === "jobs") {
       const cv = getUploadedFile(files);
-      console.info("jobs mail attempt", {
+      console.info("jobs route reached", {
         kind,
+        route: "/api/forms/jobs",
+        destinationKind: "JOBS_TO",
         hasJobsTo: Boolean(process.env.JOBS_TO),
+        hasContactTo: Boolean(process.env.CONTACT_TO),
         hasCv: Boolean(cv),
         cvName: cv?.originalFilename || cv?.newFilename || null,
         cvSize: cv?.size || null,
+        cvPathPresent: Boolean(cv?.filepath),
         attachmentCount: attachments.length
       });
     }
@@ -234,6 +237,7 @@ export default async function handler(req, res) {
 
     if (kind === "jobs") {
       console.info("jobs mail result", {
+        destinationKind: "JOBS_TO",
         acceptedCount,
         rejectedCount,
         messageId: info.messageId || null
@@ -251,6 +255,7 @@ export default async function handler(req, res) {
   } catch (error) {
     if (kind === "jobs") {
       console.error("jobs mail failed", {
+        destinationKind: "JOBS_TO",
         message: error?.message,
         code: error?.code,
         command: error?.command
