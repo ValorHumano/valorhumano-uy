@@ -1310,11 +1310,8 @@ section[id] {
   background: rgba(246, 223, 223, 0.9);
 }
 
-[data-copy-email] {
-  cursor: pointer;
-}
-
-[data-copy-email].is-copied {
+.email-visible {
+  font-weight: 600;
   color: var(--text-strong);
 }
 

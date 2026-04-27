@@ -16,7 +16,7 @@ const maxCvSizeBytes = 10 * 1024 * 1024;
 const labelsByKind = {
   contact: "Consulta desde Contacto",
   enterprise: "Consulta de Empresa",
-  jobs: "Postulacion con CV"
+  jobs: "Postulación con CV"
 };
 
 const successMessages = {
@@ -25,9 +25,11 @@ const successMessages = {
   jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
 };
 
+const safeFormError = "No se pudo enviar el formulario en este momento. Probá nuevamente más tarde.";
+
 const requiredFieldsByKind = {
-  contact: ["Nombre", "Telefono", "Correo", "Mensaje"],
-  enterprise: ["Nombre y apellido", "Empresa", "Telefono", "Correo", "Servicio de interes", "Mensaje"],
+  contact: ["Nombre", "Telefono", "Correo", "Motivo", "Mensaje"],
+  enterprise: ["Nombre y apellido", "Empresa", "Telefono", "Correo", "Servicio de interes", "Ubicacion o rubro", "Mensaje"],
   jobs: ["Nombre y apellido", "Telefono", "Correo"]
 };
 
@@ -120,6 +122,7 @@ function getRecipient(kind) {
 function buildPlainText(kind, fields) {
   return [
     labelsByKind[kind],
+    "Fuente: Formulario web Valor Humano",
     "",
     ...Object.entries(fields).map(([key, value]) => `${key}: ${value || "-"}`),
     "",
@@ -144,6 +147,7 @@ function buildHtml(kind, fields) {
   return `
     <div style="font-family:Arial,sans-serif;line-height:1.5;color:#222;">
       <h2>${escapeHtml(labelsByKind[kind])}</h2>
+      <p><strong>Fuente:</strong> Formulario web Valor Humano</p>
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:720px;">${rows}</table>
       <p style="margin-top:18px;color:#666;">Enviado desde el sitio web de Valor Humano.</p>
     </div>
@@ -187,6 +191,10 @@ export default async function handler(req, res) {
 
   try {
     const { fields, files } = await parseRequest(req);
+    const pageUrl = fields._page || req.headers.referer || "Sitio web Valor Humano";
+    const timestamp = new Date().toISOString();
+    fields.Pagina = fields.Pagina || pageUrl;
+    fields["Fecha/hora"] = fields["Fecha/hora"] || timestamp;
     const payloadError = validatePayload(kind, fields, files);
 
     if (payloadError) return sendJson(res, 400, { ok: false, message: payloadError });
@@ -194,6 +202,19 @@ export default async function handler(req, res) {
     const transporter = createTransporter();
     const replyTo = fields.Correo || undefined;
     const subject = `[Valor Humano] ${labelsByKind[kind]}`;
+    const attachments = buildAttachments(kind, files);
+
+    if (kind === "jobs") {
+      const cv = getUploadedFile(files);
+      console.info("jobs mail attempt", {
+        kind,
+        hasJobsTo: Boolean(process.env.JOBS_TO),
+        hasCv: Boolean(cv),
+        cvName: cv?.originalFilename || cv?.newFilename || null,
+        cvSize: cv?.size || null,
+        attachmentCount: attachments.length
+      });
+    }
 
     const info = await transporter.sendMail({
       from: getRequiredEnv("MAIL_FROM"),
@@ -202,8 +223,25 @@ export default async function handler(req, res) {
       subject,
       text: buildPlainText(kind, fields),
       html: buildHtml(kind, fields),
-      attachments: buildAttachments(kind, files)
+      attachments
     });
+
+    const acceptedCount = info.accepted?.length || 0;
+    const rejectedCount = info.rejected?.length || 0;
+    if (acceptedCount < 1 || rejectedCount > 0) {
+      throw new Error("Mail delivery was not accepted by provider.");
+    }
+
+    if (kind === "jobs") {
+      console.info("jobs mail result", {
+        acceptedCount,
+        rejectedCount,
+        messageId: info.messageId || null
+      });
+      if (acceptedCount < 1 || rejectedCount > 0) {
+        throw new Error("Jobs delivery was not accepted by provider.");
+      }
+    }
 
     return sendJson(res, 200, {
       ok: true,
@@ -211,6 +249,13 @@ export default async function handler(req, res) {
       deliveryId: info.messageId || info.response || "sent"
     });
   } catch (error) {
+    if (kind === "jobs") {
+      console.error("jobs mail failed", {
+        message: error?.message,
+        code: error?.code,
+        command: error?.command
+      });
+    }
     console.error("Valor Humano form delivery failed", {
       kind,
       message: error?.message,
@@ -220,7 +265,7 @@ export default async function handler(req, res) {
 
     return sendJson(res, 500, {
       ok: false,
-      message: "No se pudo enviar el formulario en este momento. Probá nuevamente más tarde o contactanos por otro canal."
+      message: safeFormError
     });
   }
 }
