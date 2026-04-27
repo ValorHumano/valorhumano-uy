@@ -192,26 +192,14 @@ async function submitChatForm(event) {
   }
 }
 
-function setupChatLinks() {
-  document.querySelectorAll("[data-chat-link]").forEach((link) => {
-    const message = link.dataset.chatMessage || "";
-    link.href = "/contacto/";
-    link.setAttribute("aria-label", "Abrir chat de Valor Humano");
+function setupWhatsAppLinks() {
+  document.querySelectorAll("[data-wa-link]").forEach((link) => {
+    const message = (link.dataset.waMessage || "Hola Valor Humano, quiero hacer una consulta.").trim();
+    const encoded = encodeURIComponent(message);
+    link.href = `/go/whatsapp?text=${encoded}`;
+    link.setAttribute("aria-label", "Abrir WhatsApp de Valor Humano");
     link.removeAttribute("target");
     link.removeAttribute("rel");
-
-    if (isGithubPagesHost()) {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        showToast(staticFallbackMessage, "error");
-      });
-      return;
-    }
-
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      openChatPanel(message);
-    });
   });
 }
 
@@ -421,25 +409,6 @@ function showToast(message, status = "success") {
   toastTimer = window.setTimeout(() => feedback.classList.remove("is-visible"), 2200);
 }
 
-function setupWhatsAppLinks() {
-  document.querySelectorAll("[data-wa-link]").forEach((link) => {
-    if (isGithubPagesHost()) {
-      link.href = "#";
-      link.removeAttribute("target");
-      link.removeAttribute("rel");
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        showToast(staticFallbackMessage, "error");
-      });
-      return;
-    }
-
-    link.href = getWhatsAppEntryUrl(link.dataset.waMessage);
-    link.removeAttribute("target");
-    link.removeAttribute("rel");
-  });
-}
-
 function setupContactPrefill() {
   const params = new URLSearchParams(window.location.search);
   const motivo = params.get("motivo");
@@ -552,9 +521,17 @@ function setupForms() {
       const restoreState = setSubmittingState(form);
       const payload = new FormData(form);
       payload.set("_page", getCleanUrl());
+      const endpoint = getFormEndpoint(form);
+
+      if (formKind === "jobs") {
+        console.info("jobs form submit", {
+          hasCv: Boolean(form.querySelector('input[name="CV"]')?.files?.length),
+          endpoint
+        });
+      }
 
       try {
-        const response = await fetch(getFormEndpoint(form), {
+        const response = await fetch(endpoint, {
           method: "POST",
           body: payload,
           headers: { Accept: "application/json" }
@@ -564,7 +541,6 @@ function setupForms() {
         try { data = await response.json(); } catch (error) { data = null; }
 
         if (!response.ok || !data?.ok) throw new Error(data?.message || "No se pudo enviar la consulta en este momento.");
-        if (!data.deliveryId) throw new Error("No hubo confirmacion verificable del proveedor de correo.");
 
         form.reset();
         showStatus("success", data.message || formSuccessMessages[formKind] || "Tu mensaje fue enviado correctamente.");
@@ -643,7 +619,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupHeader();
   setupNavigation();
   setupReveal();
-  setupChatLinks();
+  setupWhatsAppLinks();
   setupContactPrefill();
   setupForms();
   setupSliders();
