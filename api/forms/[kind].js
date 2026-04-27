@@ -22,7 +22,7 @@ const labelsByKind = {
 const successMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
-  jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
+  jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
 };
 
 const requiredFieldsByKind = {
@@ -220,7 +220,7 @@ export default async function handler(req, res) {
 
     return sendJson(res, 500, {
       ok: false,
-      message: "No se pudo enviar el formulario en este momento. Proba nuevamente mas tarde o contactanos por otro canal."
+      message: "No se pudo enviar el formulario en este momento. Probá nuevamente más tarde o contactanos por otro canal."
     });
   }
 }

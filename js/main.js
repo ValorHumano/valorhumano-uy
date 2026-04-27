@@ -5,7 +5,7 @@ let toastTimer = null;
 const formSuccessMessages = {
   contact: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
-  jobs: "Tu postulacion fue enviada correctamente. En breve seguimos el contacto."
+  jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
 };
 
 const staticFallbackMessage = "Este canal operativo funciona solo en el sitio principal de Valor Humano.";
@@ -43,7 +43,7 @@ function getCleanUrl() {
 }
 
 function getWhatsAppEntryUrl(message) {
-  const target = new URL("go/whatsapp", getSiteUrl(""));
+  const target = new URL("/go/whatsapp", getSiteUrl(""));
   target.searchParams.set("text", message || "Hola Valor Humano, quiero hacer una consulta.");
   return target.toString();
 }
