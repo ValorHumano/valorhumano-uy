@@ -7,10 +7,6 @@ const corsHeaders = {
   "Cache-Control": "no-store"
 };
 
-function getWhatsAppNumber() {
-  return readPrivateValue("VH_WHATSAPP_NUMBER").replace(/\D+/g, "");
-}
-
 export default async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
@@ -20,23 +16,12 @@ export default async (req) => {
     return new Response("Metodo no permitido.", { status: 405, headers: corsHeaders });
   }
 
-  const number = getWhatsAppNumber();
-
+  const number = readPrivateValue("WHATSAPP_PHONE").replace(/\D+/g, "");
   if (!number) {
-    return new Response("El canal de WhatsApp todavia no esta configurado.", {
-      status: 503,
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "text/plain; charset=utf-8"
-      }
-    });
+    return new Response("Canal no disponible.", { status: 503, headers: corsHeaders });
   }
-
   const url = new URL(req.url);
-  const text = String(url.searchParams.get("text") || "Hola Valor Humano, quiero hacer una consulta.")
-    .replace(/\s+/g, " ")
-    .trim()
-    .slice(0, 500);
+  const text = String(url.searchParams.get("text") || "Hola Valor Humano, quiero hacer una consulta.").slice(0, 500);
   const target = `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 
   return new Response(null, {
