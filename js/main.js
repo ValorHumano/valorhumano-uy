@@ -42,10 +42,177 @@ function getCleanUrl() {
   return url.toString();
 }
 
-function getWhatsAppEntryUrl(message) {
-  const target = new URL("/go/whatsapp", getSiteUrl(""));
-  target.searchParams.set("text", message || "Hola Valor Humano, quiero hacer una consulta.");
-  return target.toString();
+function createChatPanel() {
+  if (document.getElementById("vh-chat-widget")) return;
+
+  const widget = document.createElement("div");
+  widget.id = "vh-chat-widget";
+  widget.className = "vh-chat-widget";
+  widget.innerHTML = `
+    <div class="vh-chat-backdrop" data-chat-close></div>
+    <div class="vh-chat-panel" role="dialog" aria-modal="true" aria-labelledby="vh-chat-title">
+      <div class="vh-chat-header">
+        <div>
+          <p class="vh-chat-eyebrow">Chat Valor Humano</p>
+          <h2 id="vh-chat-title">Consulta rápida</h2>
+          <p class="vh-chat-note">Dejanos tu consulta y seguimos el contacto.</p>
+        </div>
+        <button type="button" class="vh-chat-close" aria-label="Cerrar chat">×</button>
+      </div>
+      <form class="vh-chat-form">
+        <div class="vh-chat-field">
+          <label for="chat-nombre">Nombre</label>
+          <input id="chat-nombre" name="Nombre" type="text" required />
+        </div>
+        <div class="vh-chat-field">
+          <label for="chat-telefono">Teléfono</label>
+          <input id="chat-telefono" name="Telefono" type="tel" />
+        </div>
+        <div class="vh-chat-field">
+          <label for="chat-correo">Correo</label>
+          <input id="chat-correo" name="Correo" type="email" />
+        </div>
+        <div class="vh-chat-field vh-chat-field-full">
+          <label for="chat-mensaje">Mensaje</label>
+          <textarea id="chat-mensaje" name="Mensaje" rows="4" required></textarea>
+        </div>
+        <div class="vh-chat-actions">
+          <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+        </div>
+        <p class="vh-chat-status" aria-live="polite"></p>
+      </form>
+    </div>
+  `;
+
+  widget.setAttribute("aria-hidden", "true");
+  widget.tabIndex = -1;
+  document.body.appendChild(widget);
+
+  const closeButton = widget.querySelector(".vh-chat-close");
+  const backdrop = widget.querySelector(".vh-chat-backdrop");
+  const form = widget.querySelector(".vh-chat-form");
+
+  const closeChat = () => {
+    widget.classList.remove("is-open");
+    widget.setAttribute("aria-hidden", "true");
+  };
+
+  closeButton?.addEventListener("click", closeChat);
+  backdrop?.addEventListener("click", closeChat);
+  widget.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeChat();
+  });
+
+  form?.addEventListener("submit", submitChatForm);
+}
+
+function openChatPanel(defaultMessage) {
+  createChatPanel();
+  const widget = document.getElementById("vh-chat-widget");
+  if (!widget) return;
+
+  const form = widget.querySelector(".vh-chat-form");
+  const messageField = form?.querySelector('[name="Mensaje"]');
+  if (messageField && defaultMessage && !messageField.value) {
+    messageField.value = defaultMessage;
+  }
+
+  widget.classList.add("is-open");
+  widget.setAttribute("aria-hidden", "false");
+  const nameField = form?.querySelector('[name="Nombre"]');
+  nameField?.focus();
+}
+
+function setChatStatus(message, status = "error") {
+  const widget = document.getElementById("vh-chat-widget");
+  if (!widget) return;
+  const statusNode = widget.querySelector(".vh-chat-status");
+  if (!statusNode) return;
+  statusNode.textContent = message;
+  statusNode.className = `vh-chat-status vh-chat-status-${status}`;
+}
+
+async function submitChatForm(event) {
+  event.preventDefault();
+  const form = event.currentTarget;
+  if (!form || !(form instanceof HTMLFormElement)) return;
+
+  const nombre = form.Nombre?.value.trim();
+  const telefono = form.Telefono?.value.trim();
+  const correo = form.Correo?.value.trim();
+  const mensaje = form.Mensaje?.value.trim();
+
+  if (!nombre || !mensaje) {
+    setChatStatus("Completa nombre y mensaje para enviar la consulta.", "error");
+    return;
+  }
+
+  if (!telefono && !correo) {
+    setChatStatus("Dejá tu teléfono o correo para que podamos responderte.", "error");
+    return;
+  }
+
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalLabel = submitButton?.textContent;
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando...";
+  }
+
+  try {
+    const response = await fetch(getApiUrl("api/chat"), {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        Nombre: nombre,
+        Telefono: telefono,
+        Correo: correo,
+        Mensaje: mensaje,
+        _page: window.location.href
+      })
+    });
+
+    const data = await response.json().catch(() => null);
+    if (!response.ok || !data?.ok) {
+      throw new Error(data?.message || "No se pudo enviar el mensaje en este momento. Probá nuevamente más tarde o contactanos por otro canal.");
+    }
+
+    form.reset();
+    setChatStatus(data.message || "Tu mensaje fue enviado correctamente. En breve seguimos el contacto.", "success");
+  } catch (error) {
+    setChatStatus(error?.message || "No se pudo enviar el mensaje en este momento. Probá nuevamente más tarde o contactanos por otro canal.", "error");
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalLabel || "Enviar mensaje";
+    }
+  }
+}
+
+function setupChatLinks() {
+  document.querySelectorAll("[data-chat-link]").forEach((link) => {
+    const message = link.dataset.chatMessage || "";
+    link.href = "/contacto/";
+    link.setAttribute("aria-label", "Abrir chat de Valor Humano");
+    link.removeAttribute("target");
+    link.removeAttribute("rel");
+
+    if (isGithubPagesHost()) {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        showToast(staticFallbackMessage, "error");
+      });
+      return;
+    }
+
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openChatPanel(message);
+    });
+  });
 }
 
 function injectNavigationFixStyles() {
@@ -476,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupHeader();
   setupNavigation();
   setupReveal();
-  setupWhatsAppLinks();
+  setupChatLinks();
   setupContactPrefill();
   setupForms();
   setupSliders();
