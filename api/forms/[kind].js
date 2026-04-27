@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import formidable from "formidable";
 import nodemailer from "nodemailer";
@@ -174,7 +175,7 @@ function buildAttachments(kind, files) {
   return [
     {
       filename: cv.originalFilename || "CV",
-      path: cv.filepath,
+      content: fs.createReadStream(cv.filepath),
       contentType: cv.mimetype || undefined
     }
   ];
