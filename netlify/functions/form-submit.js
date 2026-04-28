@@ -71,7 +71,11 @@ function isValidEmail(value) {
 }
 
 function getDestination(kind) {
-  return readRequiredPrivateValue(destinationByKind[kind]);
+  if (kind === "jobs") {
+    return readRequiredPrivateValue("JOBS_TO", "VH_FORWARD_JOBS");
+  }
+
+  return readRequiredPrivateValue("CONTACT_TO", "VH_FORWARD_CONTACT");
 }
 
 function getMimeType(fileName, explicitType) {
