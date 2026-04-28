@@ -15,7 +15,7 @@ Variables requeridas en Vercel (Project Settings → Environment Variables):
 
 - `MAIL_FROM` (ejemplo: `seleccionvaloreshumanos@gmail.com`)
 - `CONTACT_TO` (ejemplo: `seleccionvaloreshumanos@gmail.com`)
-- `JOBS_TO` (destino de postulación, recomendado: `seleccionvaloreshumanos@gmail.com`)
+- `JOBS_TO` (opcional; destinatarios en copia para postulación, separados por coma)
 - `SMTP_HOST` (para Gmail: `smtp.gmail.com`)
 - `SMTP_PORT` (para Gmail TLS STARTTLS: `587`)
 - `SMTP_SECURE` (`false` para puerto 587)
@@ -24,8 +24,9 @@ Variables requeridas en Vercel (Project Settings → Environment Variables):
 
 Notas:
 
-- Si `JOBS_TO` no está definido, `jobs` usa como fallback fijo `seleccionvaloreshumanos@gmail.com` (no cae en Hotmail).
-- Para evitar conflictos entre ramas, mantener este criterio de prioridad en `api/forms/[kind].js`: `JOBS_TO` configurado primero, fallback Gmail después.
+- `jobs` siempre entrega a `seleccionvaloreshumanos@gmail.com` como destinatario principal (`to`).
+- Si `JOBS_TO` está definido, se agrega como copia (`cc`) y nunca reemplaza el Gmail principal.
+- Para evitar conflictos entre ramas, mantener este criterio en `api/forms/[kind].js`: Gmail principal fijo para postulación.
 - Tamaño máximo CV: 10 MB.
 - Formatos aceptados CV: `.pdf`, `.doc`, `.docx`.
 

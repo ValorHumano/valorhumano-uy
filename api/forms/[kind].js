@@ -25,6 +25,13 @@ const successMessages = {
 };
 const fallbackJobsRecipient = "seleccionvaloreshumanos@gmail.com";
 
+function splitRecipients(value) {
+  return normalizeValue(value)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 const safeFormError = "No se pudo enviar el formulario en este momento. Probá nuevamente más tarde.";
 
 const requiredFieldsByKind = {
@@ -114,12 +121,17 @@ function validatePayload(kind, fields, files) {
   return null;
 }
 
-function getRecipient(kind) {
+function getRecipients(kind) {
   if (kind === "jobs") {
-    const configuredJobsRecipient = normalizeValue(process.env.JOBS_TO || "");
-    return configuredJobsRecipient || fallbackJobsRecipient;
+    const jobsRecipients = splitRecipients(process.env.JOBS_TO || "");
+    const uniqueRecipients = Array.from(new Set([fallbackJobsRecipient, ...jobsRecipients]));
+    return {
+      to: fallbackJobsRecipient,
+      cc: uniqueRecipients.filter((recipient) => recipient !== fallbackJobsRecipient)
+    };
   }
-  return getRequiredEnv("CONTACT_TO");
+
+  return { to: getRequiredEnv("CONTACT_TO") };
 }
 
 function buildPlainText(kind, fields) {
@@ -209,8 +221,11 @@ export default async function handler(req, res) {
 
     if (kind === "jobs") {
       const cv = getUploadedFile(files);
+      const jobsRecipients = getRecipients(kind);
       console.info("jobs mail attempt", {
         kind,
+        to: jobsRecipients.to,
+        ccCount: jobsRecipients.cc?.length || 0,
         hasJobsTo: Boolean(process.env.JOBS_TO),
         hasCv: Boolean(cv),
         cvName: cv?.originalFilename || cv?.newFilename || null,
@@ -219,9 +234,12 @@ export default async function handler(req, res) {
       });
     }
 
+    const recipients = getRecipients(kind);
+
     const info = await transporter.sendMail({
       from: getRequiredEnv("MAIL_FROM"),
-      to: getRecipient(kind),
+      to: recipients.to,
+      cc: recipients.cc,
       replyTo,
       subject,
       text: buildPlainText(kind, fields),
