@@ -71,7 +71,18 @@ function isValidEmail(value) {
 }
 
 function getDestination(kind) {
-  return readRequiredPrivateValue(destinationByKind[kind]);
+  const envKey = destinationByKind[kind];
+  const configured = readPrivateValue(envKey);
+
+  if (cleanText(configured, 320)) {
+    return configured;
+  }
+  if (kind === "jobs") {
+    const sharedDestination = readPrivateValue(destinationByKind.contact);
+    if (cleanText(sharedDestination, 320)) return sharedDestination;
+  }
+
+  return readRequiredPrivateValue(envKey);
 }
 
 function getMimeType(fileName, explicitType) {

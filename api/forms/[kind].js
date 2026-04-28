@@ -114,7 +114,7 @@ function validatePayload(kind, fields, files) {
 }
 
 function getRecipient(kind) {
-  if (kind === "jobs") return getRequiredEnv("JOBS_TO");
+  if (kind === "jobs") return process.env.JOBS_TO || getRequiredEnv("CONTACT_TO");
   return getRequiredEnv("CONTACT_TO");
 }
 
