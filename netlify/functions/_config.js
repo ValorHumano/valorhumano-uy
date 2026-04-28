@@ -12,11 +12,19 @@ export function readPrivateValue(key) {
   return "";
 }
 
-export function readRequiredPrivateValue(key) {
-  const value = readPrivateValue(key);
+export function readAlternativePrivateValue(...keys) {
+  for (const key of keys) {
+    const value = readPrivateValue(key);
+    if (value) return value;
+  }
+  return "";
+}
+
+export function readRequiredPrivateValue(...keys) {
+  const value = readAlternativePrivateValue(...keys);
 
   if (!value) {
-    throw new Error(`Missing configuration: ${key}`);
+    throw new Error(`Missing configuration: ${keys.join(" or ")}`);
   }
 
   return value;

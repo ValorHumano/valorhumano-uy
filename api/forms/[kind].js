@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs/promises";
 import formidable from "formidable";
 import nodemailer from "nodemailer";
 
@@ -39,9 +40,17 @@ function sendJson(res, statusCode, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function getRequiredEnv(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing required private environment variable: ${name}`);
+function getEnvValue(...names) {
+  for (const name of names) {
+    const value = process.env[name];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "";
+}
+
+function getRequiredEnv(...names) {
+  const value = getEnvValue(...names);
+  if (!value) throw new Error(`Missing required private environment variable: ${names.join(" or ")}`);
   return value;
 }
 
@@ -114,8 +123,8 @@ function validatePayload(kind, fields, files) {
 }
 
 function getRecipient(kind) {
-  if (kind === "jobs") return getRequiredEnv("JOBS_TO");
-  return getRequiredEnv("CONTACT_TO");
+  if (kind === "jobs") return getRequiredEnv("JOBS_TO", "VH_FORWARD_JOBS");
+  return getRequiredEnv("CONTACT_TO", "VH_FORWARD_CONTACT");
 }
 
 function buildPlainText(kind, fields) {
@@ -155,29 +164,30 @@ function buildHtml(kind, fields) {
 
 function createTransporter() {
   return nodemailer.createTransport({
-    host: getRequiredEnv("SMTP_HOST"),
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: String(process.env.SMTP_SECURE || "false") === "true",
+    host: getRequiredEnv("SMTP_HOST", "BREVO_SMTP_HOST"),
+    port: Number(process.env.SMTP_PORT || process.env.BREVO_SMTP_PORT || 587),
+    secure: String(process.env.SMTP_SECURE || process.env.BREVO_SMTP_SECURE || "false") === "true",
     auth: {
-      user: getRequiredEnv("SMTP_USER"),
-      pass: getRequiredEnv("SMTP_PASS")
+      user: getRequiredEnv("SMTP_USER", "BREVO_SMTP_LOGIN"),
+      pass: getRequiredEnv("SMTP_PASS", "BREVO_SMTP_KEY")
     }
   });
 }
 
-function buildAttachments(kind, files) {
+async function buildAttachments(kind, files) {
   if (kind !== "jobs") return [];
 
   const cv = getUploadedFile(files);
   if (!cv) return [];
 
-  return [
+  return fs.readFile(cv.filepath).then((buffer) => [
     {
       filename: cv.originalFilename || "CV",
-      path: cv.filepath,
-      contentType: cv.mimetype || undefined
+      content: buffer,
+      contentType: cv.mimetype || undefined,
+      contentDisposition: "attachment"
     }
-  ];
+  ]);
 }
 
 export default async function handler(req, res) {
@@ -201,7 +211,7 @@ export default async function handler(req, res) {
     const transporter = createTransporter();
     const replyTo = fields.Correo || undefined;
     const subject = `[Valor Humano] ${labelsByKind[kind]}`;
-    const attachments = buildAttachments(kind, files);
+    const attachments = await buildAttachments(kind, files);
 
     if (kind === "jobs") {
       const cv = getUploadedFile(files);
@@ -216,7 +226,7 @@ export default async function handler(req, res) {
     }
 
     const info = await transporter.sendMail({
-      from: getRequiredEnv("MAIL_FROM"),
+      from: getRequiredEnv("MAIL_FROM", "VH_MAIL_FROM"),
       to: getRecipient(kind),
       replyTo,
       subject,

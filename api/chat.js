@@ -17,9 +17,17 @@ function sendJson(res, statusCode, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function getRequiredEnv(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing required private environment variable: ${name}`);
+function getEnvValue(...names) {
+  for (const name of names) {
+    const value = process.env[name];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return "";
+}
+
+function getRequiredEnv(...names) {
+  const value = getEnvValue(...names);
+  if (!value) throw new Error(`Missing required private environment variable: ${names.join(" or ")}`);
   return value;
 }
 
@@ -130,12 +138,12 @@ function buildHtml(fields, pageUrl, timestamp) {
 
 function createTransporter() {
   return nodemailer.createTransport({
-    host: getRequiredEnv("SMTP_HOST"),
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: String(process.env.SMTP_SECURE || "false") === "true",
+    host: getRequiredEnv("SMTP_HOST", "BREVO_SMTP_HOST"),
+    port: Number(process.env.SMTP_PORT || process.env.BREVO_SMTP_PORT || 587),
+    secure: String(process.env.SMTP_SECURE || process.env.BREVO_SMTP_SECURE || "false") === "true",
     auth: {
-      user: getRequiredEnv("SMTP_USER"),
-      pass: getRequiredEnv("SMTP_PASS")
+      user: getRequiredEnv("SMTP_USER", "BREVO_SMTP_LOGIN"),
+      pass: getRequiredEnv("SMTP_PASS", "BREVO_SMTP_KEY")
     }
   });
 }
@@ -156,8 +164,8 @@ export default async function handler(req, res) {
     const transporter = createTransporter();
 
     await transporter.sendMail({
-      from: getRequiredEnv("MAIL_FROM"),
-      to: getRequiredEnv("CONTACT_TO"),
+      from: getRequiredEnv("MAIL_FROM", "VH_MAIL_FROM"),
+      to: getRequiredEnv("CONTACT_TO", "VH_FORWARD_CONTACT"),
       replyTo: fields.Correo || undefined,
       subject: "[Valor Humano] Chat web / Consulta rápida",
       text: buildPlainText(fields, pageUrl, timestamp),
