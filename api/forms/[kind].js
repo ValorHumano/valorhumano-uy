@@ -12,6 +12,8 @@ const allowedKinds = new Set(["contact", "enterprise", "jobs"]);
 const allowedCvExtensions = new Set([".pdf", ".doc", ".docx"]);
 const maxCvSizeBytes = 10 * 1024 * 1024;
 
+const fixedJobsRecipient = "seleccionvaloreshumanos@gmail.com";
+
 const labelsByKind = {
   contact: "Consulta desde Contacto",
   enterprise: "Consulta de Empresa",
@@ -28,7 +30,15 @@ const safeFormError = "No se pudo enviar el formulario en este momento. Probá n
 
 const requiredFieldsByKind = {
   contact: ["Nombre", "Telefono", "Correo", "Motivo", "Mensaje"],
-  enterprise: ["Nombre y apellido", "Empresa", "Telefono", "Correo", "Servicio de interes", "Ubicacion o rubro", "Mensaje"],
+  enterprise: [
+    "Nombre y apellido",
+    "Empresa",
+    "Telefono",
+    "Correo",
+    "Servicio de interes",
+    "Ubicacion o rubro",
+    "Mensaje"
+  ],
   jobs: ["Nombre y apellido", "Telefono", "Correo"]
 };
 
@@ -49,6 +59,13 @@ function normalizeValue(value) {
   if (Array.isArray(value)) return value.filter(Boolean).join(", ");
   if (typeof value === "string") return value.trim();
   return value == null ? "" : String(value).trim();
+}
+
+function splitRecipients(value) {
+  return normalizeValue(value)
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 function normalizeFields(fields) {
@@ -113,9 +130,22 @@ function validatePayload(kind, fields, files) {
   return null;
 }
 
-function getRecipient(kind) {
-  if (kind === "jobs") return process.env.JOBS_TO || getRequiredEnv("CONTACT_TO");
-  return getRequiredEnv("CONTACT_TO");
+function getRecipients(kind) {
+  if (kind === "jobs") {
+    const cc = splitRecipients(process.env.JOBS_TO || "").filter(
+      (recipient) => recipient !== fixedJobsRecipient
+    );
+
+    return {
+      to: fixedJobsRecipient,
+      cc
+    };
+  }
+
+  return {
+    to: getRequiredEnv("CONTACT_TO"),
+    cc: []
+  };
 }
 
 function buildPlainText(kind, fields) {
@@ -140,7 +170,14 @@ function escapeHtml(value) {
 
 function buildHtml(kind, fields) {
   const rows = Object.entries(fields)
-    .map(([key, value]) => `<tr><th align="left" style="padding:8px;border-bottom:1px solid #ddd;">${escapeHtml(key)}</th><td style="padding:8px;border-bottom:1px solid #ddd;">${escapeHtml(value || "-")}</td></tr>`)
+    .map(
+      ([key, value]) =>
+        `<tr><th align="left" style="padding:8px;border-bottom:1px solid #ddd;">${escapeHtml(
+          key
+        )}</th><td style="padding:8px;border-bottom:1px solid #ddd;">${escapeHtml(
+          value || "-"
+        )}</td></tr>`
+    )
     .join("");
 
   return `
@@ -190,23 +227,31 @@ export default async function handler(req, res) {
 
   try {
     const { fields, files } = await parseRequest(req);
+
     const pageUrl = fields._page || req.headers.referer || "Sitio web Valor Humano";
     const timestamp = new Date().toISOString();
+
     fields.Pagina = fields.Pagina || pageUrl;
     fields["Fecha/hora"] = fields["Fecha/hora"] || timestamp;
-    const payloadError = validatePayload(kind, fields, files);
 
-    if (payloadError) return sendJson(res, 400, { ok: false, message: payloadError });
+    const payloadError = validatePayload(kind, fields, files);
+    if (payloadError) {
+      return sendJson(res, 400, { ok: false, message: payloadError });
+    }
 
     const transporter = createTransporter();
     const replyTo = fields.Correo || undefined;
     const subject = `[Valor Humano] ${labelsByKind[kind]}`;
     const attachments = buildAttachments(kind, files);
+    const recipients = getRecipients(kind);
 
     if (kind === "jobs") {
       const cv = getUploadedFile(files);
+
       console.info("jobs mail attempt", {
         kind,
+        to: recipients.to,
+        ccCount: recipients.cc.length,
         hasJobsTo: Boolean(process.env.JOBS_TO),
         hasCv: Boolean(cv),
         cvName: cv?.originalFilename || cv?.newFilename || null,
@@ -217,7 +262,8 @@ export default async function handler(req, res) {
 
     const info = await transporter.sendMail({
       from: getRequiredEnv("MAIL_FROM"),
-      to: getRecipient(kind),
+      to: recipients.to,
+      cc: recipients.cc,
       replyTo,
       subject,
       text: buildPlainText(kind, fields),
@@ -227,6 +273,7 @@ export default async function handler(req, res) {
 
     const acceptedCount = info.accepted?.length || 0;
     const rejectedCount = info.rejected?.length || 0;
+
     if (acceptedCount < 1 || rejectedCount > 0) {
       throw new Error("Mail delivery was not accepted by provider.");
     }
@@ -237,9 +284,6 @@ export default async function handler(req, res) {
         rejectedCount,
         messageId: info.messageId || null
       });
-      if (acceptedCount < 1 || rejectedCount > 0) {
-        throw new Error("Jobs delivery was not accepted by provider.");
-      }
     }
 
     return sendJson(res, 200, {
@@ -255,6 +299,7 @@ export default async function handler(req, res) {
         command: error?.command
       });
     }
+
     console.error("Valor Humano form delivery failed", {
       kind,
       message: error?.message,
