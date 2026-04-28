@@ -23,7 +23,7 @@ const successMessages = {
   enterprise: "Tu consulta fue enviada correctamente. En breve seguimos el contacto.",
   jobs: "Tu postulación fue enviada correctamente. En breve seguimos el contacto."
 };
-const fixedJobsRecipient = "seleccionvaloreshumanos@gmail.com";
+const fallbackJobsRecipient = "seleccionvaloreshumanos@gmail.com";
 
 const safeFormError = "No se pudo enviar el formulario en este momento. Probá nuevamente más tarde.";
 
@@ -115,7 +115,10 @@ function validatePayload(kind, fields, files) {
 }
 
 function getRecipient(kind) {
-  if (kind === "jobs") return process.env.JOBS_TO || fixedJobsRecipient;
+  if (kind === "jobs") {
+    const configuredJobsRecipient = normalizeValue(process.env.JOBS_TO || "");
+    return configuredJobsRecipient || fallbackJobsRecipient;
+  }
   return getRequiredEnv("CONTACT_TO");
 }
 

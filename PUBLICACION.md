@@ -25,6 +25,7 @@ Variables requeridas en Vercel (Project Settings → Environment Variables):
 Notas:
 
 - Si `JOBS_TO` no está definido, `jobs` usa como fallback fijo `seleccionvaloreshumanos@gmail.com` (no cae en Hotmail).
+- Para evitar conflictos entre ramas, mantener este criterio de prioridad en `api/forms/[kind].js`: `JOBS_TO` configurado primero, fallback Gmail después.
 - Tamaño máximo CV: 10 MB.
 - Formatos aceptados CV: `.pdf`, `.doc`, `.docx`.
 
