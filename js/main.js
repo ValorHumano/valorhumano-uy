@@ -134,6 +134,30 @@ function injectNavigationFixStyles() {
   document.head.appendChild(style);
 }
 
+function injectTitleBalanceStyles() {
+  if (document.getElementById("vh-title-balance")) return;
+
+  const link = document.createElement("link");
+  link.id = "vh-title-balance";
+  link.rel = "stylesheet";
+  link.href = "/css/title-balance.css?v=20260429-title-balance";
+  document.head.appendChild(link);
+}
+
+function setupTitleBalance() {
+  injectTitleBalanceStyles();
+
+  const homePanelTitle = document.querySelector(".page-home .hero-panel h2");
+  if (homePanelTitle) {
+    homePanelTitle.classList.add("title-balanced", "title-balanced--home-panel");
+  }
+
+  const selectionTitle = document.querySelector(".page-selection .page-title");
+  if (selectionTitle) {
+    selectionTitle.classList.add("title-balanced", "title-balanced--selection-hero");
+  }
+}
+
 function setupHeader() {
   const header = document.querySelector(".site-header");
   if (!header) return;
@@ -458,6 +482,7 @@ function prefillFromUrl() {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("js-enhanced");
+  setupTitleBalance();
   setupHeader();
   setupNavigation();
   setupReveal();
