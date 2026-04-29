@@ -363,11 +363,155 @@
   color: var(--gold-0);
 }
 
+/* Compactacion editorial: reduce espacios muertos y aprovecha mejor imagenes/tarjetas sin cambiar la identidad. */
+:root {
+  --vh-space-section-y: clamp(52px, 5.4vw, 78px);
+  --vh-space-section-y-soft: clamp(48px, 5vw, 72px);
+  --vh-space-section-y-compact: clamp(36px, 4vw, 58px);
+  --vh-gap-section-head: clamp(22px, 2.2vw, 32px);
+  --vh-gap-grid: clamp(16px, 1.65vw, 24px);
+  --vh-card-padding: clamp(20px, 1.85vw, 28px);
+  --vh-card-padding-lg: clamp(24px, 2.25vw, 34px);
+  --vh-content-gap: clamp(12px, 1.15vw, 18px);
+  --vh-content-gap-sm: clamp(8px, 0.8vw, 12px);
+}
+
+.hero-home {
+  padding-top: clamp(38px, 4vw, 58px);
+  padding-bottom: clamp(42px, 4.6vw, 64px);
+}
+
+.page-hero {
+  padding-top: clamp(44px, 4.8vw, 68px);
+  padding-bottom: clamp(44px, 5vw, 72px);
+}
+
+.hero-grid,
+.page-hero-grid {
+  align-items: start;
+  gap: clamp(24px, 2.8vw, 40px);
+}
+
+.hero-copy,
+.page-copy {
+  align-content: start;
+}
+
+.hero-facts {
+  gap: clamp(10px, 1vw, 14px);
+}
+
+.hero-fact,
+.info-card {
+  padding: clamp(16px, 1.55vw, 22px);
+}
+
+.hero-visual,
+.page-visual {
+  gap: clamp(12px, 1.25vw, 18px);
+}
+
+.hero-home .media-frame {
+  min-height: clamp(250px, 24vw, 330px);
+}
+
+.page-hero .aside-media,
+.page-hero .media-frame,
+.page-hero .showcase-media {
+  min-height: clamp(250px, 26vw, 350px);
+}
+
+.hero-panel {
+  gap: clamp(14px, 1.35vw, 20px);
+}
+
+@media (min-width: 1025px) {
+  .hero-panel .mini-list,
+  .page-visual .info-stack {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .hero-panel .info-card,
+  .page-visual .info-card {
+    padding: 14px;
+  }
+
+  .hero-panel .info-card h3,
+  .page-visual .info-card h3 {
+    font-size: clamp(1.15rem, 1.35vw, 1.35rem);
+  }
+
+  .hero-panel .info-card p,
+  .page-visual .info-card p {
+    font-size: 13px;
+    line-height: 1.48;
+  }
+}
+
+.service-card {
+  min-height: clamp(290px, 29vw, 360px);
+}
+
+.service-card .service-media {
+  min-height: 100%;
+}
+
+.service-body {
+  align-content: center;
+  padding: clamp(22px, 2.1vw, 32px);
+}
+
+.feature-card,
+.detail-card,
+.channel-card,
+.contact-card,
+.principle-card,
+.team-card,
+.quote-card,
+.process-card,
+.sector-card,
+.support-card,
+.form-card,
+.audience-card,
+.cta-panel {
+  gap: var(--vh-content-gap);
+}
+
+.process-card {
+  min-height: unset;
+}
+
+.sector-card {
+  min-height: 160px;
+}
+
+.quote-grid {
+  margin-top: clamp(20px, 2vw, 30px);
+}
+
+.form-layout {
+  align-items: start;
+}
+
+.form-card,
+.support-card {
+  align-self: start;
+}
+
+.cta-panel {
+  align-items: center;
+}
+
+.footer-shell {
+  padding-block: clamp(34px, 4vw, 54px);
+}
+
 @media (max-width: 1024px) {
   :root {
-    --vh-space-section-y: clamp(62px, 8vw, 88px);
-    --vh-space-section-y-soft: clamp(58px, 7.4vw, 82px);
-    --vh-card-padding-lg: clamp(26px, 4.2vw, 36px);
+    --vh-space-section-y: clamp(50px, 7vw, 72px);
+    --vh-space-section-y-soft: clamp(46px, 6.5vw, 68px);
+    --vh-card-padding-lg: clamp(22px, 3.8vw, 32px);
   }
 
   .hero-grid,
@@ -376,7 +520,7 @@
   .form-layout,
   .cta-panel,
   .audience-grid {
-    gap: clamp(24px, 4vw, 38px);
+    gap: clamp(20px, 3.2vw, 32px);
   }
 }
 
@@ -398,8 +542,8 @@
   .page-hero,
   .hero-home,
   .section-cta {
-    padding-top: clamp(54px, 10vw, 72px);
-    padding-bottom: clamp(54px, 10vw, 72px);
+    padding-top: clamp(42px, 8vw, 58px);
+    padding-bottom: clamp(42px, 8vw, 58px);
   }
 
   .service-card,
@@ -416,13 +560,15 @@
   .hero-panel,
   .page-copy,
   .info-card {
-    padding: clamp(22px, 5.2vw, 32px);
+    padding: clamp(20px, 4.8vw, 28px);
   }
 
   .media-frame,
   .aside-media,
-  .showcase-media {
-    min-height: clamp(250px, 58vw, 360px);
+  .showcase-media,
+  .hero-home .media-frame,
+  .page-hero .aside-media {
+    min-height: clamp(220px, 54vw, 320px);
   }
 }
 
@@ -432,16 +578,20 @@
   }
 
   :root {
-    --vh-gap-grid: 18px;
-    --vh-content-gap: 16px;
+    --vh-gap-grid: 16px;
+    --vh-content-gap: 14px;
   }
 
   .section-header {
-    margin-bottom: 28px;
+    margin-bottom: 22px;
   }
 
   .button-row {
-    gap: 12px;
+    gap: 10px;
+  }
+
+  .hero-facts {
+    gap: 10px;
   }
 }
 
