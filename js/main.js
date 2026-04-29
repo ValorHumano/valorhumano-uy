@@ -140,22 +140,33 @@ function injectTitleBalanceStyles() {
   const link = document.createElement("link");
   link.id = "vh-title-balance";
   link.rel = "stylesheet";
-  link.href = "/css/title-balance.css?v=20260429-title-balance";
+  link.href = "/css/title-balance.css?v=20260429-title-balance-all";
   document.head.appendChild(link);
 }
 
 function setupTitleBalance() {
   injectTitleBalanceStyles();
 
-  const homePanelTitle = document.querySelector(".page-home .hero-panel h2");
-  if (homePanelTitle) {
-    homePanelTitle.classList.add("title-balanced", "title-balanced--home-panel");
-  }
+  const selectors = [
+    ".hero-title",
+    ".page-title",
+    ".section-title",
+    ".hero-panel h2",
+    ".service-card h3",
+    ".detail-card h3",
+    ".process-card h3",
+    ".audience-card h3",
+    ".channel-card h3",
+    ".contact-card h3",
+    ".support-card h3",
+    ".principle-card h3",
+    ".team-card h3",
+    ".sector-card h3"
+  ];
 
-  const selectionTitle = document.querySelector(".page-selection .page-title");
-  if (selectionTitle) {
-    selectionTitle.classList.add("title-balanced", "title-balanced--selection-hero");
-  }
+  document.querySelectorAll(selectors.join(", ")).forEach((title) => {
+    title.classList.add("title-balanced");
+  });
 }
 
 function setupHeader() {
