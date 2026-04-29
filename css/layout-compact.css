@@ -1,0 +1,355 @@
+/* Compactacion visual senior: reduce espacios muertos y mejora uso del viewport sin cambiar identidad. */
+:root {
+  --vh-section-compact: clamp(46px, 4.8vw, 72px);
+  --vh-section-soft-compact: clamp(44px, 4.6vw, 68px);
+  --vh-hero-compact-top: clamp(34px, 3.6vw, 56px);
+  --vh-hero-compact-bottom: clamp(42px, 4.4vw, 66px);
+  --vh-card-compact: clamp(20px, 1.9vw, 30px);
+  --vh-card-compact-lg: clamp(24px, 2.3vw, 34px);
+  --vh-grid-compact: clamp(16px, 1.7vw, 24px);
+}
+
+/* Menos scroll muerto: los heroes ya no ocupan una pantalla excesiva. */
+.hero-home {
+  padding-top: var(--vh-hero-compact-top);
+  padding-bottom: var(--vh-hero-compact-bottom);
+}
+
+.page-hero {
+  padding-top: clamp(38px, 4vw, 62px);
+  padding-bottom: clamp(44px, 4.6vw, 68px);
+}
+
+.section {
+  padding-top: var(--vh-section-compact);
+  padding-bottom: var(--vh-section-compact);
+}
+
+.section-soft {
+  padding-top: var(--vh-section-soft-compact);
+  padding-bottom: var(--vh-section-soft-compact);
+}
+
+.section-sm,
+.section-cta {
+  padding-top: clamp(38px, 4vw, 58px);
+  padding-bottom: clamp(38px, 4vw, 58px);
+}
+
+.section-header {
+  margin-bottom: clamp(24px, 2.5vw, 34px);
+}
+
+/* Mejor uso del ancho: textos e imagenes se alinean con menos vacio lateral/vertical. */
+.hero-grid,
+.page-hero-grid {
+  align-items: stretch;
+  gap: clamp(22px, 2.4vw, 34px);
+}
+
+.hero-copy,
+.page-copy {
+  align-content: center;
+}
+
+.page-copy {
+  padding: var(--vh-card-compact-lg);
+}
+
+.hero-summary,
+.page-summary,
+.section-intro {
+  line-height: 1.58;
+}
+
+.hero-title {
+  font-size: clamp(2.55rem, 3.35vw, 3.55rem);
+}
+
+.page-title {
+  font-size: clamp(2.45rem, 3.15vw, 3.35rem);
+}
+
+.section-title {
+  font-size: clamp(2.18rem, 2.75vw, 2.85rem);
+}
+
+/* Home: evita el gran vacio debajo del hero compactando imagen, panel y microtarjetas. */
+.page-home .media-frame {
+  min-height: clamp(250px, 26vw, 350px);
+}
+
+.page-home .hero-panel {
+  z-index: 2;
+  margin: clamp(-54px, -3.2vw, -32px) clamp(16px, 2vw, 28px) 0;
+  padding: clamp(20px, 2vw, 28px);
+  backdrop-filter: blur(12px);
+}
+
+.page-home .hero-panel h2 {
+  max-width: 100%;
+  font-size: clamp(1.78rem, 1.85vw, 2.15rem);
+  line-height: 1.06;
+}
+
+.page-home .hero-facts {
+  gap: 12px;
+}
+
+.page-home .hero-fact,
+.page-home .info-card {
+  padding: clamp(14px, 1.4vw, 20px);
+}
+
+.page-home .hero-fact p,
+.page-home .info-card p {
+  font-size: 13.5px;
+  line-height: 1.52;
+}
+
+/* Paginas internas: imagen + tarjetas se resuelven como bloque compacto. */
+.page-visual {
+  align-content: start;
+  gap: 14px;
+}
+
+.aside-media,
+.showcase-media,
+.media-frame {
+  min-height: clamp(250px, 27vw, 360px);
+}
+
+.page-visual .info-stack {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.page-visual .info-card {
+  padding: clamp(14px, 1.4vw, 20px);
+}
+
+.page-visual .info-card h3 {
+  font-size: clamp(1.2rem, 1.45vw, 1.42rem);
+}
+
+.page-visual .info-card p {
+  font-size: 13.5px;
+  line-height: 1.48;
+}
+
+/* Cards: menos altura artificial y mas densidad elegante. */
+.service-grid,
+.feature-grid,
+.detail-grid,
+.process-grid,
+.channel-grid,
+.contact-grid,
+.principles-grid,
+.team-grid,
+.sector-grid,
+.quote-grid,
+.audience-grid {
+  gap: var(--vh-grid-compact);
+}
+
+.service-card {
+  min-height: auto;
+  grid-template-columns: minmax(0, 0.94fr) minmax(245px, 1.06fr);
+}
+
+.service-media {
+  min-height: clamp(220px, 24vw, 330px);
+}
+
+.service-body,
+.feature-card,
+.detail-card,
+.channel-card,
+.contact-card,
+.principle-card,
+.team-card,
+.quote-card,
+.process-card,
+.sector-card,
+.support-card,
+.form-card,
+.audience-card,
+.cta-panel {
+  padding: var(--vh-card-compact);
+}
+
+.service-body,
+.feature-card,
+.detail-card,
+.channel-card,
+.contact-card,
+.principle-card,
+.team-card,
+.process-card,
+.sector-card,
+.support-card,
+.form-card,
+.audience-card,
+.cta-panel,
+.info-card {
+  gap: clamp(12px, 1.25vw, 18px);
+}
+
+.service-card h3,
+.feature-card h3,
+.detail-card h3,
+.sector-card h3,
+.process-card h3,
+.audience-card h3,
+.quote-card h3,
+.channel-card h3,
+.contact-card h3,
+.support-card h3,
+.principle-card h3,
+.team-card h3 {
+  font-size: clamp(1.52rem, 1.82vw, 1.86rem);
+  line-height: 1.06;
+}
+
+.service-card p,
+.feature-card p,
+.detail-card p,
+.sector-card p,
+.process-card p,
+.audience-card p,
+.quote-card p,
+.channel-card p,
+.contact-card p,
+.support-card p,
+.principle-card p,
+.team-card p,
+.info-card p {
+  line-height: 1.55;
+}
+
+/* Procesos: timeline mas compacto y menos alto. */
+.process-card {
+  min-height: auto;
+}
+
+@media (min-width: 821px) {
+  .process-grid::before {
+    top: 30px;
+  }
+
+  .process-step {
+    width: 40px;
+    height: 40px;
+    font-size: 13px;
+  }
+}
+
+/* Formularios y soportes: menos dispersion, mejor lectura. */
+.form-layout {
+  align-items: start;
+  gap: clamp(22px, 2.6vw, 36px);
+}
+
+.field-grid {
+  gap: clamp(14px, 1.4vw, 20px);
+}
+
+.form-note,
+.support-note,
+.support-list li {
+  line-height: 1.55;
+}
+
+.form-actions,
+.button-row,
+.trust-ribbon,
+.social-list {
+  margin-top: clamp(8px, 1vw, 16px);
+}
+
+/* CTA y cierres mas concentrados. */
+.cta-panel {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.footer-shell {
+  padding-top: clamp(34px, 3vw, 46px);
+  padding-bottom: clamp(26px, 2.6vw, 38px);
+}
+
+@media (max-width: 1180px) {
+  .page-visual .info-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .page-visual .info-card {
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-grid,
+  .page-hero-grid {
+    gap: clamp(20px, 3vw, 30px);
+  }
+
+  .service-card {
+    grid-template-columns: 1fr;
+  }
+
+  .service-media {
+    min-height: clamp(230px, 42vw, 330px);
+  }
+}
+
+@media (max-width: 820px) {
+  .hero-home,
+  .page-hero,
+  .section,
+  .section-soft,
+  .section-cta {
+    padding-top: clamp(42px, 8vw, 60px);
+    padding-bottom: clamp(42px, 8vw, 60px);
+  }
+
+  .page-home .hero-panel {
+    margin: 0;
+  }
+
+  .page-home .media-frame,
+  .aside-media,
+  .showcase-media,
+  .media-frame {
+    min-height: clamp(230px, 58vw, 330px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero-home,
+  .page-hero,
+  .section,
+  .section-soft,
+  .section-cta {
+    padding-top: 38px;
+    padding-bottom: 38px;
+  }
+
+  .service-body,
+  .feature-card,
+  .detail-card,
+  .channel-card,
+  .contact-card,
+  .principle-card,
+  .team-card,
+  .quote-card,
+  .process-card,
+  .sector-card,
+  .support-card,
+  .form-card,
+  .audience-card,
+  .cta-panel,
+  .hero-panel,
+  .page-copy {
+    padding: 20px;
+  }
+}
