@@ -49,6 +49,195 @@
   line-height: 1.08;
 }
 
+/* Sistema fino de espacios: armoniza aire entre secciones, tarjetas, textos e imagenes sin redisenar. */
+:root {
+  --vh-space-section-y: clamp(74px, 7.2vw, 112px);
+  --vh-space-section-y-soft: clamp(68px, 6.4vw, 104px);
+  --vh-space-section-y-compact: clamp(52px, 5vw, 78px);
+  --vh-gap-section-head: clamp(30px, 3vw, 44px);
+  --vh-gap-grid: clamp(20px, 2.1vw, 30px);
+  --vh-gap-grid-tight: clamp(16px, 1.7vw, 24px);
+  --vh-card-padding: clamp(24px, 2.25vw, 36px);
+  --vh-card-padding-lg: clamp(30px, 3vw, 44px);
+  --vh-content-gap: clamp(16px, 1.55vw, 24px);
+  --vh-content-gap-sm: clamp(10px, 1vw, 16px);
+}
+
+.section,
+.page-hero,
+.hero-home {
+  padding-top: var(--vh-space-section-y);
+  padding-bottom: var(--vh-space-section-y);
+}
+
+.section-soft {
+  padding-top: var(--vh-space-section-y-soft);
+  padding-bottom: var(--vh-space-section-y-soft);
+}
+
+.section-sm,
+.section-cta {
+  padding-top: var(--vh-space-section-y-compact);
+  padding-bottom: var(--vh-space-section-y-compact);
+}
+
+.section-header {
+  gap: var(--vh-content-gap-sm);
+  margin-bottom: var(--vh-gap-section-head);
+}
+
+.hero-grid,
+.page-hero-grid,
+.showcase-layout,
+.form-layout,
+.cta-panel,
+.audience-grid {
+  gap: clamp(28px, 3.2vw, 48px);
+}
+
+.service-grid,
+.feature-grid,
+.detail-grid,
+.process-grid,
+.channel-grid,
+.contact-grid,
+.principles-grid,
+.team-grid,
+.sector-grid,
+.quote-grid {
+  gap: var(--vh-gap-grid);
+}
+
+.info-stack,
+.mini-list,
+.hero-copy,
+.page-copy,
+.service-body,
+.feature-card,
+.detail-card,
+.channel-card,
+.contact-card,
+.principle-card,
+.team-card,
+.process-card,
+.support-card,
+.form-card,
+.audience-card,
+.cta-panel {
+  gap: var(--vh-content-gap);
+}
+
+.hero-panel,
+.page-copy,
+.form-card,
+.support-card,
+.audience-card,
+.cta-panel {
+  padding: var(--vh-card-padding-lg);
+}
+
+.feature-card,
+.detail-card,
+.channel-card,
+.contact-card,
+.principle-card,
+.team-card,
+.quote-card {
+  padding: var(--vh-card-padding);
+}
+
+.process-card,
+.sector-card,
+.info-card {
+  padding: clamp(22px, 2vw, 30px);
+}
+
+.service-body {
+  padding: clamp(28px, 2.75vw, 40px);
+}
+
+.hero-summary,
+.page-summary,
+.section-intro {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.button-row {
+  margin-top: clamp(4px, 0.7vw, 12px);
+}
+
+.page-list,
+.hero-checks,
+.support-list {
+  margin-top: clamp(4px, 0.8vw, 12px);
+}
+
+.media-frame,
+.aside-media,
+.showcase-media {
+  min-height: clamp(300px, 31vw, 430px);
+}
+
+.service-card {
+  min-height: clamp(360px, 35vw, 440px);
+}
+
+.service-card p,
+.feature-card p,
+.detail-card p,
+.sector-card p,
+.process-card p,
+.audience-card p,
+.quote-card p,
+.channel-card p,
+.contact-card p,
+.support-card p,
+.principle-card p,
+.team-card p,
+.info-card p {
+  line-height: 1.66;
+}
+
+.field-grid {
+  gap: clamp(16px, 1.6vw, 22px);
+}
+
+.field {
+  gap: 8px;
+}
+
+.form-actions {
+  margin-top: clamp(18px, 1.8vw, 28px);
+}
+
+/* Ajustes de ritmo para cierres y bloques densos. */
+.trust-ribbon,
+.social-list {
+  margin-top: clamp(12px, 1.3vw, 20px);
+}
+
+.quote-grid {
+  margin-top: clamp(30px, 3vw, 44px);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --vh-space-section-y: clamp(62px, 8vw, 88px);
+    --vh-space-section-y-soft: clamp(58px, 7.4vw, 82px);
+    --vh-card-padding-lg: clamp(26px, 4.2vw, 36px);
+  }
+
+  .hero-grid,
+  .page-hero-grid,
+  .showcase-layout,
+  .form-layout,
+  .cta-panel,
+  .audience-grid {
+    gap: clamp(24px, 4vw, 38px);
+  }
+}
+
 @media (max-width: 820px) {
   .hero-title.title-balanced,
   .page-title.title-balanced,
@@ -61,10 +250,55 @@
     font-size: clamp(1.9rem, 7vw, 2.32rem);
     line-height: 1.05;
   }
+
+  .section,
+  .section-soft,
+  .page-hero,
+  .hero-home,
+  .section-cta {
+    padding-top: clamp(54px, 10vw, 72px);
+    padding-bottom: clamp(54px, 10vw, 72px);
+  }
+
+  .service-card,
+  .feature-card,
+  .detail-card,
+  .process-card,
+  .quote-card,
+  .audience-card,
+  .channel-card,
+  .contact-card,
+  .support-card,
+  .form-card,
+  .cta-panel,
+  .hero-panel,
+  .page-copy,
+  .info-card {
+    padding: clamp(22px, 5.2vw, 32px);
+  }
+
+  .media-frame,
+  .aside-media,
+  .showcase-media {
+    min-height: clamp(250px, 58vw, 360px);
+  }
 }
 
 @media (max-width: 560px) {
   .title-balanced {
     text-wrap: pretty;
+  }
+
+  :root {
+    --vh-gap-grid: 18px;
+    --vh-content-gap: 16px;
+  }
+
+  .section-header {
+    margin-bottom: 28px;
+  }
+
+  .button-row {
+    gap: 12px;
   }
 }
